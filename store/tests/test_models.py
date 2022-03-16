@@ -2,7 +2,7 @@ from django.test import TestCase
 from store.models import Category, Product
 from user.models import MyUser
 
-class TestCategoryModel(TestCase):
+class CategoryModelTest(TestCase):
 	
 	@classmethod
 	def setUpTestData(cls):
@@ -15,7 +15,7 @@ class TestCategoryModel(TestCase):
 		self.assertEqual(str(self.category), 'django')
 
 
-class TestProductModel(TestCase):
+class ProductModelTest(TestCase):
 	
 	@classmethod
 	def setUpTestData(cls):
