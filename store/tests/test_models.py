@@ -1,0 +1,38 @@
+from django.test import TestCase
+from store.models import Category, Product
+from user.models import MyUser
+
+class TestCategoryModel(TestCase):
+	
+	@classmethod
+	def setUpTestData(cls):
+		cls.category = Category.objects.create(name='django', slug='django')
+		
+	def test_entry(self):
+		self.assertTrue(isinstance(self.category, Category))
+	
+	def test_str(self):
+		self.assertEqual(str(self.category), 'django')
+
+
+class TestProductModel(TestCase):
+	
+	@classmethod
+	def setUpTestData(cls):
+		cls.category = Category.objects.create(name='django', slug='django')
+		cls.user = MyUser.objects.create(username='test')
+		cls.product = Product.objects.create(
+			category_id=1,
+			title='django beginners',
+			created_by_id=1,
+			slug='django-beginners',
+			price='20.00',
+			image='djano.img'
+		)
+		
+	def test_entry(self):
+		self.assertTrue(isinstance(self.product, Product))
+		
+	def test_str(self):
+		self.assertEqual(str(self.product), 'django beginners')
+
