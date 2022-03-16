@@ -6,6 +6,9 @@
 .idea/**/dictionaries
 .idea/**/shelf
 
+# images
+media/images/
+
 # Unit test / coverage reports
 htmlcov/
 .tox/
