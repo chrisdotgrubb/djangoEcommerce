@@ -27,7 +27,7 @@ class TestProductModel(TestCase):
 			created_by_id=1,
 			slug='django-beginners',
 			price='20.00',
-			image='djano.img'
+			image='django.img'
 		)
 		
 	def test_entry(self):
