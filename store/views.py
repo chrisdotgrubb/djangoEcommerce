@@ -6,8 +6,8 @@ from .models import Category, Product
 
 
 
-def all_products_view(request):
-	products = Product.objects.all()
+def products_all_view(request):
+	products = Product.products.all()
 	context = {
 		'products': products,
 	}

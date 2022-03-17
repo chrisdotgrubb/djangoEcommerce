@@ -5,21 +5,23 @@ from store.models import Category, Product
 from user.models import MyUser
 from store import views
 
-class AllProductsViewTest(TestCase):
+
+class ProductsAllViewTest(TestCase):
 	
 	def setUp(self):
-		self.url = reverse('store:all_products')
-		self.response = self.client.get(self.url)
-		
+		self.url = reverse('store:products_all')
+		self.request = RequestFactory().get(self.url)
+		self.response = views.products_all_view(self.request).render()
+	
 	def test_get(self):
 		self.assertEqual(self.response.status_code, 200)
-		
+	
 	def test_html(self):
 		request = HttpRequest()
-		response = views.all_products_view(request)
+		response = views.products_all_view(request)
 		rendered = response.render()
 		html = rendered.content.decode('utf-8')
-		self.assertIn('<title>Store</title>', html)
+		self.assertIn('<title>Book Store</title>', html)
 		self.assertTrue(html.startswith('\n<!DOCTYPE html>\n'))
 
 
@@ -40,8 +42,9 @@ class ProductDetailViewTest(TestCase):
 	
 	def setUp(self):
 		self.url = reverse('store:product_detail', args=['django-beginners'])
-		self.response = self.client.get(self.url)
-		
+		self.request = RequestFactory().get(self.url)
+		self.response = views.product_detail_view(self.request, slug='django-beginners').render()
+	
 	def test_get(self):
 		self.assertEqual(self.response.status_code, 200)
 
@@ -58,4 +61,3 @@ class CategoryViewTest(TestCase):
 	
 	def test_get(self):
 		self.assertEqual(self.response.status_code, 200)
-
