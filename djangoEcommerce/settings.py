@@ -19,6 +19,7 @@ INSTALLED_APPS = [
 	'store',
 	'user',
 	'cart',
+	'django_htmx',
 ]
 
 MIDDLEWARE = [
@@ -29,7 +30,29 @@ MIDDLEWARE = [
 	'django.contrib.auth.middleware.AuthenticationMiddleware',
 	'django.contrib.messages.middleware.MessageMiddleware',
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
+	'django_htmx.middleware.HtmxMiddleware'
 ]
+
+LOGGING = {
+	'version': 1,
+	'disable_existing_loggers': False,
+	'handlers': {
+		'console': {
+			'class': 'logging.StreamHandler',
+			'formatter': 'format_1',
+		},
+	},
+	'formatters': {
+		'format_1': {
+			'format': '({levelname}) [{pathname}:{funcName}:{lineno:d}] "{message}" ({levelname})',
+			'style': '{',
+		},
+	},
+	'root': {
+		'handlers': ['console'],
+		'level': 'DEBUG',
+	},
+}
 
 ROOT_URLCONF = 'djangoEcommerce.urls'
 

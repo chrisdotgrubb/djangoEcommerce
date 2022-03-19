@@ -22,23 +22,19 @@
 							</div>
 						</div>
 						<div class="col">
-							<div class="row p-3">
-								<div class="col-6">
-									<label for="select">Qty</label>
-									<select id="select">
-										<option value="">1</option>
-										<option value="">2</option>
-										<option value="">3</option>
-										<option value="">4</option>
-									</select>
-
+							<form>
+								<div class="row p-3">
+									<div class="col-6">
+										{% csrf_token %}
+										{{ form }}
+									</div>
+									<div class=" col-6 text-end">
+										<button type="submit" class="btn btn-secondary btn-sm" hx-post="{% url 'cart:add' product.id %}">Add to
+											basket
+										</button>
+									</div>
 								</div>
-								<div class="col-6 text-end">
-									<button type="button" id="add-button" value="{{ product.id }}" class="btn btn-secondary btn-sm">Add to
-										basket
-									</button>
-								</div>
-							</div>
+							</form>
 						</div>
 					</div>
 				</div>
@@ -46,22 +42,24 @@
 		</main>
 	</div>
 
-	<script>
-	$(document).on("click", "#add-button", function (e) {
-		e.preventDefault();
-		$.ajax({
-			type: "POST",
-			url: '{% url 'cart:add' %}',
-			data: {
-				productid: $("#add-button").val(),
-				csrfmiddlewaretoken: "{{ csrf_token }}",
-				action: "post"
-			},
-			success: function (json) {
-
-			},
-			error: function (xhr, errmsg, err){}
-		});
-	})
-	</script>
+	{#	<script>#}
+	{#	$(document).on("click", "#add-button", function (e) {#}
+	{#		e.preventDefault();#}
+	{#console.log($("#select option:selected").text())#}
+	{#		$.ajax({#}
+	{#			type: "POST",#}
+	{#			url: '{% url 'cart:add' %}',#}
+	{#			data: {#}
+	{#				productid: $("#add-button").val(),#}
+	{#				productaty: $("#select option:selected").val(),#}
+	{#				csrfmiddlewaretoken: "{{ csrf_token }}",#}
+	{#				action: "post"#}
+	{#			},#}
+	{#			success: function (json) {#}
+	{##}
+	{#			},#}
+	{#			error: function (xhr, errmsg, err){}#}
+	{#		});#}
+	{#	})#}
+	{#	</script>#}
 {% endblock %}
