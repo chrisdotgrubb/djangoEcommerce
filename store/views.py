@@ -1,11 +1,7 @@
 from django.template.response import TemplateResponse
 from django.shortcuts import get_object_or_404
-
 from cart.forms import QuantityForm
 from .models import Category, Product
-
-
-
 
 
 def products_all_view(request):

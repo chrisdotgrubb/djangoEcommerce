@@ -1,0 +1,13 @@
+<form hx-post="{% url 'cart:add' product.id %}">
+	<div class="row p-3">
+		<div class="col-6">
+			{% csrf_token %}
+			{{ form }}
+		</div>
+		<div class=" col-6 text-end">
+			<button type="submit" class="btn btn-primary btn-sm">
+				Add to cart
+			</button>
+		</div>
+	</div>
+</form>

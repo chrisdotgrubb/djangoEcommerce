@@ -22,44 +22,11 @@
 							</div>
 						</div>
 						<div class="col">
-							<form>
-								<div class="row p-3">
-									<div class="col-6">
-										{% csrf_token %}
-										{{ form }}
-									</div>
-									<div class=" col-6 text-end">
-										<button type="submit" class="btn btn-secondary btn-sm" hx-post="{% url 'cart:add' product.id %}">Add to
-											basket
-										</button>
-									</div>
-								</div>
-							</form>
+							{% include 'store/cart_form.html' %}
 						</div>
 					</div>
 				</div>
 			</div>
 		</main>
 	</div>
-
-	{#	<script>#}
-	{#	$(document).on("click", "#add-button", function (e) {#}
-	{#		e.preventDefault();#}
-	{#console.log($("#select option:selected").text())#}
-	{#		$.ajax({#}
-	{#			type: "POST",#}
-	{#			url: '{% url 'cart:add' %}',#}
-	{#			data: {#}
-	{#				productid: $("#add-button").val(),#}
-	{#				productaty: $("#select option:selected").val(),#}
-	{#				csrfmiddlewaretoken: "{{ csrf_token }}",#}
-	{#				action: "post"#}
-	{#			},#}
-	{#			success: function (json) {#}
-	{##}
-	{#			},#}
-	{#			error: function (xhr, errmsg, err){}#}
-	{#		});#}
-	{#	})#}
-	{#	</script>#}
 {% endblock %}
