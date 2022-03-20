@@ -1,0 +1,8 @@
+<div class="col-12 text-center">
+	{% if cart|length > 0 %}
+		<h1 class="h6">$ {{ cart.get_total_price }}</h1>
+		<div class="col-12 text-center">
+			<a href="." role="button" type="button" class="btn btn-lg btn-success fw-bold">Checkout</a>
+		</div>
+	{% endif %}
+</div>
