@@ -7,7 +7,11 @@ from store.models import Product
 
 
 def cart_view(request):
-	return TemplateResponse(request, 'store/cart/cart.html')
+	cart = Cart(request)
+	context = {
+		'cart': cart,
+	}
+	return TemplateResponse(request, 'store/cart/cart.html', context)
 
 
 def cart_add(request, product_id):
@@ -21,11 +25,26 @@ def cart_add(request, product_id):
 		'form': QuantityForm,
 	}
 	
-	response = TemplateResponse(request, 'store/cart/_cart_form.html', context)
+	response = TemplateResponse(request, 'store/cart/_form.html', context)
 	trigger_client_event(response, 'cartUpdatedEvent', {}, )
 	
 	return response
 
 
-def update_cart_number(request):
-	return TemplateResponse(request, 'store/cart/_cart_total.html')
+def cart_remove(request):
+	pass
+
+
+def cart_update_number(request):
+	return TemplateResponse(request, 'store/cart/_total.html')
+
+
+def cart_update_details(request):
+	return TemplateResponse(request, 'store/cart/_details.html')
+
+
+def cart_update_footer(request):
+	return TemplateResponse(request, 'store/cart/_footer.html')
+
+
+
