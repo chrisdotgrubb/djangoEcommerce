@@ -40,22 +40,21 @@
 													{% include 'store/cart/_quantity.html' %}
 													<div>
 														<button hx-delete="{% url 'cart:delete' product.id %}" id="delete-button-{{ product.id }}"
-																hx-headers='{"X-CSRFToken": "{{  csrf_token }}"}'
+																hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-trigger="click, deletedEvent-{{ product.id }} from:body"
 																hx-target="#product-{{ product.id }}" hx-swap="outerHTML" class="btn btn-sm btn-warning">Delete
 														</button>
 													</div>
-
 												</div>
 											</div>
 										</div>
 									</div>
 								</div>
-								</div>
-								</div>
 							{% endwith %}
 						{% endfor %}
 					</div>
 				{% endif %}
+			</div>
+		</div>
 		<br>
 		<div class="row" id="cart-footer" hx-get="{% url 'cart:update_footer' %}" hx-trigger="load delay:1s, cartUpdatedEvent from:body">
 			{% include 'store/cart/_footer.html' %}

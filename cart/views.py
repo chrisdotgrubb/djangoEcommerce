@@ -61,6 +61,8 @@ def cart_choose_quantity(request, product_id):
 	
 	response = TemplateResponse(request, 'store/cart/_quantity.html', context)
 	trigger_client_event(response, 'cartUpdatedEvent', {}, )
+	if product_qty == '0':
+		trigger_client_event(response, f'deletedEvent-{product_id}', {})
 	
 	return response
 
