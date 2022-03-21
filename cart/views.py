@@ -10,9 +10,11 @@ from store.models import Product
 
 def cart_view(request):
 	cart = Cart(request)
+	
+	form = QuantityForm(initial={'qty': 1})
 	context = {
 		'cart': cart,
-		'form': QuantityForm,
+		'form': form,
 	}
 	return TemplateResponse(request, 'store/cart/cart.html', context)
 
@@ -42,11 +44,12 @@ def cart_choose_quantity(request, product_id):
 	product_qty = request.POST.get('qty', 0)
 	cart = Cart(request)
 	cart.set_quantity(product_id, product_qty)
+	form = QuantityForm(initial={'qty': product_qty})
 	
 	product = get_object_or_404(Product, id=product_id, in_stock=True)
 	context = {
 		'product': product,
-		'form': QuantityForm,
+		'form': form,
 	}
 	
 	response = TemplateResponse(request, 'store/cart/_quantity.html', context)
@@ -68,9 +71,8 @@ def cart_update_footer(request):
 
 
 def cart_update_item_total(request, product_id):
-	cart = Cart(request).__iter__()
-	logging.debug(cart)
-	item = cart.cart[str(product_id)]
+	cart = Cart(request).as_dict()
+	item = cart[str(product_id)]
 	context = {
 		'cart': cart,
 		'item': item,

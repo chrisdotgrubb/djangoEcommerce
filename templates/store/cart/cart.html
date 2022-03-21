@@ -30,8 +30,7 @@
 														{{ product.description }}
 														{{ product.id }}
 													</div>
-													<div class="col-6 text-end" hx-trigger="cartUpdatedEvent from:body" hx-get="{% url 'cart:update_item_total' product.id %}">
-{#														<span class="h6 fw-bold">${{ item.price }} x {{ item.qty }} = {{ item.total_price }}</span>#}
+													<div class="col-6 text-end" hx-trigger="load, cartUpdatedEvent from:body" hx-get="{% url 'cart:update_item_total' product.id %}">
 														{% include 'store/cart/_item_total.html' %}
 													</div>
 												</div>
