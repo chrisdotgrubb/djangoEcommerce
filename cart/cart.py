@@ -61,18 +61,28 @@ class Cart:
 			qty += pqt
 			self.cart[pid]['qty'] = qty
 		
-		self.session.modified = True
+		self.save()
 	
+	def delete(self, product_id):
+		pid = str(product_id)
+		
+		if pid in self.cart:
+			del self.cart[pid]
+			self.save()
+			
 	def set_quantity(self, product_id, product_qty):
 		pid = str(product_id)
 		obj = Product.objects.get(id=pid)
 		pqt = int(product_qty)
-
-		self.cart[pid]['qty'] = pqt
-		
+		if pqt != 0:
+			self.cart[pid]['qty'] = pqt
+			self.save()
+		else:
+			self.delete(product_id)
+	
+	def save(self):
 		self.session.modified = True
-	
-	
+		
 	def get_total_price(self):
 		return sum(Decimal(item['price']) * item['qty'] for item in self.__iter__())
 		

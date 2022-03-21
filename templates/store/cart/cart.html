@@ -15,7 +15,7 @@
 					<div class="col-12">
 						{% for item in cart %}
 							{% with product=item.product %}
-								<div id="product={{ product.id }}" class="row mb-4 border product-item" data-index="{{ product.id }}">
+								<div id="product-{{ product.id }}" class="row mb-4 border product-item" data-index="{{ product.id }}">
 									<div class="col-md-3 col-lg-2 order-md-first bg-light">
 										<img class="img-fluid mx-auto d-block" src="{{ product.image.url }}" alt="Responsive image">
 									</div>
@@ -39,8 +39,8 @@
 												<div class="row p-3 col-12">
 													{% include 'store/cart/_quantity.html' %}
 													<div>
-														<button hx-delete="{{ product.remove_from_cart_url }}" id="delete-button-{{ product.id }}"
-																hx-headers='{"X-CSRFToken": "{% csrf_token %}"}'
+														<button hx-delete="{% url 'cart:delete' product.id %}" id="delete-button-{{ product.id }}"
+																hx-headers='{"X-CSRFToken": "{{  csrf_token }}"}'
 																hx-target="#product-{{ product.id }}" hx-swap="outerHTML" class="btn btn-sm btn-warning">Delete
 														</button>
 													</div>
