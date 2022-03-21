@@ -28,27 +28,18 @@
 												<div class="row p-3">
 													<div class="col-6">
 														{{ product.description }}
+														{{ product.id }}
 													</div>
-													<div class="col-6 text-end">
-														<span class="h6 fw-bold">${{ product.price }}</span>
+													<div class="col-6 text-end" hx-trigger="cartUpdatedEvent from:body" hx-get="{% url 'cart:update_item_total' product.id %}">
+{#														<span class="h6 fw-bold">${{ item.price }} x {{ item.qty }} = {{ item.total_price }}</span>#}
+														{% include 'store/cart/_item_total.html' %}
 													</div>
 												</div>
 											</div>
 											<div class="col">
 												<div class="row p-3 col-12">
-													<label for="select">Qty</label>
-													<select id="select{{ product.id }}">
-														<option selected>
-															{{ item.qty }}
-														</option>
-														<option value="1">1</option>
-														<option value="2">REPLACE WITH FORM AND HTMX</option>
-													</select>
+													{% include 'store/cart/_quantity.html' %}
 													<div>
-														<button hx-delete="{{ product.remove_from_cart_url }}" id="delete-button-{{ product.id }}"
-																hx-headers='{"X-CSRFToken": "{% csrf_token %}"}'
-																hx-target="#product-{{ product.id }}" hx-swap="outerHTML" class="btn btn-sm btn-primary">(UPDATE) REPLACE HTMX
-														</button>
 														<button hx-delete="{{ product.remove_from_cart_url }}" id="delete-button-{{ product.id }}"
 																hx-headers='{"X-CSRFToken": "{% csrf_token %}"}'
 																hx-target="#product-{{ product.id }}" hx-swap="outerHTML" class="btn btn-sm btn-warning">Delete

@@ -1,6 +1,6 @@
 from django.template.response import TemplateResponse
 from django.shortcuts import get_object_or_404
-from cart.forms import QuantityForm
+from cart.forms import AddForm
 from .models import Category, Product
 
 
@@ -16,7 +16,7 @@ def product_detail_view(request, slug):
 	product = get_object_or_404(Product, slug=slug, in_stock=True)
 	context = {
 		'product': product,
-		'form': QuantityForm,
+		'form': AddForm,
 	}
 	return TemplateResponse(request, 'store/product_detail.html', context)
 

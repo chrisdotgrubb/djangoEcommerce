@@ -1,7 +1,7 @@
 from django import forms
 
 
-class QuantityForm(forms.Form):
+class AddForm(forms.Form):
 	choices = [
 		('1', 1),
 		('2', 2),
@@ -10,3 +10,8 @@ class QuantityForm(forms.Form):
 		('5', 5),
 	]
 	qty = forms.ChoiceField(choices=choices)
+
+
+class QuantityForm(forms.Form):
+	qty = forms.IntegerField()
+	
