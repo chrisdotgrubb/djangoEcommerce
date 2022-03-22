@@ -1,3 +1,5 @@
+from importlib import import_module
+from django.conf import settings
 from django.http import HttpRequest
 from django.test import TestCase, RequestFactory
 from django.urls import reverse
@@ -5,12 +7,12 @@ from store.models import Category, Product
 from user.models import MyUser
 from store import views
 
-
 class ProductsAllViewTest(TestCase):
 	
 	def setUp(self):
 		self.url = reverse('store:products_all')
 		self.request = RequestFactory().get(self.url)
+		self.request.session = import_module(settings.SESSION_ENGINE).SessionStore()
 		self.response = views.products_all_view(self.request).render()
 	
 	def test_get(self):
@@ -18,6 +20,7 @@ class ProductsAllViewTest(TestCase):
 	
 	def test_html(self):
 		request = HttpRequest()
+		request.session = import_module(settings.SESSION_ENGINE).SessionStore()
 		response = views.products_all_view(request)
 		rendered = response.render()
 		html = rendered.content.decode('utf-8')
@@ -39,12 +42,14 @@ class ProductDetailViewTest(TestCase):
 			price='20.00',
 			image='django.img'
 		)
+		
 	
 	def setUp(self):
 		self.url = reverse('store:product_detail', args=['django-beginners'])
 		self.request = RequestFactory().get(self.url)
+		self.request.session = import_module(settings.SESSION_ENGINE).SessionStore()
 		self.response = views.product_detail_view(self.request, slug='django-beginners').render()
-	
+		
 	def test_get(self):
 		self.assertEqual(self.response.status_code, 200)
 

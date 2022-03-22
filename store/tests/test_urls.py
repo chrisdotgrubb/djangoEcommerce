@@ -1,3 +1,5 @@
+import logging
+
 from django.test import TestCase
 from django.urls import reverse, resolve
 from store import views
@@ -6,7 +8,9 @@ from store import views
 class UrlsTest(TestCase):
 	
 	def test_allowed_hosts(self):
+		logging.debug('↓ ↓ ↓ EXPECTED ERROR and WARNING BETWEEN for testing not-allowed host ↓ ↓ ↓')
 		response = self.client.get('/', HTTP_HOST='wrongaddress.com')
+		logging.debug('↑ ↑ ↑ EXPECTED ERROR and WARNING BETWEEN for testing not-allowed host ↑ ↑ ↑')
 		self.assertEqual(response.status_code, 400)
 		response = self.client.get('/', HTTP_HOST='localhost')
 		self.assertEqual(response.status_code, 200)
