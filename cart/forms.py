@@ -15,5 +15,5 @@ class AddForm(forms.Form):
 class QuantityForm(forms.Form):
 	qty = forms.IntegerField()
 	
-	qty.widget.attrs.update({'min': 0})
+	qty.widget.attrs.update({'min': 0, 'class': 'w-25'})
 	

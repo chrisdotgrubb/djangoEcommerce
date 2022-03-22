@@ -10,7 +10,7 @@
 				{% include "store/cart/_details.html" %}
 			</div>
 			<br>
-			<div class="row g-3">
+			<div class="row p-3">
 				{% if cart|length > 0 %}
 					<div class="col-12">
 						{% for item in cart %}
@@ -23,7 +23,7 @@
 										<a class="text-decoration-none text-reset" href="{{ product.get_absolute_url }}">
 											<h1 class="h5 pt-2">{{ product.title }}</h1>
 										</a>
-										<div class="border">
+										<div class="border p-4">
 											<div class="col border-bottom">
 												<div class="row p-3">
 													<div class="col-6">
@@ -36,13 +36,15 @@
 												</div>
 											</div>
 											<div class="col">
-												<div class="row p-3 col-12">
+												<div class="row py-3 col-12">
 													{% include 'store/cart/_quantity.html' %}
-													<div>
-														<button hx-delete="{% url 'cart:delete' product.id %}" id="delete-button-{{ product.id }}"
-																hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-trigger="click, deletedEvent-{{ product.id }} from:body"
-																hx-target="#product-{{ product.id }}" hx-swap="outerHTML" class="btn btn-sm btn-warning">Delete
-														</button>
+													<div class="row">
+														<div class="col-12 px-0">
+															<button hx-delete="{% url 'cart:delete' product.id %}" id="delete-button-{{ product.id }}"
+																	hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-trigger="click, deletedEvent-{{ product.id }} from:body"
+																	hx-target="#product-{{ product.id }}" hx-swap="outerHTML" class="btn btn-sm btn-warning">Delete
+															</button>
+														</div>
 													</div>
 												</div>
 											</div>
@@ -56,8 +58,8 @@
 			</div>
 		</div>
 		<br>
-		<div class="row" id="cart-footer" hx-get="{% url 'cart:update_footer' %}" hx-trigger="load delay:1s, cartUpdatedEvent from:body">
-			{% include 'store/cart/_footer.html' %}
+		<div class="mb-5 pe-4" id="cart-footer" hx-get="{% url 'cart:update_footer' %}" hx-trigger="load delay:1s, cartUpdatedEvent from:body">
+				{% include 'store/cart/_footer.html' %}
 		</div>
 	</main>
 {% endblock content %}

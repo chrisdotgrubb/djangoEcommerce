@@ -1,8 +1,8 @@
 import logging
-
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
+from django.views.decorators.http import require_http_methods
 from django_htmx.http import trigger_client_event
 from cart.cart import Cart
 from cart.forms import AddForm, QuantityForm
@@ -20,6 +20,7 @@ def cart_view(request):
 	return TemplateResponse(request, 'store/cart/cart.html', context)
 
 
+@require_http_methods(["POST"])
 def cart_add(request, product_id):
 	product_qty = request.POST.get('qty', 0)
 	cart = Cart(request)
@@ -37,6 +38,7 @@ def cart_add(request, product_id):
 	return response
 
 
+@require_http_methods(["DELETE"])
 def cart_delete(request, product_id):
 	cart = Cart(request)
 	cart.delete(product_id)
@@ -47,6 +49,7 @@ def cart_delete(request, product_id):
 	return response
 
 
+@require_http_methods(["POST"])
 def cart_choose_quantity(request, product_id):
 	product_qty = request.POST.get('qty', 0)
 	cart = Cart(request)
