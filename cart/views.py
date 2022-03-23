@@ -17,7 +17,7 @@ def cart_view(request):
 		'cart': cart,
 		'form': form,
 	}
-	return TemplateResponse(request, 'store/cart/cart.html', context)
+	return TemplateResponse(request, 'cart/cart.html', context)
 
 
 @require_http_methods(["POST"])
@@ -32,7 +32,7 @@ def cart_add(request, product_id):
 		'form': AddForm,
 	}
 	
-	response = TemplateResponse(request, 'store/cart/_add.html', context)
+	response = TemplateResponse(request, 'cart/_add.html', context)
 	trigger_client_event(response, 'cartUpdatedEvent', {}, )
 	
 	return response
@@ -62,7 +62,7 @@ def cart_choose_quantity(request, product_id):
 		'form': form,
 	}
 	
-	response = TemplateResponse(request, 'store/cart/_quantity.html', context)
+	response = TemplateResponse(request, 'cart/_quantity.html', context)
 	trigger_client_event(response, 'cartUpdatedEvent', {}, )
 	if product_qty == '0':
 		trigger_client_event(response, f'deletedEvent-{product_id}', {})
@@ -71,15 +71,15 @@ def cart_choose_quantity(request, product_id):
 
 
 def cart_update_number(request):
-	return TemplateResponse(request, 'store/cart/_total.html')
+	return TemplateResponse(request, 'cart/_total.html')
 
 
 def cart_update_details(request):
-	return TemplateResponse(request, 'store/cart/_details.html')
+	return TemplateResponse(request, 'cart/_details.html')
 
 
 def cart_update_footer(request):
-	return TemplateResponse(request, 'store/cart/_footer.html')
+	return TemplateResponse(request, 'cart/_footer.html')
 
 
 def cart_update_item_total(request, product_id):
@@ -93,5 +93,5 @@ def cart_update_item_total(request, product_id):
 		context['item'] = item
 		
 	
-	return TemplateResponse(request, 'store/cart/_item_total.html', context)
+	return TemplateResponse(request, 'cart/_item_total.html', context)
 

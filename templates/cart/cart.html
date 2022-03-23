@@ -7,7 +7,7 @@
 	<main class="pt-5">
 		<div class="container">
 			<div class="row" id="cart-header" hx-get="{% url 'cart:update_details' %}" hx-trigger="load delay:1s, cartUpdatedEvent from:body">
-				{% include "store/cart/_details.html" %}
+				{% include "cart/_details.html" %}
 			</div>
 			<br>
 			<div class="row p-3">
@@ -28,16 +28,15 @@
 												<div class="row p-3">
 													<div class="col-6">
 														{{ product.description }}
-														{{ product.id }}
 													</div>
 													<div class="col-6 text-end" hx-trigger="load, cartUpdatedEvent from:body" hx-get="{% url 'cart:update_item_total' product.id %}">
-														{% include 'store/cart/_item_total.html' %}
+														{% include 'cart/_item_total.html' %}
 													</div>
 												</div>
 											</div>
 											<div class="col">
 												<div class="row py-3 col-12">
-													{% include 'store/cart/_quantity.html' %}
+													{% include 'cart/_quantity.html' %}
 													<div class="row">
 														<div class="col-12 px-0">
 															<button hx-delete="{% url 'cart:delete' product.id %}" id="delete-button-{{ product.id }}"
@@ -59,7 +58,7 @@
 		</div>
 		<br>
 		<div class="mb-5 pe-4" id="cart-footer" hx-get="{% url 'cart:update_footer' %}" hx-trigger="load delay:1s, cartUpdatedEvent from:body">
-				{% include 'store/cart/_footer.html' %}
+			{% include 'cart/_footer.html' %}
 		</div>
 	</main>
 {% endblock content %}

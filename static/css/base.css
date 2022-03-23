@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+html, body, p, div{
+	letter-spacing: -0.02px;
+	font-family: 'Roboto', sans-serif;
+}
+
+.fs12{
+	font-size: 12px;
+}
+
+.fs15{
+	font-size: 15px;
+}
+
+.fw300{
+	font-weight: 300;
+}
+
+.fw500{
+	font-weight: 500;
+}
+
+.logo {
+	width: 49px;
+	height: auto;
+}
+
+@media (min-width: 768px) {
+	.logo{
+		width: 49px;
+	}
+}
+
+@media (min-width: 992px) {
+	.logo{
+		width: 60px;
+	}
+}
+
+@media (min-width: 1200px) {
+	.logo{
+		width: 70px;
+	}
+}
+
+.footer > div > div > ul > li{
+	padding-bottom: 8px;
+}
+
+.dropdown-toggle::after{
+	display: none;
+}
+
+/*for cart quantity*/
+
+.cart-qty {
+	color: #fff;
+	background: #d42114;
+	border: 2px solid #fff;
+	border-radius: 50%;
+	text-align: center;
+	font-size: 9px;
+	height: 16px;
+	width: 16px;
+	position: absolute;
+	box-sizing: content-box;
+	font-weight: 600;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	top: 0;
+	right: 0;
+}
+
+.cart-btn {
+	position: relative;
+}
+
+.empty {
+	background-color: gray;
+}
+.cart-btn:hover, .cart-btn:focus, .cart-btn:active, .cart-btn.active {
+	color: #d42114;
+	transition-duration: 0.4s;
+	background-color: #fff;
+}

@@ -1,0 +1,9 @@
+	{% if cart|length > 0 %}
+		<div id="cart-qty" class="cart-qty">
+		{{ cart|length }}
+		</div>
+	{% else %}
+		<div id="cart-qty" class="cart-qty empty">
+		0
+		</div>
+	{% endif %}
