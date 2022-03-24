@@ -9,7 +9,7 @@ from django.template.loader import render_to_string
 from django.template.response import TemplateResponse
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from .forms import RegistrationForm
+from .forms import RegistrationForm, UserEditForm
 from .models import MyUser
 from .token import account_activation_token
 
@@ -70,3 +70,23 @@ def account_activate(request, uidb64, token):
 @login_required
 def dashboard_view(request):
 	return TemplateResponse(request, 'user/dashboard.html')
+
+
+@login_required
+def edit_profile_view(request):
+	if request.method == 'POST':
+		form = UserEditForm(instance=request.user, data=request.POST)
+		if form.is_valid():
+			form.save()
+	else:
+		form = UserEditForm(instance=request.user)
+	
+	context = {
+		'form': form,
+	}
+	
+	return TemplateResponse(request, 'user/edit_profile.html', context)
+	
+	
+	
+	

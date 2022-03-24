@@ -1,6 +1,7 @@
 import os.path
 from pathlib import Path
 from django.contrib.messages import constants as message_constants
+from django.utils.translation import gettext_lazy as _
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -117,6 +118,11 @@ TIME_ZONE = 'EST'
 USE_I18N = True
 
 USE_TZ = True
+
+COUNTRIES_OVERRIDE = {'US': _('United States')}
+COUNTRIES_FIRST = ['US']
+COUNTRIES_FIRST_BREAK = '-----------'
+COUNTRIES_FIRST_REPEAT = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static/']
