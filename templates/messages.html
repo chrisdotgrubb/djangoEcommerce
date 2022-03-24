@@ -1,0 +1,27 @@
+{% if messages %}
+	<div class="text-center">
+		{% for message in messages %}
+			{% if message.tags == 'info' %}
+				<div class="container alert alert-info my-1 p-1 w-25 text-center">
+					{{ message }}
+				</div>
+			{% elif message.tags == 'success' %}
+				<div class="container alert alert-success my-1 p-1 w-25 text-center">
+					{{ message }}
+				</div>
+			{% elif message.tags == 'warning' %}
+				<div class="container alert alert-warning my-1 p-1 w-25 text-center">
+					{{ message }}
+				</div>
+			{% elif message.tags == 'error' %}
+				<div class="container alert alert-danger my-1 p-1 w-25 text-center">
+					{{ message }}
+				</div>
+			{% else %}
+				<div class="container alert alert-primary my-1 p-1 w-25 text-center">
+					{{ message }}
+				</div>
+			{% endif %}
+		{% endfor %}
+	</div>
+{% endif %}

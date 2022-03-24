@@ -1,5 +1,6 @@
 import os.path
 from pathlib import Path
+from django.contrib.messages import constants as message_constants
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -53,6 +54,10 @@ LOGGING = {
 		'level': 'DEBUG',
 	},
 }
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
+MESSAGE_LEVEL = message_constants.DEBUG
 
 ROOT_URLCONF = 'djangoEcommerce.urls'
 
