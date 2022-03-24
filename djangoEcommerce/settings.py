@@ -99,6 +99,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTH_USER_MODEL = 'user.MyUser'
+LOGIN_URL = '/user/login/'
+LOGIN_REDIRECT_URL = '/user/dashboard/'
+LOGOUT_REDIRECT_URL = '/'
 
 LANGUAGE_CODE = 'en-us'
 

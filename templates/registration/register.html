@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign up{% endblock %}
+{% block content %}
+
+	<div class="container-fluid">
+		<div class="row no-gutter">
+			<div class="col-md-12">
+				<div class="login d-flex align-items-center py-5">
+					<div class="container">
+						<div class="row">
+							<div class="col-12 col-lg-8 mx-auto">
+								<form action="." method="post" class="account-form p-4 rounded col-lg-10 mx-auto">
+
+									{% csrf_token %}
+									<h3 class="mb-2 font-weight-bold">
+										Create an account
+									</h3>
+									<p class="mb-4">
+										It is free and only takes a minute.
+									</p>
+									{% if form.errors %}
+										<p>Please correct the following errors:</p>
+										{% for field in form %}
+											{% if field.errors %}
+												<div class="alert alert-primary" role="alert">
+													{{ field.label }}: {{ field.errors|striptags }}
+												</div>
+											{% endif %}
+										{% endfor %}
+									{% endif %}
+									<div>
+										<label>{{ form.username.label }}<span class="text-muted small">(Required)</span></label>
+										{{ form.username }}
+									</div>
+									<div>
+										<label>{{ form.email.label }}<span class="text-muted small">(Required)</span></label>
+										{{ form.email }}
+									</div>
+									<div>
+										<label>{{ form.password1.label }}
+											<span class="text-muted small">At least 8 characters, with at least 1 digit.</span>
+										</label>
+										{{ form.password1 }}
+									</div>
+									<div>
+										<label>{{ form.password2.label }}<span class="text-muted small">(Required)</span></label>
+										{{ form.password2 }}
+									</div>
+									<div class="text-center">
+										<button class="btn btn-primary btn-block py-2 mb-4 mt-5 fw500 w-50" type="submit">Register</button>
+									</div>
+									<div><p class="text-center">already? login
+										{#										<a href="{% url 'user:login' %}">Already have an account? Login here.</a>#}
+									</p></div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+{% endblock content %}
