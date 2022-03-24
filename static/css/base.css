@@ -1,22 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-html, body, p, div{
+
+html, body, p, div {
 	letter-spacing: -0.02px;
 	font-family: 'Roboto', sans-serif;
 }
 
-.fs12{
+.fs12 {
 	font-size: 12px;
 }
 
-.fs15{
+.fs15 {
 	font-size: 15px;
 }
 
-.fw300{
+.fw300 {
 	font-weight: 300;
 }
 
-.fw500{
+.fw500 {
 	font-weight: 500;
 }
 
@@ -26,28 +27,28 @@ html, body, p, div{
 }
 
 @media (min-width: 768px) {
-	.logo{
+	.logo {
 		width: 49px;
 	}
 }
 
 @media (min-width: 992px) {
-	.logo{
+	.logo {
 		width: 60px;
 	}
 }
 
 @media (min-width: 1200px) {
-	.logo{
+	.logo {
 		width: 70px;
 	}
 }
 
-.footer > div > div > ul > li{
+.footer > div > div > ul > li {
 	padding-bottom: 8px;
 }
 
-.dropdown-toggle::after{
+.dropdown-toggle::after {
 	display: none;
 }
 
@@ -79,8 +80,23 @@ html, body, p, div{
 .empty {
 	background-color: gray;
 }
+
 .cart-btn:hover, .cart-btn:focus, .cart-btn:active, .cart-btn.active {
 	color: #d42114;
 	transition-duration: 0.4s;
 	background-color: #fff;
+}
+
+.container-fluid {
+	max-width: 100%;
+}
+
+.account-form input {
+	border: 2px solid #ccc;
+	height: calc(2em + .75rem + 2px);
+}
+
+.account-form input:focus {
+	border-color: #1497ff;
+	box-shadow: none;
 }
