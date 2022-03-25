@@ -1,12 +1,11 @@
 import re
-
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.template.loader import render_to_string
 from django.template.response import TemplateResponse
 from django.utils.encoding import force_bytes, force_str
@@ -53,9 +52,9 @@ def user_registration_view(request):
 def account_activate(request, uidb64, token):
 	try:
 		uid = force_str(urlsafe_base64_decode(uidb64))
-		user = MyUser.objects.get(pk=uid)
+		user = get_object_or_404(MyUser.inactive, pk=uid)
 	except ObjectDoesNotExist:
-		messages.add_message(request, messages.ERROR, 'Account not found.')
+		messages.add_message(request, messages.ERROR, 'Account error, may have already been activated.')
 		return TemplateResponse(request, 'registration/activation_invalid.html')
 	
 	if user is not None and account_activation_token.check_token(user, token):
@@ -94,7 +93,7 @@ def edit_profile_view(request):
 	
 @login_required
 def delete_profile_view(request):
-	user = MyUser.objects.get(username=request.user)
+	user = get_object_or_404(MyUser.active, username=request.user)
 	user.is_active = False
 	user.save()
 	logout(request)
@@ -106,8 +105,10 @@ def check_username(request):
 	if username:
 		if len(username) < 4:
 			return HttpResponse('<div id="username-error" style="color:red" class="mb-1 ps-2">Username too short</div>')
-		elif MyUser.objects.filter(username__iexact=username).exists():
+		elif MyUser.active.filter(username__iexact=username).exists():
 			return HttpResponse('<div id="username-error" style="color:red" class="mb-1 ps-2">Username taken</div>')
+		elif MyUser.inactive.filter(username__iexact=username).exists():
+			return HttpResponse('<div id="username-error" style="color:red" class="mb-1 ps-2">Account with this username may have been recently deleted</div>')
 		else:
 			return HttpResponse('<div id="username-error" style="color:green" class="mb-1 ps-2">Username available</div>')
 	else:
@@ -120,8 +121,10 @@ def check_email(request):
 	if email:
 		if not re.fullmatch(pattern, email):
 			return HttpResponse('<div id="email-error" style="color:red" class="mb-1 ps-2">Email not valid</div>')
-		if MyUser.objects.filter(email__iexact=email).exists():
+		elif MyUser.active.filter(email__iexact=email).exists():
 			return HttpResponse('<div id="email-error" style="color:red" class="mb-1 ps-2">Email taken</div>')
+		elif MyUser.inactive.filter(email__iexact=email).exists():
+			return HttpResponse('<div id="email-error" style="color:red" class="mb-1 ps-2">Account with this email may have been recently deleted</div>')
 		else:
 			return HttpResponse('<div id="email-error" style="color:green" class="mb-1 ps-2">Email available</div>')
 	else:

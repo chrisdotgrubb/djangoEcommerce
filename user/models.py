@@ -29,14 +29,26 @@ class AccountManager(BaseUserManager):
 		other_fields.setdefault('is_superuser', True)
 		return self.create_user(email, username, password, **other_fields)
 		
-		
+
+class ActiveUserManager(models.Manager):
+	
+	def get_queryset(self):
+		return super().get_queryset().filter(is_active=True)
+
+
+class InactiveUserManager(models.Manager):
+	
+	def get_queryset(self):
+		return super().get_queryset().filter(is_active=False)
+	
+	
 class MyUser(AbstractBaseUser, PermissionsMixin):
 	
 	email = models.EmailField(_('email address'), unique=True)
 	username = models.CharField(max_length=150, unique=True)
 	first = models.CharField(max_length=150, blank=True)
 	about = models.TextField(_('about'), max_length=500, blank=True)
-	country = CountryField()
+	country = CountryField(blank=True)
 	phone = PhoneNumberField(blank=True)
 	address_line_1 = models.CharField(max_length=150, blank=True)
 	address_line_2 = models.CharField(max_length=150, blank=True)
@@ -52,6 +64,8 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 	REQUIRED_FIELDS = ['username']
 	
 	objects = AccountManager()
+	active = ActiveUserManager()
+	inactive = InactiveUserManager()
 	
 	class Meta:
 		verbose_name = 'Accounts'
