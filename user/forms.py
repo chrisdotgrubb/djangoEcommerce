@@ -58,7 +58,7 @@ class UserEditForm(forms.ModelForm):
 	email = forms.EmailField(label='Account email (can not be changed)', max_length=200, widget=forms.TextInput(
 		attrs={'class': 'form-control mb-3', 'placeholder': 'Email', 'id': 'form-email', 'readonly': 'readonly', 'style': 'cursor:not-allowed'}))
 	
-	username = forms.CharField(label='Username', min_length=4, max_length=50, widget=forms.TextInput(
+	username = forms.CharField(label='Username (can not be changed)', min_length=4, max_length=50, widget=forms.TextInput(
 		attrs={'class': 'form-control mb-3', 'placeholder': 'Username', 'id': 'form-username', 'readonly': 'readonly', 'style': 'cursor:not-allowed'}))
 	
 	first = forms.CharField(label='First name', min_length=2, max_length=50, widget=forms.TextInput(

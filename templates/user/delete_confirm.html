@@ -9,8 +9,18 @@
 						<div class="row">
 							<div class="col-12 col-lg-6 mx-auto">
 								<div class="p-4">
-									<h3 class="mb-4">Account deleted</h3>
-									<p>Thank you</p>
+									<h3 class="mb-4">Are you sure you want to delete your account?</h3>
+
+									<div>
+										<form action="{% url 'user:delete_profile' %}">
+										<button type="submit" role="button" class="btn btn-danger my-4">Confirm Delete</button>
+									</form>
+
+										<form action="{% url 'user:edit_profile' %}">
+											<button type="submit" role="button" class="btn btn-secondary">Cancel</button>
+										</form>
+									</div>
+
 								</div>
 							</div>
 						</div>

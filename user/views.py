@@ -74,16 +74,16 @@ def dashboard_view(request):
 @login_required
 def edit_profile_view(request):
 	if request.method == 'POST':
-		user_form = UserEditForm(instance=request.user, data=request.POST)
-		if user_form.is_valid():
-			user_form.save()
+		form = UserEditForm(instance=request.user, data=request.POST)
+		if form.is_valid():
+			form.save()
 			messages.add_message(request, messages.SUCCESS, 'Profile updated.')
 		else:
 			messages.add_message(request, messages.WARNING, 'Profile update failed.')
 	else:
-		user_form = UserEditForm(instance=request.user)
+		form = UserEditForm(instance=request.user)
 	context = {
-		'user_form': user_form,
+		'form': form,
 	}
 	
 	return TemplateResponse(request, 'user/edit_profile.html', context)
@@ -95,4 +95,4 @@ def delete_profile_view(request):
 	user.is_active = False
 	user.save()
 	logout(request)
-	return redirect('user:delete_confirm')
+	return redirect('user:delete_finished')
