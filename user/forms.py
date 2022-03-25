@@ -55,16 +55,16 @@ class RegistrationForm(forms.ModelForm):
 
 
 class UserEditForm(forms.ModelForm):
-	email = forms.EmailField(label='Account email(can not be changed)', max_length=200, widget=forms.TextInput(
-		attrs={'class': 'form-control mb-3', 'placeholder': 'Email', 'id': 'form-email', 'readonly': 'readonly'}))
+	email = forms.EmailField(label='Account email (can not be changed)', max_length=200, widget=forms.TextInput(
+		attrs={'class': 'form-control mb-3', 'placeholder': 'Email', 'id': 'form-email', 'readonly': 'readonly', 'style': 'cursor:not-allowed'}))
 	
 	username = forms.CharField(label='Username', min_length=4, max_length=50, widget=forms.TextInput(
-		attrs={'class': 'form-control mb-3', 'placeholder': 'Username', 'id': 'form-username', 'readonly': 'readonly'}))
+		attrs={'class': 'form-control mb-3', 'placeholder': 'Username', 'id': 'form-username', 'readonly': 'readonly', 'style': 'cursor:not-allowed'}))
 	
-	first = forms.CharField(label='Username', min_length=2, max_length=50, widget=forms.TextInput(
+	first = forms.CharField(label='First name', min_length=2, max_length=50, widget=forms.TextInput(
 		attrs={'class': 'form-control mb-3', 'placeholder': 'First name', 'id': 'form-first'}))
 	
-	country = CountryField().formfield(label='Country', widget=CountrySelectWidget(
+	country = CountryField(blank=True).formfield(label='Country', widget=CountrySelectWidget(
 		attrs={'class': 'form-control mb-3', 'placeholder': 'Country', 'id': 'form-country'}, layout='{widget}'))
 
 	phone = PhoneNumberField(label='phone', widget=forms.TextInput(
@@ -84,10 +84,17 @@ class UserEditForm(forms.ModelForm):
 	
 	class Meta:
 		model = MyUser
-		fields = ['email', 'username', 'first']
+		fields = ['email', 'username', 'first', 'country', 'phone', 'address_line_1', 'address_line_2', 'town_city', 'about']
 		
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		self.fields['username'].required = True
 		self.fields['email'].required = True
+		self.fields['first'].required = False
+		self.fields['country'].required = False
+		self.fields['phone'].required = False
+		self.fields['address_line_1'].required = False
+		self.fields['address_line_2'].required = False
+		self.fields['town_city'].required = False
+		self.fields['about'].required = False
 		

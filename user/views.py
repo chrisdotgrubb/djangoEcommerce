@@ -1,9 +1,8 @@
 from django.contrib import messages
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.password_validation import validate_password
 from django.contrib.sites.shortcuts import get_current_site
-from django.core.exceptions import ObjectDoesNotExist, ValidationError
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import redirect
 from django.template.loader import render_to_string
 from django.template.response import TemplateResponse
@@ -75,18 +74,25 @@ def dashboard_view(request):
 @login_required
 def edit_profile_view(request):
 	if request.method == 'POST':
-		form = UserEditForm(instance=request.user, data=request.POST)
-		if form.is_valid():
-			form.save()
+		user_form = UserEditForm(instance=request.user, data=request.POST)
+		if user_form.is_valid():
+			user_form.save()
+			messages.add_message(request, messages.SUCCESS, 'Profile updated.')
+		else:
+			messages.add_message(request, messages.WARNING, 'Profile update failed.')
 	else:
-		form = UserEditForm(instance=request.user)
-	
+		user_form = UserEditForm(instance=request.user)
 	context = {
-		'form': form,
+		'user_form': user_form,
 	}
 	
 	return TemplateResponse(request, 'user/edit_profile.html', context)
 	
 	
-	
-	
+@login_required
+def delete_profile_view(request):
+	user = MyUser.objects.get(username=request.user)
+	user.is_active = False
+	user.save()
+	logout(request)
+	return redirect('user:delete_confirm')
