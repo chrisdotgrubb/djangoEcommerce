@@ -1,8 +1,11 @@
+import re
+
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template.loader import render_to_string
 from django.template.response import TemplateResponse
@@ -96,3 +99,30 @@ def delete_profile_view(request):
 	user.save()
 	logout(request)
 	return redirect('user:delete_finished')
+
+
+def check_username(request):
+	username = request.POST.get('username')
+	if username:
+		if len(username) < 4:
+			return HttpResponse('<div id="username-error" style="color:red" class="mb-1 ps-2">Username too short</div>')
+		elif MyUser.objects.filter(username__iexact=username).exists():
+			return HttpResponse('<div id="username-error" style="color:red" class="mb-1 ps-2">Username taken</div>')
+		else:
+			return HttpResponse('<div id="username-error" style="color:green" class="mb-1 ps-2">Username available</div>')
+	else:
+		return HttpResponse('<div id="username-error" class="mb-1 ps-2">&nbsp;</div>')
+	
+	
+def check_email(request):
+	email = request.POST.get('email')
+	pattern = r'^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$'
+	if email:
+		if not re.fullmatch(pattern, email):
+			return HttpResponse('<div id="email-error" style="color:red" class="mb-1 ps-2">Email not valid</div>')
+		if MyUser.objects.filter(email__iexact=email).exists():
+			return HttpResponse('<div id="email-error" style="color:red" class="mb-1 ps-2">Email taken</div>')
+		else:
+			return HttpResponse('<div id="email-error" style="color:green" class="mb-1 ps-2">Email available</div>')
+	else:
+		return HttpResponse('<div id="email-error" class="mb-1 ps-2">&nbsp;</div>')

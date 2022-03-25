@@ -26,9 +26,9 @@ class RegistrationForm(forms.ModelForm):
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		self.fields['username'].widget.attrs.update(
-			{'class': 'form-control mb-3', 'placeholder': 'Username'})
+			{'class': 'form-control', 'placeholder': 'Username', 'hx-post': "/user/check_username/", 'hx-swap': "outerHTML", 'hx-trigger': "keyup changed delay:500ms", 'hx-target': "#username-error"})
 		self.fields['email'].widget.attrs.update(
-			{'class': 'form-control mb-3', 'placeholder': 'E-mail'})
+			{'class': 'form-control', 'placeholder': 'E-mail', 'hx-post': "/user/check_email/", 'hx-swap': "outerHTML", 'hx-trigger': "keyup changed delay:500ms", 'hx-target': "#email-error"})
 		self.fields['password1'].widget.attrs.update(
 			{'class': 'form-control mb-3', 'placeholder': 'Password'})
 		self.fields['password2'].widget.attrs.update(

@@ -18,3 +18,10 @@ urlpatterns = [
 	path('profile/delete/delete', views.delete_profile_view, name='delete_profile'),
 	path('profile/delete_finished/', TemplateView.as_view(template_name='user/delete_finished.html'), name='delete_finished'),
 ]
+
+htmx_urlpatterns = [
+	path('check_username/', views.check_username, name="check_username"),
+	path('check_email/', views.check_email, name="check_email"),
+]
+
+urlpatterns += htmx_urlpatterns

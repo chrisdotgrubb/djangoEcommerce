@@ -33,10 +33,12 @@
 										<label>{{ form.username.label }}<span class="text-muted small">(Required)</span></label>
 										{{ form.username }}
 									</div>
+									<div id="username-error" class="mb-1 ps-2">&nbsp;</div>
 									<div>
 										<label>{{ form.email.label }}<span class="text-muted small">(Required)</span></label>
 										{{ form.email }}
 									</div>
+									<div id="email-error" class="mb-1 ps-2">&nbsp;</div>
 									<div>
 										<label>{{ form.password1.label }}
 											<span class="text-muted small">At least 8 characters, with at least 1 digit.</span>
