@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth import password_validation
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm
 from django_countries.fields import CountryField
 from django_countries.widgets import CountrySelectWidget
 from phonenumber_field.formfields import PhoneNumberField
@@ -98,3 +98,28 @@ class UserEditForm(forms.ModelForm):
 		self.fields['town_city'].required = False
 		self.fields['about'].required = False
 		
+
+class PwdResetForm(PasswordResetForm):
+	email = forms.EmailField(max_length=254, widget=forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'Email', 'id': 'fom-email'}))
+	
+	def clean_email(self):
+		email = self.cleaned_data['email']
+		user = MyUser.objects.filter(email__iexact=email)
+		if not user:
+			raise forms.ValidationError('That email was not found. Please recheck the spelling.')
+		return email
+	
+
+class SetPwdForm(SetPasswordForm):
+	new_password1 = forms.CharField(
+		label='New password',
+		widget=forms.PasswordInput(attrs={'class': 'form-control mb-3', 'placeholder': 'New Password', 'id': 'form-new-pass1'}),
+		strip=False,
+		help_text=password_validation.password_validators_help_text_html(),
+	)
+	new_password2 = forms.CharField(
+		label='New password confirmation',
+		strip=False,
+		widget=forms.PasswordInput(attrs={'class': 'form-control mb-3', 'placeholder': 'New Password', 'id': 'form-new-pass2'}),
+	)
+	
