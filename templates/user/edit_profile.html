@@ -45,9 +45,13 @@
 									<button class="btn btn-primary btn-block py-2 mb-4 mt-2 fw-bold w-25" type="submit"
 											value="Save changes">Save Changes
 									</button>
-									<hr class="mb-3">
 								</form>
-
+								<form action="{% url 'user:password_change' %}" class="px-4">
+									<button type="submit" role="button"
+											class="btn btn-primary btn-block py-2 mb-4 mt-2 fw-bold w-25">Change Password
+									</button>
+								</form>
+								<hr class="mb-3">
 								<p class=" h3 pt-2 font-weight-bold">Delete Account</p>
 								<form action="{% url 'user:delete_confirm' %}" class="px-4">
 									<button type="submit" role="button"

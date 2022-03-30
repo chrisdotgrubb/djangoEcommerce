@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth import password_validation
-from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm, PasswordChangeForm
 from django_countries.fields import CountryField
 from django_countries.widgets import CountrySelectWidget
 from phonenumber_field.formfields import PhoneNumberField
@@ -66,7 +66,7 @@ class UserEditForm(forms.ModelForm):
 	
 	country = CountryField(blank=True).formfield(label='Country', widget=CountrySelectWidget(
 		attrs={'class': 'form-control mb-3', 'placeholder': 'Country', 'id': 'form-country'}, layout='{widget}'))
-
+	
 	phone = PhoneNumberField(label='phone', widget=forms.TextInput(
 		attrs={'class': 'form-control mb-3', 'placeholder': 'Phone number', 'id': 'form-phone'}))
 	
@@ -85,7 +85,7 @@ class UserEditForm(forms.ModelForm):
 	class Meta:
 		model = MyUser
 		fields = ['email', 'username', 'first', 'country', 'phone', 'address_line_1', 'address_line_2', 'town_city', 'about']
-		
+	
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		self.fields['username'].required = True
@@ -97,10 +97,10 @@ class UserEditForm(forms.ModelForm):
 		self.fields['address_line_2'].required = False
 		self.fields['town_city'].required = False
 		self.fields['about'].required = False
-		
+
 
 class PwdResetForm(PasswordResetForm):
-	email = forms.EmailField(max_length=254, widget=forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'Email', 'id': 'fom-email'}))
+	email = forms.EmailField(max_length=254, widget=forms.TextInput(attrs={'class': 'form-control mb-3', 'placeholder': 'Email', 'id': 'form-email'}))
 	
 	def clean_email(self):
 		email = self.cleaned_data['email']
@@ -108,18 +108,38 @@ class PwdResetForm(PasswordResetForm):
 		if not user:
 			raise forms.ValidationError('That email was not found. Please recheck the spelling.')
 		return email
-	
+
 
 class SetPwdForm(SetPasswordForm):
 	new_password1 = forms.CharField(
-		label='New password',
+		label='New password:',
 		widget=forms.PasswordInput(attrs={'class': 'form-control mb-3', 'placeholder': 'New Password', 'id': 'form-new-pass1'}),
 		strip=False,
 		help_text=password_validation.password_validators_help_text_html(),
 	)
 	new_password2 = forms.CharField(
-		label='New password confirmation',
+		label='New password again:',
 		strip=False,
-		widget=forms.PasswordInput(attrs={'class': 'form-control mb-3', 'placeholder': 'New Password', 'id': 'form-new-pass2'}),
+		widget=forms.PasswordInput(attrs={'class': 'form-control mb-3', 'placeholder': 'New Password again', 'id': 'form-new-pass2'}),
 	)
-	
+
+
+class PwdChangeForm(PasswordChangeForm):
+	old_password = forms.CharField(
+		label="Old password:",
+		strip=False,
+		widget=forms.PasswordInput(
+			attrs={'class': 'form-control mb-3', 'placeholder': 'Old Password', 'id': 'form-old-pass', 'autofocus': True}
+		),
+	)
+	new_password1 = forms.CharField(
+		label="New password:",
+		widget=forms.PasswordInput(attrs={'class': 'form-control mb-3', 'placeholder': 'New Password', 'id': 'form-new-pass1'}),
+		strip=False,
+		help_text=password_validation.password_validators_help_text_html(),
+	)
+	new_password2 = forms.CharField(
+		label="New password again:",
+		strip=False,
+		widget=forms.PasswordInput(attrs={'class': 'form-control mb-3', 'placeholder': 'New Password again', 'id': 'form-new-pass2'}),
+	)
