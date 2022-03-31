@@ -88,7 +88,9 @@
 			</div>
 		</div>
 	</div>
-
-
-
+	<script>
+		const CSRF_TOKEN = '{% csrf_token %}';
+	</script>
+	<script src="https://js.stripe.com/v3/"></script>
+	<script src="{% static 'payment/index.js' %}" data-rel-js></script>
 {% endblock %}
