@@ -21,6 +21,7 @@ INSTALLED_APPS = [
 	'store',
 	'user',
 	'cart',
+	'payment',
 	'django_htmx',
 ]
 
