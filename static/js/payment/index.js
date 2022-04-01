@@ -36,32 +36,31 @@ var form = document.getElementById('payment-form');
 form.addEventListener('submit', function(ev) {
 ev.preventDefault();
 
-var custName = document.getElementById("custName").value;
-var custAdd = document.getElementById("custAdd").value;
-var custAdd2 = document.getElementById("custAdd2").value;
-var postCode = document.getElementById("postCode").value;
+var name = document.getElementById("name").value;
+var address = document.getElementById("address").value;
+var address2 = document.getElementById("address2").value;
+var zipcode = document.getElementById("zipcode").value;
 
-
-  $.ajax({
-    type: "POST",
-    url: 'http://127.0.0.1:8000/orders/add/',
-    data: {
-      order_key: clientsecret,
-      csrfmiddlewaretoken: CSRF_TOKEN,
-      action: "post",
-    },
-    success: function (json) {
-      console.log(json.success)
+  // $.ajax({
+  //   type: "POST",
+  //   url: 'http://localhost:8000/orders/add/',
+  //   data: {
+  //     order_key: clientsecret,
+  //     csrfmiddlewaretoken: CSRF_TOKEN,
+  //     action: "post",
+  //   },
+  //   success: function (json) {
+  //     console.log(json.success)
 
       stripe.confirmCardPayment(clientsecret, {
         payment_method: {
           card: card,
           billing_details: {
             address:{
-                line1:custAdd,
-                line2:custAdd2
+                line1:address,
+                line2:address2
             },
-            name: custName
+            name: name
           },
         }
       }).then(function(result) {
@@ -75,14 +74,14 @@ var postCode = document.getElementById("postCode").value;
             // execution. Set up a webhook or plugin to listen for the
             // payment_intent.succeeded event that handles any business critical
             // post-payment actions.
-            window.location.replace("http://127.0.0.1:8000/payment/orderplaced/");
+            window.location.replace("http://localhost:8000/payment/orderplaced/");
           }
         }
       });
 
-    },
-    error: function (xhr, errmsg, err) {},
-  });
+    // };
+    // error: function (xhr, errmsg, err) {},
+  // });
 
 
 
