@@ -22,4 +22,5 @@ def add(request):
 	return response
 
 
-
+def payment_confirmation(data):
+	Order.objects.filter(order_key=data).update(is_paid=True)

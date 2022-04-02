@@ -86,4 +86,11 @@ class Cart:
 	def get_total_price(self):
 		return sum(Decimal(item['price']) * item['qty'] for item in self.__iter__())
 		
-			
+	def clear(self):
+		try:
+			del self.session[self.session.session_key]
+		except KeyError:
+			return
+		self.save()
+		
+		
