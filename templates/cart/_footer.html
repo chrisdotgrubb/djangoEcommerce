@@ -1,8 +1,22 @@
-<div class="me-5 text-end">
+<div class="text-end">
 	{% if cart|length > 0 %}
+
 		<div class="">
+			<span class="h6">Subtotal: $ {{ cart.get_subtotal_price }}</span>
+		</div>
+
+		<div>
+			<span class="h6">Tax: $ {{ cart.get_tax_price }}</span>
+		</div>
+
+		<div>
+			<span class="h6">Shipping: $ {{ cart.get_shipping_price }}</span>
+		</div>
+
+		<div>
 			<a href="{% url 'payment:cart' %}" role="button" type="button" class="btn btn-lg btn-success fw-bold">Checkout</a>
 			<span class="h6">$ {{ cart.get_total_price }}</span>
 		</div>
+
 	{% endif %}
 </div>

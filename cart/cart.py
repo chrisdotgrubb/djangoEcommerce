@@ -17,6 +17,7 @@ class Cart:
 			self.session.save()
 			cart = self.session[self.session.session_key] = {}
 		self.cart = cart
+		self.shipping_cost = Decimal(9.99)
 	
 	def __len__(self):
 		return sum(item['qty'] for item in self.cart.values())
@@ -83,9 +84,26 @@ class Cart:
 	def save(self):
 		self.session.modified = True
 		
-	def get_total_price(self):
+	def get_subtotal_price(self):
 		return sum(Decimal(item['price']) * item['qty'] for item in self.__iter__())
+	
+	def get_tax_price(self):
+		return round(self.get_subtotal_price() * Decimal(0.06), 2)
+	
+	def get_shipping_price(self):
+		return round(self.shipping_cost, 2)
+	
+	def get_total_price(self):
+		subtotal = self.get_subtotal_price() + self.get_tax_price()
 		
+		if subtotal == 0:
+			shipping = Decimal(0.00)
+		else:
+			shipping = self.shipping_cost
+		
+		total = subtotal + Decimal(shipping)
+		return round(total, 2)
+	
 	def clear(self):
 		try:
 			del self.session[self.session.session_key]

@@ -8,7 +8,7 @@ def add(request):
 	if request.POST.get('action') == 'post':
 		user_id = request.user.id
 		order_key = request.POST.get('order_key')
-		cart_total = cart.get_total_price()
+		cart_total = cart.get_subtotal_price()
 		
 		if Order.objects.filter(order_key=order_key).exists():
 			pass
@@ -24,3 +24,10 @@ def add(request):
 
 def payment_confirmation(data):
 	Order.objects.filter(order_key=data).update(is_paid=True)
+
+
+def user_orders(request):
+	user_id = request.user.id
+	orders = Order.objects.filter(user_id=user_id).filter(is_paid=True)
+	return orders
+

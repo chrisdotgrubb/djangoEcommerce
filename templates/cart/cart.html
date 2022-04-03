@@ -53,12 +53,23 @@
 							{% endwith %}
 						{% endfor %}
 					</div>
+
+					<div class="col-12">
+						<div class="row mb-4 product-item">
+							<div class="col-md-12 col-lg-12 ps-md-12 ps-lg-12">
+								<div class="p-4">
+									<div class="mb-5" id="cart-footer" hx-get="{% url 'cart:update_footer' %}" hx-trigger="load delay:1s, cartUpdatedEvent from:body">
+										{% include 'cart/_footer.html' %}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+
 				{% endif %}
 			</div>
-		</div>
-		<br>
-		<div class="mb-5 pe-4" id="cart-footer" hx-get="{% url 'cart:update_footer' %}" hx-trigger="load delay:1s, cartUpdatedEvent from:body">
-			{% include 'cart/_footer.html' %}
 		</div>
 	</main>
 {% endblock content %}
