@@ -38,6 +38,7 @@ form.addEventListener('submit', function (ev) {
 
 	var name = document.getElementById("name").value;
 	var email = document.getElementById("email").value;
+	var phone = document.getElementById("phone").value;
 	var address = document.getElementById("address").value;
 	var address2 = document.getElementById("address2").value;
 	var city = document.getElementById("city").value;
@@ -52,6 +53,14 @@ form.addEventListener('submit', function (ev) {
 			order_key: clientsecret,
 			csrfmiddlewaretoken: CSRF_TOKEN,
 			action: "post",
+			name: name,
+			phone: phone,
+			address: address,
+			address2: address2,
+			city: city,
+			country: country,
+			state: state,
+			zipcode: zipcode
 		},
 		success: function (json) {
 			console.log(json.success)

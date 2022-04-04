@@ -1,6 +1,9 @@
 from decimal import Decimal
 from django.conf import settings
 from django.db import models
+from django_countries.fields import CountryField
+from localflavor.us.models import USStateField
+from phonenumber_field.modelfields import PhoneNumberField
 
 from store.models import Product
 
@@ -8,10 +11,12 @@ from store.models import Product
 class Order(models.Model):
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='order_user')
 	name = models.CharField(max_length=150)
+	phone = PhoneNumberField()
 	address1 = models.CharField(max_length=250)
 	address2 = models.CharField(max_length=250)
 	city = models.CharField(max_length=100)
-	phone = models.CharField(max_length=100)
+	state = USStateField()
+	country = CountryField()
 	zip_code = models.CharField(max_length=20)
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
@@ -23,7 +28,7 @@ class Order(models.Model):
 		ordering = ('-created',)
 	
 	def __str__(self):
-		return f'{self.name}/{self.created}'
+		return f'{self.name} {self.created:%Y %b %d %H:%M}'
 
 
 class OrderItem(models.Model):
