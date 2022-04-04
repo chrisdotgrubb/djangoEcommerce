@@ -18,59 +18,59 @@
 
 								<form>
 									<div class="row g-3">
-										<div class="col-sm-7">
-											<label for="name" class="form-label">Customer Name</label>
-											<input type="text" class="form-control" id="name" placeholder="" required>
+										<div class="col-12">
+											{{ form.name.label }}
+											{{ form.name }}
 											<div class="invalid-feedback">
 												Valid first name is required.
 											</div>
 										</div>
 										<div class="col-12">
-											<label for="email" class="form-label">Email</label>
-											<input type="email" class="form-control" id="email" placeholder="your@email.here">
+											{{ form.email.label }}
+											{{ form.email }}
 											<div class="invalid-feedback">
 												Please enter a valid email address for shipping updates.
 											</div>
 										</div>
 										<div class="col-12">
-											<label for="address" class="form-label">Address</label>
-											<input type="text" class="form-control" id="address" placeholder="1234 Main St" required>
+											{{ form.phone.label }}
+											{{ form.phone }}
+											<div class="invalid-feedback">
+												Please enter a valid phone number for shipping updates.
+											</div>
+										</div>
+										<div class="col-12">
+											{{ form.address.label }}
+											{{ form.address }}
 											<div class="invalid-feedback">
 												Please enter your shipping address.
 											</div>
 										</div>
 										<div class="col-12">
-											<label for="address2" class="form-label">Address 2 <span
-													class="text-muted">(Optional)</span></label>
-											<input type="text" class="form-control" id="address2" placeholder="Apartment or suite">
+											{{ form.address2.label }}
+											{{ form.address2 }}
 										</div>
 										<div class="col-12">
-											<label for="city" class="form-label">City or Town</label>
-											<input type="text" class="form-control" id="city" placeholder="City/Town">
+											{{ form.city.label }}
+											{{ form.city }}
 										</div>
 										<div class="col-md-5">
-											<label for="country" class="form-label">Country</label>
-											<select class="form-select" id="country" required>
-												<option value="">Choose...</option>
-												<option value="US">United States</option>
-											</select>
+											{{ form.country.label }}
+											{{ form.country }}
 											<div class="invalid-feedback">
 												Please select a valid country.
 											</div>
 										</div>
 										<div class="col-md-4">
-											<label for="state" class="form-label">State</label>
-											<select class="form-select" id="state" required>
-												<option value="">Choose...</option>
-												<option>California</option>
-											</select>
+											{{ form.state.label }}
+											{{ form.state }}
 											<div class="invalid-feedback">
 												Please provide a valid state.
 											</div>
 										</div>
 										<div class="col-md-3">
-											<label for="zipcode" class="form-label">Zip Code</label>
-											<input type="text" class="form-control" id="zipcode" placeholder="" required>
+											{{ form.zipcode.label }}
+											{{ form.zipcode }}
 											<div class="invalid-feedback">
 												Zip code required.
 											</div>

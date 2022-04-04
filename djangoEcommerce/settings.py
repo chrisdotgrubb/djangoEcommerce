@@ -24,6 +24,7 @@ INSTALLED_APPS = [
 	'payment',
 	'order',
 	'django_htmx',
+	'localflavor',
 ]
 
 MIDDLEWARE = [

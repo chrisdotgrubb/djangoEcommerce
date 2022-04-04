@@ -8,6 +8,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 from cart.cart import Cart
 from order.views import payment_confirmation
+from payment.forms import PaymentForm
+
 
 @login_required
 def CartView(request):
@@ -21,9 +23,10 @@ def CartView(request):
 		currency='usd',
 		metadata={'userid': request.user.id}
 	)
-
+	form = PaymentForm(use_required_attribute=False)
 	content = {
 		'client_secret': intent.client_secret,
+		'form': form
 	}
 	
 	return TemplateResponse(request, 'payment/payment.html', content)

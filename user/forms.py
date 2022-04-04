@@ -77,7 +77,7 @@ class UserEditForm(forms.ModelForm):
 		attrs={'class': 'form-control mb-3', 'placeholder': 'Address line 2', 'id': 'form-address2'}))
 	
 	town_city = forms.CharField(label='Town/City', min_length=2, max_length=150, widget=forms.TextInput(
-		attrs={'class': 'form-control mb-3', 'placeholder': 'Address line 2', 'id': 'form-address2'}))
+		attrs={'class': 'form-control mb-3', 'placeholder': 'Town/City', 'id': 'form-town'}))
 	
 	about = forms.CharField(label='About me', min_length=2, max_length=500, widget=forms.Textarea(
 		attrs={'class': 'form-control mb-3', 'placeholder': 'About me', 'id': 'form-about'}))
