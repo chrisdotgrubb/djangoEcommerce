@@ -3,8 +3,25 @@ from django.db.models import F
 from .models import Order, OrderItem
 
 
+class StatesWithOrders(admin.SimpleListFilter):
+	title = 'State'
+	parameter_name = 'state'
+	
+	def lookups(self, request, model_admin):
+		qs = set(Order.objects.values_list('state', flat=True))
+		query = []
+		for state in sorted(qs):
+			query.append((state, state))
+		return query
+
+	def queryset(self, request, queryset):
+		if self.value():
+			return queryset.filter(state=self.value())
+		return queryset
+	
+	
 class OrderAdmin(admin.ModelAdmin):
-	list_display = ('name', 'created', 'total_paid', 'is_paid')
+	list_display = ('name', 'state', 'created', 'total_paid', 'is_paid')
 	fields = (
 		'user',
 		'name',
@@ -22,7 +39,7 @@ class OrderAdmin(admin.ModelAdmin):
 		'updated'
 	)
 	readonly_fields = ('user', 'created', 'updated', 'order_key')
-	list_filter = ('is_paid', 'name', 'state')
+	list_filter = ('is_paid', StatesWithOrders, 'name')
 	ordering = ('-created',)
 
 
