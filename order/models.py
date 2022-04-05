@@ -38,4 +38,4 @@ class OrderItem(models.Model):
 	quantity = models.PositiveIntegerField(default=1)
 	
 	def __str__(self):
-		return f'{self.product.title}'
+		return f'{self.product.title} - {self.order}'
