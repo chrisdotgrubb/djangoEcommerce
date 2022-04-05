@@ -53,7 +53,7 @@ def user_registration_view(request):
 def account_activate(request, uidb64, token):
 	try:
 		uid = force_str(urlsafe_base64_decode(uidb64))
-		user = get_object_or_404(MyUser.inactive, pk=uid)
+		user = get_object_or_404(MyUser, pk=uid)
 	except ObjectDoesNotExist:
 		messages.add_message(request, messages.ERROR, 'Account error, may have already been activated.')
 		return TemplateResponse(request, 'registration/activation_invalid.html')
@@ -62,7 +62,7 @@ def account_activate(request, uidb64, token):
 		user.is_active = True
 		user.save()
 		login(request, user)
-		messages.add_message(request, messages.SUCCESS, 'Account activated, email confirmed.')
+		messages.add_message(request, messages.SUCCESS, 'Email confirmed, your account is now active.')
 		return redirect('user:dashboard')
 	else:
 		messages.add_message(request, messages.ERROR, 'Account error, may have already been activated.')

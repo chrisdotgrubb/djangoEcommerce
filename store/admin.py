@@ -15,9 +15,10 @@ class ProductAdmin(admin.ModelAdmin):
 		'slug',
 		'price',
 		'in_stock',
+		'is_active',
 		'created',
 		'updated',
 	]
 	list_filter = ['in_stock', 'is_active']
-	list_editable = ['price', 'in_stock']
+	list_editable = ['price', 'is_active']
 	prepopulated_fields = {'slug': ('title',)}

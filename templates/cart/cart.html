@@ -4,14 +4,16 @@
 {% block title %}Shopping Cart{% endblock title %}
 
 {% block content %}
-	<main class="pt-5">
+	<div class="pt-5">
 		<div class="container">
 			<div class="row" id="cart-header" hx-get="{% url 'cart:update_details' %}" hx-trigger="load delay:1s, cartUpdatedEvent from:body">
 				{% include "cart/_details.html" %}
 			</div>
 			<br>
+
 			<div class="row p-3">
 				{% if cart|length > 0 %}
+
 					<div class="col-12">
 						{% for item in cart %}
 							{% with product=item.product %}
@@ -66,10 +68,8 @@
 						</div>
 					</div>
 
-
-
 				{% endif %}
 			</div>
 		</div>
-	</main>
+	</div>
 {% endblock content %}

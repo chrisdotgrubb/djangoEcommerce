@@ -10,7 +10,7 @@ def products_all_view(request):
 	context = {
 		'products': products,
 	}
-	return TemplateResponse(request, 'home.html', context)
+	return TemplateResponse(request, 'store/index.html', context)
 
 
 def product_detail_view(request, slug):
