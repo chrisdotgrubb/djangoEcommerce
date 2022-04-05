@@ -13,9 +13,11 @@
 				<p class="lead text-muted">Something short and leading about the collection below—its contents, the
 					creator,
 					etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p>
-				<p>
-					<a href="{% url 'user:register' %}" class="btn btn-primary my-2">Make an account</a>
-				</p>
+				{% if not user.is_authenticated %}
+					<p>
+						<a href="{% url 'user:register' %}" class="btn btn-primary my-2">Make an account</a>
+					</p>
+				{% endif %}
 			</div>
 		</div>
 	</section>

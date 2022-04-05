@@ -42,20 +42,20 @@
 									{{ form.about }}
 
 
-									<button class="btn btn-primary btn-block py-2 mb-4 mt-2 fw-bold w-25" type="submit"
+									<button class="btn btn-primary fw-500 mb-4 mt-2" type="submit"
 											value="Save changes">Save Changes
 									</button>
 								</form>
 								<form action="{% url 'user:password_change' %}" class="px-4">
 									<button type="submit" role="button"
-											class="btn btn-primary btn-block py-2 mb-4 mt-2 fw-bold w-25">Change Password
+											class="btn btn-primary fw-500 mb-4">Change Password
 									</button>
 								</form>
 								<hr class="mb-3">
 								<p class=" h3 pt-2 font-weight-bold">Delete Account</p>
 								<form action="{% url 'user:delete_confirm' %}" class="px-4">
 									<button type="submit" role="button"
-											class="btn btn-danger btn-block py-2 mb-4 mt-2 fw-bold w-25">Delete
+											class="btn btn-danger btn-block py-2 mt-2 fw-500">Delete
 									</button>
 								</form>
 

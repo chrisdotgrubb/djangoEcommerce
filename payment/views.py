@@ -14,7 +14,7 @@ from payment.forms import PaymentForm
 @login_required
 def CartView(request):
 	cart = Cart(request)
-	total = str(cart.get_subtotal_price()).replace('.', '')
+	total = str(cart.get_total_price()).replace('.', '')
 	total = int(total)
 
 	stripe.api_key = 'sk_test_51KjPSyIu1jKvkROghajB8v3FL6yinPOO4Ni5baDLToV99GRp991EsHMtqJQsuvjF93QmyBx0NcOoLqZhI6JOvER500K2D6rPAU'
