@@ -1,4 +1,3 @@
-from decimal import Decimal
 from django.conf import settings
 from django.db import models
 from django_countries.fields import CountryField
@@ -31,6 +30,11 @@ class Order(models.Model):
 		return f'{self.name} {self.created:%Y %b %d %H:%M}'
 
 
+class OrderItemManager(models.Manager):
+	
+	def get_queryset(self):
+		return super().get_queryset().filter(product__is_active=True)
+	
 class OrderItem(models.Model):
 	order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
 	product = models.ForeignKey(Product, related_name='order_items', on_delete=models.CASCADE)
@@ -39,3 +43,8 @@ class OrderItem(models.Model):
 	
 	def __str__(self):
 		return f'{self.product.title} - {self.order}'
+	
+	objects = models.Manager()
+	products = OrderItemManager()
+	
+	

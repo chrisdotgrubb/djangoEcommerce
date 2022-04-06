@@ -68,7 +68,7 @@ class OrderItemAdmin(admin.ModelAdmin):
 		return f'{obj.total:.2f}'
 	
 	total.admin_order_field = 'total'
-	list_filter = ('quantity',)
+	list_filter = ('quantity', 'product')
 	ordering = ('order', '-quantity')
 
 

@@ -19,6 +19,6 @@ class UrlsTest(TestCase):
 		url = '/'
 		rev_url = reverse('store:products_all')
 		self.assertEqual(url, rev_url)
-		self.assertEqual(resolve(url).func, views.products_all_view)
+		self.assertEqual(resolve(url).func, views.products_index_view)
 
 

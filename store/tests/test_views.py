@@ -13,7 +13,7 @@ class ProductsAllViewTest(TestCase):
 		self.url = reverse('store:products_all')
 		self.request = RequestFactory().get(self.url)
 		self.request.session = import_module(settings.SESSION_ENGINE).SessionStore()
-		self.response = views.products_all_view(self.request).render()
+		self.response = views.products_index_view(self.request).render()
 	
 	def test_get(self):
 		self.assertEqual(self.response.status_code, 200)
@@ -21,7 +21,7 @@ class ProductsAllViewTest(TestCase):
 	def test_html(self):
 		request = HttpRequest()
 		request.session = import_module(settings.SESSION_ENGINE).SessionStore()
-		response = views.products_all_view(request)
+		response = views.products_index_view(request)
 		rendered = response.render()
 		html = rendered.content.decode('utf-8')
 		self.assertIn('<title>Book Store</title>', html)
