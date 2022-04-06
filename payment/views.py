@@ -7,6 +7,7 @@ from django.template.response import TemplateResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from cart.cart import Cart
+from djangoEcommerce import settings
 from order.views import payment_confirmation
 from payment.forms import PaymentForm
 
@@ -16,8 +17,9 @@ def CartView(request):
 	cart = Cart(request)
 	total = str(cart.get_total_price()).replace('.', '')
 	total = int(total)
-
-	stripe.api_key = 'sk_test_51KjPSyIu1jKvkROghajB8v3FL6yinPOO4Ni5baDLToV99GRp991EsHMtqJQsuvjF93QmyBx0NcOoLqZhI6JOvER500K2D6rPAU'
+	
+	STRIPE_PUBLIC_KEY = settings.STRIPE_PUBLIC_KEY
+	stripe.api_key = settings.STRIPE_SECRET_KEY
 	intent = stripe.PaymentIntent.create(
 		amount=total,
 		currency='usd',
@@ -26,6 +28,7 @@ def CartView(request):
 	form = PaymentForm(use_required_attribute=False)
 	content = {
 		'client_secret': intent.client_secret,
+		'STRIPE_PUBLIC_KEY': STRIPE_PUBLIC_KEY,
 		'form': form
 	}
 	

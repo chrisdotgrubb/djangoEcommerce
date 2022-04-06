@@ -2,10 +2,14 @@ import os.path
 from pathlib import Path
 from django.contrib.messages import constants as message_constants
 from django.utils.translation import gettext_lazy as _
+import environ
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-=pg0-lf1ut4d7dwt%o7hgeaf5#9g1te3!4+-yc1^tvq5ko)@h8'
+env = environ.Env()
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
+SECRET_KEY = env('SECRET_KEY')
 
 DEBUG = True
 
@@ -138,6 +142,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 PHONENUMBER_DB_FORMAT = 'NATIONAL'
 PHONENUMBER_DEFAULT_REGION = 'US'
 
-STRIPE_PUBLIC_KEY = 'pk_test_51KjPSyIu1jKvkROgukXGhCbkwqwJ28ZDBOJk7iaEuybPsvPQ3cAy6yPrErgcqmcDMYCK15VvqU3h9JQY8IN3ZIlX00wnZzuAcB'
-STRIPE_SECRET_KEY = 'sk_test_51KjPSyIu1jKvkROghajB8v3FL6yinPOO4Ni5baDLToV99GRp991EsHMtqJQsuvjF93QmyBx0NcOoLqZhI6JOvER500K2D6rPAU'
-STRIPE_ENDPOINT_SECRET = 'whsec_338b4ea43bd6265e0a5742b4d25e0df3f6d82da2124898ad1ce572107fab4a12'
+STRIPE_PUBLIC_KEY = env('STRIPE_PUBLIC_KEY')
+STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY')
+STRIPE_ENDPOINT_SECRET = env('STRIPE_ENDPOINT_SECRET')
