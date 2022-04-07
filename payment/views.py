@@ -7,7 +7,7 @@ from django.template.response import TemplateResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from cart.cart import Cart
-from djangoEcommerce import settings
+from config import settings
 from order.views import payment_confirmation
 from payment.forms import PaymentForm
 

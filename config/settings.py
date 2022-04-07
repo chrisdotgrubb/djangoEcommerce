@@ -29,6 +29,7 @@ INSTALLED_APPS = [
 	'order',
 	'django_htmx',
 	'localflavor',
+	'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -41,7 +42,7 @@ MIDDLEWARE = [
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
 	'django_htmx.middleware.HtmxMiddleware'
 ]
-
+#  debug_toolbar.middleware.DebugToolbarMiddleware
 LOGGING = {
 	'version': 1,
 	'disable_existing_loggers': False,
@@ -67,7 +68,7 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 MESSAGE_LEVEL = message_constants.DEBUG
 
-ROOT_URLCONF = 'djangoEcommerce.urls'
+ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
 	{
@@ -87,7 +88,7 @@ TEMPLATES = [
 	},
 ]
 
-WSGI_APPLICATION = 'djangoEcommerce.wsgi.application'
+WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
 	'default': {
