@@ -32,7 +32,7 @@ db.sqlite3
 db.sqlite3-journal
 
 # Environments
-.env
+config/settings/.env
 .venv
 env/
 venv/

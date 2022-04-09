@@ -4,10 +4,10 @@ from django.contrib.messages import constants as message_constants
 from django.utils.translation import gettext_lazy as _
 import environ
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 env = environ.Env()
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+environ.Env.read_env(os.path.join(BASE_DIR, 'config/settings/.env'))
 
 SECRET_KEY = env('SECRET_KEY')
 
@@ -29,7 +29,6 @@ INSTALLED_APPS = [
 	'order',
 	'django_htmx',
 	'localflavor',
-	'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -42,7 +41,7 @@ MIDDLEWARE = [
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
 	'django_htmx.middleware.HtmxMiddleware'
 ]
-#  debug_toolbar.middleware.DebugToolbarMiddleware
+
 LOGGING = {
 	'version': 1,
 	'disable_existing_loggers': False,

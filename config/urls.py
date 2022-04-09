@@ -1,3 +1,4 @@
+import debug_toolbar
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
@@ -10,6 +11,7 @@ urlpatterns = [
     path('user/', include('user.urls', namespace='user')),
     path('payment/', include('payment.urls', namespace='payment')),
     path('order/', include('order.urls', namespace='order')),
+    path('__debug__/', include(debug_toolbar.urls)),
     path('', include('store.urls', namespace='store')),
 ]
 
