@@ -212,7 +212,7 @@ class ProductImage(models.Model):
 		null=True,
 		blank=True,
 	)
-	is_feature = models.BooleanField(default=False)
+	is_feature = models.BooleanField(default=False)  #TODO should only allow one image to be is_feature
 	created_at = models.DateTimeField(auto_now_add=True, editable=False)
 	updated_at = models.DateTimeField(auto_now=True)
 	

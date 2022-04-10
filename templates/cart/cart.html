@@ -19,7 +19,11 @@
 							{% with product=item.product %}
 								<div id="product-{{ product.id }}" class="row mb-4 border product-item" data-index="{{ product.id }}">
 									<div class="col-md-3 col-lg-2 order-md-first bg-light">
-										<img class="img-fluid mx-auto d-block" src="{{ product.image.url }}" alt="Responsive image">
+										{% for image in product.product_image.all %}
+											{% if image.is_feature %}
+												<img class="img-fluid mx-auto d-block" src="{{ image.image.url }}" alt="{{ image.alt_text }}">
+											{% endif %}
+										{% endfor %}
 									</div>
 									<div class="col-md-9 col-lg-10 ps-md-3 ps-lg-10">
 										<a class="text-decoration-none text-reset" href="{{ product.get_absolute_url }}">

@@ -24,12 +24,12 @@ class Cart:
 	
 	def __iter__(self):
 		product_ids = self.cart.keys()
-		products = Product.products.filter(id__in=product_ids)
+		products = Product.objects.filter(id__in=product_ids)
 		cart = self.cart.copy()
 		
 		for product in products:
 			cart[str(product.id)]['product'] = product
-			cart[str(product.id)]['price'] = product.price
+			cart[str(product.id)]['price'] = product.regular_price
 		
 		for item in cart.values():
 			item['price'] = Decimal(item['price'])
@@ -38,12 +38,12 @@ class Cart:
 	
 	def as_dict(self):
 		product_ids = self.cart.keys()
-		products = Product.products.filter(id__in=product_ids)
+		products = Product.objects.filter(id__in=product_ids)
 		cart = self.cart.copy()
 		
 		for product in products:
 			cart[str(product.id)]['product'] = product
-			cart[str(product.id)]['price'] = product.price
+			cart[str(product.id)]['price'] = product.regular_price
 		
 		for item in cart.values():
 			item['price'] = Decimal(item['price'])

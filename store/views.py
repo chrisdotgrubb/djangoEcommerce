@@ -1,14 +1,13 @@
 from django.contrib import messages
-from django.db.models import Count
 from django.template.response import TemplateResponse
 from django.shortcuts import get_object_or_404
 from cart.forms import AddForm
-from order.models import OrderItem
 from .models import Category, Product
 
 
+#TODO add popular products
 def products_index_view(request):
-	products = Product.objects.all()
+	products = Product.objects.prefetch_related('product_image').filter(is_active=True)
 	
 	context = {
 		'products': products
@@ -17,7 +16,7 @@ def products_index_view(request):
 
 
 def product_detail_view(request, slug):
-	product = get_object_or_404(Product, slug=slug)
+	product = get_object_or_404(Product, slug=slug, is_active=True)
 	context = {
 		'product': product,
 		'form': AddForm,
@@ -27,7 +26,7 @@ def product_detail_view(request, slug):
 
 def category_view(request, slug):
 	category = get_object_or_404(Category, slug=slug)
-	products = Product.objects.filter(category=category)
+	products = Product.objects.filter(category__in=Category.objects.filter(slug=slug).get_descendants(include_self=True))
 	context = {
 		'category': category,
 		'products': products,

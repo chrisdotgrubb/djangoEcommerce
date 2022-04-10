@@ -26,7 +26,7 @@ def cart_add(request, product_id):
 	cart = Cart(request)
 	cart.add(product_id, product_qty)
 	
-	product = get_object_or_404(Product, id=product_id, in_stock=True)
+	product = get_object_or_404(Product, id=product_id, is_active=True)
 	context = {
 		'product': product,
 		'form': AddForm,
@@ -56,7 +56,7 @@ def cart_choose_quantity(request, product_id):
 	cart.set_quantity(product_id, product_qty)
 	form = QuantityForm(initial={'qty': product_qty})
 	
-	product = get_object_or_404(Product, id=product_id, in_stock=True)
+	product = get_object_or_404(Product, id=product_id, is_active=True)
 	context = {
 		'product': product,
 		'form': form,
@@ -95,3 +95,4 @@ def cart_update_item_total(request, product_id):
 	
 	return TemplateResponse(request, 'cart/_item_total.html', context)
 
+#TODO add shipping options

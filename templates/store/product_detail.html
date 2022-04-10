@@ -8,11 +8,16 @@
 		<div class="pt-5">
 			<div class="row g-3">
 				<div class="col-md-5 col-lg-5 order-md-first bg-light">
-					<img class="img-fluid mx-auto d-block" width="200px" alt="Responsive image" src="{{ product.product_image.image }}">
+					{% for image in product.product_image.all %}
+						{% if image.is_feature %}
+							<img class="img-fluid mx-auto d-block" width="200px" src="{{ image.image.url }}" alt="{{ image.alt_text }}">
+						{% else %}
+							<img class="img-fluid d-block-inline pt-3" width="100px" src="{{ image.image.url }}" alt="{{ image.alt_text }}">
+						{% endif %}
+					{% endfor %}
 				</div>
 				<div class="col-md-7 col-lg-7 ps-md-3 ps-lg-5">
 					<h1 class="mb-0 h4">{{ product.title }}</h1>
-{#					<p><span class="lead">{{ product.author }}</span> (Author)</p>#}
 					<p>{{ product.description|slice:":355" }}...</p>
 					<div class="border">
 						<div class="col border-bottom">
