@@ -8,8 +8,7 @@ from .models import Category, Product
 
 
 def products_index_view(request):
-	popular = OrderItem.products.values('product').annotate(count=Count('product')).order_by('-count')[:5]
-	products = Product.products.filter(id__in=popular.values('product'))
+	products = Product.objects.all()
 	
 	context = {
 		'products': products
@@ -18,7 +17,7 @@ def products_index_view(request):
 
 
 def product_detail_view(request, slug):
-	product = get_object_or_404(Product, slug=slug, in_stock=True)
+	product = get_object_or_404(Product, slug=slug)
 	context = {
 		'product': product,
 		'form': AddForm,
@@ -28,7 +27,7 @@ def product_detail_view(request, slug):
 
 def category_view(request, slug):
 	category = get_object_or_404(Category, slug=slug)
-	products = Product.products.filter(category=category)
+	products = Product.objects.filter(category=category)
 	context = {
 		'category': category,
 		'products': products,

@@ -29,6 +29,7 @@ INSTALLED_APPS = [
 	'order',
 	'django_htmx',
 	'localflavor',
+	'mptt',
 ]
 
 MIDDLEWARE = [
