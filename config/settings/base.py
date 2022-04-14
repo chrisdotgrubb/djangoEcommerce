@@ -30,6 +30,7 @@ INSTALLED_APPS = [
 	'django_htmx',
 	'localflavor',
 	'mptt',
+	'phonenumber_field',
 ]
 
 MIDDLEWARE = [

@@ -4,7 +4,8 @@ from django.contrib.auth.models import Group
 
 
 from .forms import RegistrationForm
-from .models import MyUser
+from .models import MyUser, Address
+
 
 class MyUserAdmin(UserAdmin):
 	list_display = ('username',	'first', 'email', 'created', 'is_staff', 'is_superuser', 'is_active')
@@ -19,4 +20,5 @@ class MyUserAdmin(UserAdmin):
 	ordering = ('-created',)
 
 admin.site.register(MyUser, MyUserAdmin)
+admin.site.register(Address)
 admin.site.unregister(Group)

@@ -26,6 +26,11 @@ urlpatterns = [
 	path('profile/delete/', TemplateView.as_view(template_name='user/delete_confirm.html'), name='delete_confirm'),
 	path('profile/delete/delete', views.delete_profile_view, name='delete_profile'),
 	path('profile/delete_finished/', TemplateView.as_view(template_name='user/delete_finished.html'), name='delete_finished'),
+	path('addresses/', views.address_list_view, name='addresses'),
+	path('add_address/', views.add_address_view, name='add_address'),
+	path('addresses/edit/<slug:id>/', views.edit_address_view, name='edit_address'),
+	path('addresses/delete/<slug:id>/', views.delete_address_view, name='delete_address'),
+	path('addresses/set_default/<slug:id>/', views.set_default_address_view, name='set_default_address'),
 ]
 
 htmx_urlpatterns = [

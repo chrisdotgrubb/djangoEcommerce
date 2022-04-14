@@ -11,7 +11,7 @@ from django.template.response import TemplateResponse
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from .forms import RegistrationForm, UserEditForm
-from .models import MyUser
+from .models import MyUser, Address
 from .token import account_activation_token
 from order.views import user_orders
 
@@ -134,3 +134,27 @@ def check_email(request):
 			return HttpResponse('<div id="email-error" style="color:green" class="mb-1 ps-2">Email available</div>')
 	else:
 		return HttpResponse('<div id="email-error" class="mb-1 ps-2">&nbsp;</div>')
+
+
+@login_required
+def address_list_view(request):
+	addresses = Address.objects.filter(customer=request.user)
+	context = {'addresses': addresses}
+	return TemplateResponse(request, 'user/address/list.html', context)
+
+
+def add_address_view(request):
+	pass
+
+
+def edit_address_view(request):
+	pass
+
+
+def delete_address_view(request):
+	pass
+
+
+def set_default_address_view(request):
+	pass
+

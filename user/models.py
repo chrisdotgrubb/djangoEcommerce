@@ -1,5 +1,5 @@
 import uuid
-
+import phonenumbers
 from django.core.mail import send_mail
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
@@ -97,3 +97,6 @@ class Address(models.Model):
 		
 	def __str__(self):
 		return f'{self.name} address'
+	
+	def formatted_phone(self):
+		return phonenumbers.format_number(self.phone, phonenumbers.PhoneNumberFormat.NATIONAL)
