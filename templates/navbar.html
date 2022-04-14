@@ -24,7 +24,7 @@
 							</i>
 						</a>
 						<ul class="dropdown-menu rounded-0 border-0">
-							<li {% if request.path == '/' %}class="" {% else %}class=""{% endif %}>
+							<li {% if request.path == '/' %}class="selected" {% else %}class=""{% endif %}>
 								<a class="dropdown-item" href="{% url "store:products_all" %}">Home</a>
 							</li>
 							{% for c in categories %}
@@ -57,10 +57,10 @@
 											{% if user.name %}
 												{{ request.user.first }}
 											{% else %}
-												{{ request.user.first }}
+												User
 											{% endif %}
 										{% else %}
-											Login
+											please log in.
 										{% endif %}
 									</div>
 									<span class="fs15 fw500">Account &amp; Lists</span>
@@ -68,7 +68,7 @@
 								<div class="dropdown-menu rounded-0" aria-labelledby="navbarDropdown">
 									<div class="card border-0">
 										<div class="card-body">
-											<h6 class="card-title">My Account</h6>
+											<h6 class="card-title fw-bold">My Account</h6>
 											<ul class="list-group list-group-flush dropdown-account-link">
 												{% if user.is_authenticated %}
 													<a href="{% url "user:dashboard" %}" class="text-reset small list-group-item p-0 pb-1 border-0 dropdown-account-link">Your Account</a>
@@ -99,6 +99,18 @@
 			</div>
 			<div class="d-md-none d-lg-none d-xl-none">
 				<div class="collapse navbar-collapse" id="navbarCollapse">
+					<h6 class="card-title fw-bold">My Account</h6>
+					<ul class="list-group list-group-flush dropdown-account-link">
+						{% if user.is_authenticated %}
+							<a href="{% url "user:dashboard" %}" class="dropdown-item">Your Account</a>
+							<a href="#" class="dropdown-item">Orders</a>
+							<a href="{% url "user:logout" %}" class="dropdown-item">Logout</a>
+						{% else %}
+							<a href="{% url "user:login" %}" class="dropdown-item">Login</a>
+							<a href="{% url "user:register" %}" class="dropdown-item">Sign up</a>
+						{% endif %}
+					</ul>
+					<h6 class="card-title fw-bold">Shopping</h6>
 					<ul class="navbar-nav me-auto mb-2 mb-md-0">
 						<li><a class="dropdown-item" href="{% url "store:products_all" %}">All</a></li>
 						{% for c in categories %}
