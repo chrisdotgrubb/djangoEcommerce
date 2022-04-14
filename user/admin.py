@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import Group
+
 
 from .forms import RegistrationForm
 from .models import MyUser
@@ -7,8 +9,7 @@ from .models import MyUser
 class MyUserAdmin(UserAdmin):
 	list_display = ('username',	'first', 'email', 'created', 'is_staff', 'is_superuser', 'is_active')
 	fieldsets = (
-		(None, {'fields': ('username', 'email', 'first', 'phone', 'about')}),
-		('Address', {'fields': ('address_line_1', 'address_line_2', 'town_city', 'country')}),
+		(None, {'fields': ('username', 'email', 'first', 'phone')}),
 		('Perms', {'fields': ('is_staff', 'is_superuser', 'is_active')}),
 		('Times', {'fields': ('created', 'updated')})
 	)
@@ -18,3 +19,4 @@ class MyUserAdmin(UserAdmin):
 	ordering = ('-created',)
 
 admin.site.register(MyUser, MyUserAdmin)
+admin.site.unregister(Group)

@@ -1,3 +1,5 @@
+import uuid
+
 from django.core.mail import send_mail
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
@@ -46,13 +48,8 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 	
 	email = models.EmailField(_('email address'), unique=True)
 	username = models.CharField(max_length=150, unique=True)
-	first = models.CharField(max_length=150, blank=True)
-	about = models.TextField(_('about'), max_length=500, blank=True)
-	country = CountryField(blank=True)
 	phone = PhoneNumberField(blank=True)
-	address_line_1 = models.CharField(max_length=150, blank=True)
-	address_line_2 = models.CharField(max_length=150, blank=True)
-	town_city = models.CharField(max_length=150, blank=True)
+	first = models.CharField(max_length=150, blank=True)
 	
 	is_active = models.BooleanField(default=False)
 	is_staff = models.BooleanField(default=False)
@@ -77,3 +74,26 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 	def email_user(self, subject, message):
 		send_mail(subject, message, 'from@email.com', [self.email], fail_silently=False)
 	
+
+class Address(models.Model):
+	id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+	customer = models.ForeignKey(MyUser, verbose_name=_('Customer'), on_delete=models.CASCADE)
+	
+	name = models.CharField(_('Full Name'), max_length=150)
+	phone = PhoneNumberField(blank=True)
+	country = CountryField(blank=True)
+	address_line_1 = models.CharField(max_length=150, blank=True)
+	address_line_2 = models.CharField(max_length=150, blank=True)
+	town_city = models.CharField(max_length=150, blank=True)
+	zip = models.CharField(_('Zipcode'), max_length=13)
+	delivery_instructions = models.CharField(_('Delivery instructions'), max_length=255)
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
+	default = models.BooleanField(_('Default'), default=False)
+	
+	class Meta:
+		verbose_name = 'Address'
+		verbose_name_plural = 'Addresses'
+		
+	def __str__(self):
+		return f'{self.name} address'
