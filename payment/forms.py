@@ -5,7 +5,7 @@ from django_countries.widgets import CountrySelectWidget
 from phonenumber_field.formfields import PhoneNumberField
 
 
-
+#TODO change form and js for new way of handing addresses
 class PaymentForm(forms.Form):
 	name = forms.CharField(label='Name', max_length=150, widget=forms.TextInput(
 		attrs={'class': 'form-control', 'placeholder': 'Name', 'id': 'name', 'required': True}))

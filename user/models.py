@@ -86,7 +86,7 @@ class Address(models.Model):
 	address_line_2 = models.CharField(max_length=150, blank=True)
 	town_city = models.CharField(max_length=150, blank=True)
 	zip = models.CharField(_('Zipcode'), max_length=13)
-	delivery_instructions = models.CharField(_('Delivery instructions'), max_length=255)
+	delivery_instructions = models.CharField(_('Delivery instructions'), max_length=255, blank=True)
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
 	default = models.BooleanField(_('Default'), default=False)

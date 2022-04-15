@@ -4,13 +4,14 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, get_object_or_404
 from django.template.loader import render_to_string
 from django.template.response import TemplateResponse
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from .forms import RegistrationForm, UserEditForm
+from django.urls import reverse
+from .forms import RegistrationForm, UserEditForm, UserAddressForm
 from .models import MyUser, Address
 from .token import account_activation_token
 from order.views import user_orders
@@ -143,8 +144,21 @@ def address_list_view(request):
 	return TemplateResponse(request, 'user/address/list.html', context)
 
 
+@login_required
 def add_address_view(request):
-	pass
+	if request.method == 'POST':
+		form = UserAddressForm(request.POST)
+		if form.is_valid():
+			form = form.save(commit=False)
+			form.customer = request.user
+			form.save()
+			return HttpResponseRedirect(reverse('user:addresses'))
+		else:
+			return redirect('/')
+	else:
+		form = UserAddressForm()
+		context = {'form': form}
+		return TemplateResponse(request, 'user/address/edit.html', context)
 
 
 def edit_address_view(request):

@@ -5,7 +5,7 @@ from django_countries.fields import CountryField
 from django_countries.widgets import CountrySelectWidget
 from phonenumber_field.formfields import PhoneNumberField
 
-from .models import MyUser
+from .models import MyUser, Address
 
 
 class UserLoginForm(AuthenticationForm):
@@ -97,6 +97,23 @@ class UserEditForm(forms.ModelForm):
 		self.fields['address_line_2'].required = False
 		self.fields['town_city'].required = False
 		self.fields['about'].required = False
+
+
+class UserAddressForm(forms.ModelForm):
+	class Meta:
+		model = Address
+		fields = ('name', 'phone', 'address_line_1', 'address_line_2', 'town_city', 'country', 'zip', 'delivery_instructions')
+	
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
+		self.fields['name'].widget.attrs.update({'class': 'form-control mb-2 account-form', 'placeholder': 'Full Name'})
+		self.fields["phone"].widget.attrs.update({"class": "form-control mb-2 account-form", "placeholder": "Phone"})
+		self.fields["address_line_1"].widget.attrs.update({"class": "form-control mb-2 account-form", "placeholder": "Full Name"})
+		self.fields["address_line_2"].widget.attrs.update({"class": "form-control mb-2 account-form", "placeholder": "Full Name"})
+		self.fields["town_city"].widget.attrs.update({"class": "form-control mb-2 account-form", "placeholder": "Full Name"})
+		self.fields["country"].widget.attrs.update({"class": "form-control mb-2 account-form"})
+		self.fields["zip"].widget.attrs.update({"class": "form-control mb-2 account-form", "placeholder": "Zip code"})
+		self.fields["delivery_instructions"].widget.attrs.update({"class": "form-control mb-2 account-form", "placeholder": "Special instructions"})
 
 
 class PwdResetForm(PasswordResetForm):
