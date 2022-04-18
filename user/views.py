@@ -160,15 +160,30 @@ def add_address_view(request):
 		context = {'form': form}
 		return TemplateResponse(request, 'user/address/edit.html', context)
 
+@login_required
+def edit_address_view(request, id):
+	address = Address.objects.get(pk=id, customer=request.user)
+	
+	if request.method == 'POST':
+		form = UserAddressForm(instance=address, data=request.POST)
+		if form.is_valid():
+			form.save()
+			return HttpResponseRedirect(reverse('user:addresses'))
+		else:
+			return redirect('/')
+	else:
+		form = UserAddressForm(instance=address)
+		context = {'form': form}
+		return TemplateResponse(request, 'user/address/edit.html', context)
 
-def edit_address_view(request):
-	pass
+@login_required
+def delete_address_view(request, id):
+	address = Address.objects.get(pk=id, customer=request.user).delete()
+	return HttpResponseRedirect(reverse('user:addresses'))
 
-
-def delete_address_view(request):
-	pass
-
-
-def set_default_address_view(request):
-	pass
+@login_required
+def set_default_address_view(request, id):
+	Address.objects.filter(customer=request.user, default=True).update(default=False)
+	Address.objects.filter(pk=id, customer=request.user).update(default=True)
+	return HttpResponseRedirect(reverse('user:addresses'))
 
