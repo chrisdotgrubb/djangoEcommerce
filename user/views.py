@@ -15,6 +15,7 @@ from .forms import RegistrationForm, UserEditForm, UserAddressForm
 from .models import MyUser, Address
 from .token import account_activation_token
 from order.views import user_orders
+from store.models import Product
 
 
 def user_registration_view(request):
@@ -186,4 +187,22 @@ def set_default_address_view(request, id):
 	Address.objects.filter(customer=request.user, default=True).update(default=False)
 	Address.objects.filter(pk=id, customer=request.user).update(default=True)
 	return HttpResponseRedirect(reverse('user:addresses'))
+
+@login_required
+def add_to_wishlist_view(request, id):
+	product = get_object_or_404(Product, id=id)
+	if product.users_wishlist.filter(id=request.user.id).exists():
+		product.users_wishlist.remove(request.user)
+		messages.success(request, f'Removed {product.title} from your wishlist.')
+	else:
+		product.users_wishlist.add(request.user)
+		messages.success(request, f'Added {product.title} to your wishlist.')
+	return HttpResponseRedirect(request.META["HTTP_REFERER"])
+
+@login_required
+def wishlist_view(request):
+	wishlist = Product.objects.filter(users_wishlist=request.user)
+	context = {'wishlist': wishlist}
+	return TemplateResponse(request, 'user/user_wish_list.html', context)
+
 

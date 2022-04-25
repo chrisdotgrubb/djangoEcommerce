@@ -73,6 +73,7 @@
 												{% if user.is_authenticated %}
 													<a href="{% url "user:dashboard" %}" class="text-reset small list-group-item p-0 pb-1 border-0 dropdown-account-link">Your Account</a>
 													<a href="#" class="text-reset small list-group-item p-0 pb-1 border-0 dropdown-account-link">Orders</a>
+													<a href="{% url 'user:wishlist' %}" class="text-reset small list-group-item p-0 pb-1 border-0 dropdown-account-link">Wishlist</a>
 													<a href="{% url "user:logout" %}" class="text-reset small list-group-item p-0 pb-1 border-0 dropdown-account-link">Logout</a>
 												{% else %}
 													<a href="{% url "user:login" %}" class="text-reset small list-group-item p-0 pb-1 border-0 dropdown-account-link">Login</a>

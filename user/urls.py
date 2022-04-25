@@ -31,6 +31,8 @@ urlpatterns = [
 	path('addresses/edit/<slug:id>/', views.edit_address_view, name='edit_address'),
 	path('addresses/delete/<slug:id>/', views.delete_address_view, name='delete_address'),
 	path('addresses/set_default/<slug:id>/', views.set_default_address_view, name='set_default_address'),
+	path('wishlist/add_to_wishlist/<int:id>/', views.add_to_wishlist_view, name='add_to_wishlist'),
+	path('wishlist/', views.wishlist_view, name='wishlist')
 ]
 
 htmx_urlpatterns = [

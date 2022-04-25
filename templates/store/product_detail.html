@@ -28,6 +28,20 @@
 						</div>
 						<div class="col">
 							{% include 'cart/_add.html' %}
+							<div class="row p-3">
+								<div class="col-6">
+
+								</div>
+								<div class=" col-6 text-end">
+									<a href="{% url 'user:add_to_wishlist' product.id %}" class="btn btn-primary btn-sm" role="button">
+										{% if in_wish %}
+											Remove from Wishlist
+										{% else %}
+											Add to Wishlist
+										{% endif %}
+									</a>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>

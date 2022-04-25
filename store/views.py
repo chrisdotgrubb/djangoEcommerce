@@ -17,9 +17,13 @@ def products_index_view(request):
 
 def product_detail_view(request, slug):
 	product = get_object_or_404(Product, slug=slug, is_active=True)
+	in_wish = False
+	if product.users_wishlist.filter(id=request.user.id).exists():
+		in_wish = True
 	context = {
 		'product': product,
 		'form': AddForm,
+		'in_wish': in_wish
 	}
 	return TemplateResponse(request, 'store/product_detail.html', context)
 
