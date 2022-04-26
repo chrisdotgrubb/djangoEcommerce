@@ -14,7 +14,7 @@
 		</div>
 
 		<div>
-			<a href="#" role="button" type="button" class="btn btn-lg btn-success fw-bold">Checkout</a>
+			<a href="{% url 'checkout:delivery_choices' %}" role="button" type="button" class="btn btn-lg btn-success fw-bold">Checkout</a>
 			<span class="h6">$ {{ cart.get_total_price }}</span>
 		</div>
 
