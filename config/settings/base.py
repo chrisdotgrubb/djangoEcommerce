@@ -22,10 +22,11 @@ INSTALLED_APPS = [
 	'django.contrib.sessions',
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
-	'store',
-	'user',
 	'cart',
+	'checkout',
 	'order',
+	'user',
+	'store',
 	'django_htmx',
 	'localflavor',
 	'mptt',
@@ -142,4 +143,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 PHONENUMBER_DB_FORMAT = 'NATIONAL'
 PHONENUMBER_DEFAULT_REGION = 'US'
-
