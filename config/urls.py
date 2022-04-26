@@ -9,7 +9,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('cart/', include('cart.urls', namespace='cart')),
     path('user/', include('user.urls', namespace='user')),
-    path('payment/', include('payment.urls', namespace='payment')),
+    # path('payment/', include('payment.urls', namespace='payment')),
     path('order/', include('order.urls', namespace='order')),
     path('__debug__/', include(debug_toolbar.urls)),
     path('', include('store.urls', namespace='store')),

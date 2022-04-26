@@ -25,7 +25,6 @@ INSTALLED_APPS = [
 	'store',
 	'user',
 	'cart',
-	'payment',
 	'order',
 	'django_htmx',
 	'localflavor',
@@ -144,6 +143,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 PHONENUMBER_DB_FORMAT = 'NATIONAL'
 PHONENUMBER_DEFAULT_REGION = 'US'
 
-STRIPE_PUBLIC_KEY = env('STRIPE_PUBLIC_KEY')
-STRIPE_SECRET_KEY = env('STRIPE_SECRET_KEY')
-STRIPE_ENDPOINT_SECRET = env('STRIPE_ENDPOINT_SECRET')
