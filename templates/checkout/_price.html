@@ -1,0 +1,48 @@
+<div id="price" class="col-md-5 col-lg-4 order-md-last order-3 p-0">
+	<div class="d-flex bd-highlight ms-0">
+		<div class="flex-grow-1 bd-highlight p-2">Sub Total:</div>
+		<div class="bd-highlight p-2">
+			<span class="fw-bold h5">$</span>
+			<span class="fw-bold h5" id="sub_total">
+				{{ cart.get_subtotal_price }}
+			</span>
+		</div>
+	</div>
+	<div class="d-flex bd-highlight">
+		<div class="flex-grow-1 bd-highlight p-2">Tax:</div>
+		<div class="bd-highlight p-2">
+			<span class="fw-bold h5">$</span>
+			<span class="fw-bold h5" id="tax_price">
+				{{ cart.get_tax_price }}
+			</span>
+		</div>
+	</div>
+
+	<div class="d-flex bd-highlight">
+		<div class="flex-grow-1 bd-highlight p-2">Delivery:</div>
+		<div class="bd-highlight p-2">
+			<span class="fw-bold h5">$</span>
+			<span class="fw-bold h5" id="delivery_price">
+				{% if delivery_price %}
+					{{ delivery_price }}
+				{% else %}
+					0.00
+				{% endif %}
+				</span>
+		</div>
+	</div>
+	<hr>
+	<div class="d-flex bd-highlight">
+		<div class="flex-grow-1 bd-highlight p-2">Total:</div>
+		<div class="bd-highlight p-2">
+			<span class="fw-bold h5">$</span>
+			<span class="fw-bold h5" id="total_price">
+				{% if total %}
+					{{ total }}
+				{% else %}
+					{{ cart.get_grand_total }}
+				{% endif %}
+			</span>
+		</div>
+	</div>
+</div>

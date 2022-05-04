@@ -21,16 +21,15 @@ def cart_update_delivery_view(request):
 	if request.POST.get('action') == 'post':
 		delivery_option = int(request.POST.get('delivery_option'))
 		delivery_type = DeliveryOptions.objects.get(id=delivery_option)
-		updated_total_price = cart.update_delivery(delivery_type.delivery_price)
+		updated_total_price = cart.get_grand_total(delivery_type.delivery_price)
 		
-		# session = request.session
-		# if 'purchase' not in session[session.session_key]:
-		# 	session[session.session_key]['purchase'] = {'delivery_id': delivery_type.id}
-		# 	session.modified = True
-		# else:
-		# 	session[session.session_key]['purchase']['delivery_id'] = delivery_type.id
-		# 	cart.save()
-			
+		session = request.session
+		if 'purchase' not in session:
+			session['purchase'] = {'delivery_id': delivery_type.id}
+		else:
+			session['purchase']['delivery_id'] = delivery_type.id
+			cart.save()
+		
 		response = JsonResponse({'total': updated_total_price, 'delivery_price': delivery_type.delivery_price})
 		return response
 		
@@ -54,6 +53,23 @@ def payment_complete_view(request):
 def payment_success_view(request):
 	pass
 
-
-
+@login_required
+def update_delivery(request, delivery_id):
+	cart = Cart(request)
+	
+	delivery_type = DeliveryOptions.objects.get(id=delivery_id)
+	updated_total_price = cart.get_grand_total(delivery_type.delivery_price)
+	
+	# session = request.session
+	# if 'purchase' not in session:
+	# 	session['purchase'] = {'delivery_id': delivery_id}
+	# else:
+	# 	session['purchase']['delivery_id'] = delivery_id
+	# 	session.modified = True
+	# 	# del session['purchase']
+	# request.session.modified = True
+	
+	
+	response = TemplateResponse(request, 'checkout/_price.html', {'total': updated_total_price, 'delivery_price': delivery_type.delivery_price})
+	return response
 

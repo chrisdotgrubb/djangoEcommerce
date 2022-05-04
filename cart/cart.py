@@ -12,10 +12,10 @@ class Cart:
 	
 	def __init__(self, request):
 		self.session = request.session
-		cart = self.session.get(self.session.session_key)
+		cart = self.session.get('cart')
 		if not cart:
 			self.session.save()
-			cart = self.session[self.session.session_key] = {}
+			cart = self.session['cart'] = {}
 		self.cart = cart
 	
 	def __len__(self):
@@ -39,15 +39,15 @@ class Cart:
 		product_ids = self.cart.keys()
 		products = Product.objects.filter(id__in=product_ids)
 		cart = self.cart.copy()
-		
+
 		for product in products:
 			cart[str(product.id)]['product'] = product
 			cart[str(product.id)]['price'] = product.regular_price
-		
+
 		for item in cart.values():
 			item['price'] = Decimal(item['price'])
 			item['total_price'] = item['price'] * item['qty']
-		
+
 		return cart
 	
 	def add(self, product_id, product_qty):
@@ -81,6 +81,7 @@ class Cart:
 			self.delete(product_id)
 	
 	def save(self):
+		logging.debug(self.session.keys)
 		self.session.modified = True
 		
 	def get_subtotal_price(self):
@@ -92,12 +93,12 @@ class Cart:
 	def get_subtotal_plus_tax_price(self):
 		return round(self.get_subtotal_price() + self.get_tax_price(), 2)
 	
-	def update_delivery(self, delivery_price=0):
+	def get_grand_total(self, delivery_price=0):
 		return self.get_subtotal_price() + self.get_tax_price() + Decimal(delivery_price)
 	
 	def clear(self):
 		try:
-			del self.session[self.session.session_key]
+			del self.session['cart']
 		except KeyError:
 			return
 		self.save()
