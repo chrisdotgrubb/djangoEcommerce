@@ -104,6 +104,9 @@ class Cart:
 		total = subtotal + Decimal(shipping)
 		return round(total, 2)
 	
+	def update_delivery(self, delivery_price=0):
+		return self.get_subtotal_price() + self.get_tax_price() + Decimal(delivery_price)
+	
 	def clear(self):
 		try:
 			del self.session[self.session.session_key]

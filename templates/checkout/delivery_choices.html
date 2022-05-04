@@ -77,7 +77,7 @@
 										</div>
 									</div>
 									<div class="col-md-1 ps-md-1">
-										<input type="radio" class="align-middle h-11" name="'delivery_option" id="{{ option.id }}" value="{{ option.id }}">
+										<label for="{{ option.id }}"></label><input type="radio" class="align-middle h-11" name="delivery_option" id="{{ option.id }}" value="{{ option.id }}">
 									</div>
 
 								</div>
@@ -106,7 +106,7 @@
 										</div>
 									</div>
 									<div class="col-md-1 ps-md-1">
-										<input type="radio" class="align-middle h-11" name="'delivery_option" id="{{ option.id }}" value="{{ option.id }}">
+										<input type="radio" class="align-middle h-11" name="delivery_option" id="{{ option.id }}" value="{{ option.id }}">
 									</div>
 
 								</div>
@@ -134,7 +134,7 @@
 										</div>
 									</div>
 									<div class="col-md-1 ps-md-1">
-										<input type="radio" class="align-middle h-11" name="'delivery_option" id="{{ option.id }}" value="{{ option.id }}">
+										<input type="radio" class="align-middle h-11" name="delivery_option" id="{{ option.id }}" value="{{ option.id }}">
 									</div>
 
 								</div>
@@ -151,4 +151,24 @@
 			{% endif %}
 		</div>
 	</div>
+	<script>
+		$('input[type=radio][name=delivery_option]').on('change', function (e) {
+			e.preventDefault();
+			$.ajax({
+				type: 'POST',
+				url: '{% url 'checkout:cart_update_delivery' %}',
+				data: {
+					delivery_option: $(this).val(),
+					csrfmiddlewaretoken: '{{ csrf_token }}',
+					action: 'post',
+				},
+				success: function (json) {
+					document.getElementById('total_price').innerHTML = json.total;
+					document.getElementById('delivery_price').innerHTML = json.delivery_price;
+				},
+				error: function (xhr, errmsg, err) {
+				},
+			});
+		});
+	</script>
 {% endblock content %}
