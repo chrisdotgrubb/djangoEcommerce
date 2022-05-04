@@ -10,12 +10,11 @@
 		</div>
 
 		<div>
-			<span class="h6">Shipping: $ {{ cart.get_shipping_price }}</span>
+			<span class="h6">Total: $ {{ cart.get_subtotal_plus_tax_price }}</span>
 		</div>
 
 		<div>
-			<a href="{% url 'checkout:delivery_choices' %}" role="button" type="button" class="btn btn-lg btn-success fw-bold">Checkout</a>
-			<span class="h6">$ {{ cart.get_total_price }}</span>
+			<a href="{% url 'checkout:delivery_choices' %}" role="button" type="button" class="btn btn-lg btn-success fw-bold">Choose shipping option</a>
 		</div>
 
 	{% endif %}

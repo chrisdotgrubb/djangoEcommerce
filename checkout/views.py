@@ -1,3 +1,5 @@
+import logging
+
 from django.http import JsonResponse
 from django.template.response import TemplateResponse
 from django.contrib.auth.decorators import login_required
@@ -21,13 +23,13 @@ def cart_update_delivery_view(request):
 		delivery_type = DeliveryOptions.objects.get(id=delivery_option)
 		updated_total_price = cart.update_delivery(delivery_type.delivery_price)
 		
-		session = request.session
-		if 'purchase' not in session[session.session_key]:
-			session[session.session_key]['purchase'] = {'delivery_id': delivery_type.id}
-			# cart.save()
-		else:
-			session[session.session_key]['purchase']['delivery_id'] = delivery_type.id
-			cart.save()
+		# session = request.session
+		# if 'purchase' not in session[session.session_key]:
+		# 	session[session.session_key]['purchase'] = {'delivery_id': delivery_type.id}
+		# 	session.modified = True
+		# else:
+		# 	session[session.session_key]['purchase']['delivery_id'] = delivery_type.id
+		# 	cart.save()
 			
 		response = JsonResponse({'total': updated_total_price, 'delivery_price': delivery_type.delivery_price})
 		return response
