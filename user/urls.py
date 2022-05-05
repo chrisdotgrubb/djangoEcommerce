@@ -31,10 +31,10 @@ urlpatterns = [
 	path('add_address/', views.add_address, name='add_address'),
 	path('new_address_btn/', views.new_address_btn, name='new_address_btn'),
 	path('get_address/<uuid:uuid>/', views.get_address, name='get_address'),
-	path('addresses/edit/<slug:id>/', views.edit_address_view, name='edit_address'),
-	path('addresses/delete/<slug:id>/', views.delete_address_view, name='delete_address'),
-	path('addresses/set_default/<slug:id>/', views.set_default_address_view, name='set_default_address'),
-	path('wishlist/add_to_wishlist/<int:id>/', views.add_to_wishlist_view, name='add_to_wishlist'),
+	path('addresses/edit/<uuid:uuid>/', views.edit_address_view, name='edit_address'),
+	path('addresses/delete/<uuid:uuid>/', views.delete_address, name='delete_address'),
+	path('addresses/set_default/<uuid:uuid>/', views.set_default_address_view, name='set_default_address'),
+	path('wishlist/add_to_wishlist/<int:pk>/', views.add_to_wishlist_view, name='add_to_wishlist'),
 	path('wishlist/', views.wishlist_view, name='wishlist')
 ]
 

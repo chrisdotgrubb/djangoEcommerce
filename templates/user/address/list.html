@@ -11,9 +11,7 @@
 
 		<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" id="addresses">
 			{% for address in addresses %}
-				<div class="col-6" hx-trigger="load" hx-get="{% url 'user:get_address' address.id %}">
-					{% include 'user/address/_address.html' %}
-				</div>
+				{% include 'user/address/_address.html' %}
 			{% endfor %}
 		</div>
 

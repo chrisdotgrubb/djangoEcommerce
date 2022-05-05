@@ -181,8 +181,8 @@ def new_address_btn(request):
 
 
 @login_required
-def edit_address_view(request, id):
-	address = Address.objects.get(pk=id, customer=request.user)
+def edit_address_view(request, uuid):
+	address = Address.objects.get(pk=uuid, customer=request.user)
 	
 	if request.method == 'POST':
 		form = UserAddressForm(instance=address, data=request.POST)
@@ -198,21 +198,20 @@ def edit_address_view(request, id):
 
 
 @login_required
-def delete_address_view(request, id):
-	address = Address.objects.get(pk=id, customer=request.user).delete()
-	return HttpResponseRedirect(reverse('user:addresses'))
-
+def delete_address(request, uuid):
+	Address.objects.get(pk=uuid, customer=request.user).delete()
+	return HttpResponse()
 
 @login_required
-def set_default_address_view(request, id):
+def set_default_address_view(request, uuid):
 	Address.objects.filter(customer=request.user, default=True).update(default=False)
-	Address.objects.filter(pk=id, customer=request.user).update(default=True)
+	Address.objects.filter(pk=uuid, customer=request.user).update(default=True)
 	return HttpResponseRedirect(reverse('user:addresses'))
 
 
 @login_required
-def add_to_wishlist_view(request, id):
-	product = get_object_or_404(Product, id=id)
+def add_to_wishlist_view(request, pk):
+	product = get_object_or_404(Product, id=pk)
 	if product.users_wishlist.filter(id=request.user.id).exists():
 		product.users_wishlist.remove(request.user)
 		messages.success(request, f'Removed {product.title} from your wishlist.')
