@@ -60,12 +60,12 @@ def update_delivery(request, delivery_id):
 	delivery_type = DeliveryOptions.objects.get(id=delivery_id)
 	updated_total_price = cart.get_grand_total(delivery_type.delivery_price)
 	
-	session = request.session
-	if 'purchase' not in session:
-		session['purchase'] = {'delivery_id': delivery_id}
-	else:
-		session['purchase']['delivery_id'] = delivery_id
-		session.modified = True
+	# session = request.session
+	# if 'purchase' not in session:
+	# 	session['purchase'] = {'delivery_id': delivery_id}
+	# else:
+	# 	session['purchase']['delivery_id'] = delivery_id
+	# 	session.modified = True
 	logging.debug(request.session['cart'])
 	logging.debug(request.session['purchase'])
 	

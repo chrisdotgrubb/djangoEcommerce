@@ -19,6 +19,14 @@ def cart_view(request):
 		'cart': cart,
 		'form': form,
 	}
+	
+	product_ids = cart.cart.keys()
+	products = Product.objects.filter(id__in=product_ids)
+	cart = cart.cart
+	
+	for product in products:
+		cart[str(product.id)]['product'] = product
+	
 	return TemplateResponse(request, 'cart/cart.html', context)
 
 

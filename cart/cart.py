@@ -27,7 +27,7 @@ class Cart:
 		cart = self.cart.copy()
 		
 		for product in products:
-			cart[str(product.id)]['product'] = product
+			# cart[str(product.id)]['product'] = product
 			cart[str(product.id)]['price'] = product.regular_price
 		
 		for item in cart.values():
