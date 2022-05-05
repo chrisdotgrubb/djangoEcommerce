@@ -35,20 +35,11 @@ class Cart:
 			item['total_price'] = item['price'] * item['qty']
 			yield item
 	
-	def as_dict(self):
-		product_ids = self.cart.keys()
-		products = Product.objects.filter(id__in=product_ids)
-		cart = self.cart.copy()
-
-		for product in products:
-			cart[str(product.id)]['product'] = product
-			cart[str(product.id)]['price'] = product.regular_price
-
-		for item in cart.values():
-			item['price'] = Decimal(item['price'])
-			item['total_price'] = item['price'] * item['qty']
-
-		return cart
+	# def as_dict(self):
+	# 	product_ids = self.cart.keys()
+	# 	products = Product.objects.filter(id__in=product_ids)
+	#
+	# 	return products
 	
 	def add(self, product_id, product_qty):
 		pid = str(product_id)
@@ -81,7 +72,8 @@ class Cart:
 			self.delete(product_id)
 	
 	def save(self):
-		logging.debug(self.session.keys)
+		logging.debug(self.session['cart'])
+		logging.debug(self.session['purchase'])
 		self.session.modified = True
 		
 	def get_subtotal_price(self):

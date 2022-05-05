@@ -1,4 +1,6 @@
 import logging
+from decimal import Decimal
+
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
@@ -83,15 +85,26 @@ def cart_update_footer(request):
 
 
 def cart_update_item_total(request, product_id):
-	cart = Cart(request).as_dict()
+	product_ids = request.session['cart'].keys()
+	products = Product.objects.filter(id__in=product_ids)
+	cart = request.session['cart'].copy()
+	
+	for product in products:
+		cart[str(product.id)]['product'] = product
+		cart[str(product.id)]['price'] = product.regular_price
+	
+	for item in cart.values():
+		item['price'] = Decimal(item['price'])
+		item['total_price'] = item['price'] * item['qty']
+	
 	context = {
 		'cart': cart,
+		'products': products
 	}
 	pid = str(product_id)
 	if pid in cart:
 		item = cart[pid]
 		context['item'] = item
-		
 	
 	return TemplateResponse(request, 'cart/_item_total.html', context)
 
