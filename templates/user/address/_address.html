@@ -1,0 +1,27 @@
+<div class="col">
+	<div class="card pb-3">
+		<div class="card-header bg-white small text-muted">
+			{% if address.default %}
+				Default
+			{% endif %}
+			&nbsp;
+		</div>
+		<div class="card-body small pb-1">
+			<p class="card-text m-0 fw-bold">{{ address.name }}</p>
+			<p class="card-text m-0">{{ address.address_line_1 }}</p>
+			<p class="card-text m-0">{{ address.address_line_2 }}</p>
+			<p class="card-text m-0">{{ address.town_city }}</p>
+			<p class="card-text m-0">{{ address.zip }}</p>
+			<p class="card-text m-0">{{ address.formatted_phone }}</p>
+			<p class="card-text m-0">{{ address.delivery_instructions }}</p>
+			<div class="pt-5">
+				<a href="{% url 'user:edit_address' address.id %}" class="text-decoration-none">Edit</a>
+				|
+				<a href="{% url 'user:delete_address' address.id %}" class="text-decoration-none">Delete</a>
+				{% if not address.default %}
+					| <a href="{% url 'user:set_default_address' address.id %}" class="text-decoration-none">Set Default</a>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>

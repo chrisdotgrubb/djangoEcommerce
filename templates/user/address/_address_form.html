@@ -1,0 +1,27 @@
+<form name="address_form" class="account-form" hx-post="{% url 'user:address_form' %}" method="post">
+	{% if form.errors %}
+		<div class="alert alert-primary" role="alert">
+			Error: Please try again!
+		</div>
+	{% endif %}
+	{% csrf_token %}
+	<label class="small fw-bold">{{ form.name.label }}</label>
+	{{ form.name }}
+	<label class="small fw-bold">{{ form.phone.label }}</label>
+	{{ form.phone }}
+	<label class="small fw-bold">{{ form.address_line_1.label }}</label>
+	{{ form.address_line_1 }}
+	<label class="small fw-bold">{{ form.address_line_2.label }}</label>
+	{{ form.address_line_2 }}
+	<label class="small fw-bold">{{ form.town_city.label }}</label>
+	{{ form.town_city }}
+	<label class="small fw-bold">{{ form.country.label }}</label>
+	{{ form.country }}
+	<label class="small fw-bold">{{ form.zip.label }}</label>
+	{{ form.zip }}
+	<label class="small fw-bold">{{ form.delivery_instructions.label }}</label>
+	{{ form.delivery_instructions }}
+	<button class="btn btn-primary btn-block py-2 mb-4 mt-4 fw-bold w-25" type="button" value="Submit">
+		Add Address
+	</button>
+</form>

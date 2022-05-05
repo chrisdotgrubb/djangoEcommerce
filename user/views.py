@@ -141,10 +141,25 @@ def check_email(request):
 @login_required
 def address_list_view(request):
 	addresses = Address.objects.filter(customer=request.user)
-	context = {'addresses': addresses}
+	form = UserAddressForm()
+	context = {
+		'addresses': addresses,
+		# 'form': form
+	}
 	return TemplateResponse(request, 'user/address/list.html', context)
 
 
+@login_required
+def address_form(request):
+	context = {'form': UserAddressForm()}
+	return TemplateResponse(request, 'user/address/_address_form.html', context)
+
+@login_required
+def get_address(request, uuid):
+	address = UserAddress.objects.get(pk=uuid)
+	
+	return TemplateResponse(request, 'user/address/_address.html', {'address': address})
+	
 @login_required
 def add_address_view(request):
 	if request.method == 'POST':
