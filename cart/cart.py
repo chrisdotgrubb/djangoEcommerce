@@ -27,19 +27,12 @@ class Cart:
 		cart = self.cart.copy()
 		
 		for product in products:
-			# cart[str(product.id)]['product'] = product
 			cart[str(product.id)]['price'] = product.regular_price
 		
 		for item in cart.values():
-			item['price'] = Decimal(item['price'])
-			item['total_price'] = item['price'] * item['qty']
+			item['price'] = f"{Decimal(item['price']):.2f}"
+			item['total_price'] = F"{Decimal(item['price']) * item['qty']:2f}"
 			yield item
-	
-	# def as_dict(self):
-	# 	product_ids = self.cart.keys()
-	# 	products = Product.objects.filter(id__in=product_ids)
-	#
-	# 	return products
 	
 	def add(self, product_id, product_qty):
 		pid = str(product_id)
@@ -72,21 +65,19 @@ class Cart:
 			self.delete(product_id)
 	
 	def save(self):
-		logging.debug(self.session['cart'])
-		logging.debug(self.session['purchase'])
 		self.session.modified = True
 		
 	def get_subtotal_price(self):
-		return sum(Decimal(item['price']) * item['qty'] for item in self.__iter__())
+		return f"{sum(Decimal(item['price']) * item['qty'] for item in self.__iter__()):.2f}"
 	
 	def get_tax_price(self):
-		return round(self.get_subtotal_price() * Decimal(0.06), 2)
+		return f"{round(Decimal(self.get_subtotal_price()) * Decimal(0.06), 2):.2f}"
 	
 	def get_subtotal_plus_tax_price(self):
-		return round(self.get_subtotal_price() + self.get_tax_price(), 2)
+		return f"{round(Decimal(self.get_subtotal_price()) + Decimal(self.get_tax_price()), 2):.2f}"
 	
 	def get_grand_total(self, delivery_price=0):
-		return self.get_subtotal_price() + self.get_tax_price() + Decimal(delivery_price)
+		return f"{Decimal(self.get_subtotal_price()) + Decimal(self.get_tax_price()) + Decimal(delivery_price):.2f}"
 	
 	def clear(self):
 		try:

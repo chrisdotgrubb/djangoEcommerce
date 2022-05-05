@@ -60,19 +60,13 @@ def update_delivery(request, delivery_id):
 	delivery_type = DeliveryOptions.objects.get(id=delivery_id)
 	updated_total_price = cart.get_grand_total(delivery_type.delivery_price)
 	
-	# session = request.session
-	# if 'purchase' not in session:
-	# 	session['purchase'] = {'delivery_id': delivery_id}
-	# else:
-	# 	session['purchase']['delivery_id'] = delivery_id
-	# 	session.modified = True
-	logging.debug(request.session['cart'])
-	logging.debug(request.session['purchase'])
+	session = request.session
+	if 'purchase' not in session:
+		session['purchase'] = {'delivery_id': delivery_id, 'delivery_name': delivery_type.delivery_name}
+	else:
+		session['purchase']['delivery_id'] = delivery_id
+		session['purchase']['delivery_name'] = delivery_type.delivery_name
+		session.modified = True
 	
 	response = TemplateResponse(request, 'checkout/_price.html', {'total': updated_total_price, 'delivery_price': delivery_type.delivery_price})
 	return response
-
-
-"{'3': {'name': 'desk-chair', 'qty': 1}}"
-"{'3': {'name': 'desk-chair', 'qty': 1, 'product': <Product: Desk Chair>, 'price': Decimal('60.00'), 'total_price': Decimal('60.00')}}"
-
