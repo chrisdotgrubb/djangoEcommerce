@@ -11,11 +11,13 @@ from django.template.response import TemplateResponse
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.urls import reverse
+from django.views.decorators.http import require_http_methods
 from .forms import RegistrationForm, UserEditForm, UserAddressForm
 from .models import MyUser, Address
 from .token import account_activation_token
 from order.views import user_orders
 from store.models import Product
+from django_htmx.http import trigger_client_event
 
 
 def user_registration_view(request):
@@ -96,8 +98,8 @@ def edit_profile_view(request):
 	}
 	
 	return TemplateResponse(request, 'user/edit_profile.html', context)
-	
-	
+
+
 @login_required
 def delete_profile_view(request):
 	user = get_object_or_404(MyUser.active, username=request.user)
@@ -120,8 +122,8 @@ def check_username(request):
 			return HttpResponse('<div id="username-error" style="color:green" class="mb-1 ps-2">Username available</div>')
 	else:
 		return HttpResponse('<div id="username-error" class="mb-1 ps-2">&nbsp;</div>')
-	
-	
+
+
 def check_email(request):
 	email = request.POST.get('email')
 	pattern = r'^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$'
@@ -141,10 +143,8 @@ def check_email(request):
 @login_required
 def address_list_view(request):
 	addresses = Address.objects.filter(customer=request.user)
-	form = UserAddressForm()
 	context = {
 		'addresses': addresses,
-		# 'form': form
 	}
 	return TemplateResponse(request, 'user/address/list.html', context)
 
@@ -154,27 +154,31 @@ def address_form(request):
 	context = {'form': UserAddressForm()}
 	return TemplateResponse(request, 'user/address/_address_form.html', context)
 
+
 @login_required
 def get_address(request, uuid):
-	address = UserAddress.objects.get(pk=uuid)
+	address = Address.objects.get(pk=uuid)
 	
-	return TemplateResponse(request, 'user/address/_address.html', {'address': address})
-	
+	response = TemplateResponse(request, 'user/address/_address.html', {'address': address})
+	trigger_client_event(response, 'addressAddedEvent', {}, )
+	return response
+
+
+@require_http_methods(["POST"])
 @login_required
-def add_address_view(request):
-	if request.method == 'POST':
-		form = UserAddressForm(request.POST)
-		if form.is_valid():
-			form = form.save(commit=False)
-			form.customer = request.user
-			form.save()
-			return HttpResponseRedirect(reverse('user:addresses'))
-		else:
-			return redirect('/')
-	else:
-		form = UserAddressForm()
-		context = {'form': form}
-		return TemplateResponse(request, 'user/address/edit.html', context)
+def add_address(request):
+	form = UserAddressForm(request.POST)
+	if form.is_valid():
+		address = form.save(commit=False)
+		address.customer = request.user
+		address.save()
+		return redirect(reverse('user:get_address', args=[address.pk]))
+
+
+@login_required
+def new_address_btn(request):
+	return TemplateResponse(request, 'user/address/_new_address_btn.html')
+
 
 @login_required
 def edit_address_view(request, id):
@@ -192,16 +196,19 @@ def edit_address_view(request, id):
 		context = {'form': form}
 		return TemplateResponse(request, 'user/address/edit.html', context)
 
+
 @login_required
 def delete_address_view(request, id):
 	address = Address.objects.get(pk=id, customer=request.user).delete()
 	return HttpResponseRedirect(reverse('user:addresses'))
+
 
 @login_required
 def set_default_address_view(request, id):
 	Address.objects.filter(customer=request.user, default=True).update(default=False)
 	Address.objects.filter(pk=id, customer=request.user).update(default=True)
 	return HttpResponseRedirect(reverse('user:addresses'))
+
 
 @login_required
 def add_to_wishlist_view(request, id):
@@ -214,10 +221,9 @@ def add_to_wishlist_view(request, id):
 		messages.success(request, f'Added {product.title} to your wishlist.')
 	return HttpResponseRedirect(request.META["HTTP_REFERER"])
 
+
 @login_required
 def wishlist_view(request):
 	wishlist = Product.objects.filter(users_wishlist=request.user)
 	context = {'wishlist': wishlist}
 	return TemplateResponse(request, 'user/user_wish_list.html', context)
-
-

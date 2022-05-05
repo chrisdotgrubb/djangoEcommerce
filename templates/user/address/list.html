@@ -1,32 +1,32 @@
 {% extends "base.html" %}
 {% block title %}Edit Addresses{% endblock title %}
 
-
-
 {% block content %}
+
 	<h1 class="h2">Your Addresses</h1>
 	<div>Manage your <b>addresses</b> and delivery preferences</div>
 	<hr/>
+
 	<div class="container px-0">
-		<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+
+		<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" id="addresses">
 			{% for address in addresses %}
-				<div class="col-6 text-end" hx-trigger="load, cartUpdatedEvent from:body" hx-get="{% url 'user:get_address' address.id %}">
+				<div class="col-6" hx-trigger="load" hx-get="{% url 'user:get_address' address.id %}">
 					{% include 'user/address/_address.html' %}
 				</div>
 			{% endfor %}
 		</div>
+
 		<div>
 			<div class="col">
-				<div class="card pb-3">
-					<div class="card-header bg-white small text-muted">
-						<button class="btn btn-primary btn-sm" hx-get="{% url 'user:address_form' %}" hx-swap="outerHTML">Add</button>
-					</div>
-					<div class="card-body small pb-1">
-						{#						{% include 'user/address/_address_form.html' %}#}
+				<div class="card pb-3 mt-3">
+					<div class="card-body bg-white small text-muted">
+						<button class="btn btn-primary btn-sm" hx-get="{% url 'user:address_form' %}" hx-swap="outerHTML">Add a New Address</button>
 					</div>
 				</div>
 			</div>
 		</div>
+
 	</div>
 
 {% endblock content %}
