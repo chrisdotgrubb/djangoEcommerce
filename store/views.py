@@ -8,13 +8,6 @@ from .models import Category, Product
 #TODO add popular products
 def products_index_view(request):
 	products = Product.objects.prefetch_related('product_image').filter(is_active=True)
-	
-	session = request.session
-	if 'purchase' not in session:
-		session['purchase'] = {'delivery_id': 1}
-	else:
-		session['purchase']['delivery_id'] = 2
-		session.modified = True
 	context = {
 		'products': products
 	}

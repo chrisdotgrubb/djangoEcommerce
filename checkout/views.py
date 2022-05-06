@@ -1,6 +1,7 @@
 import logging
 
-from django.http import JsonResponse
+from django.contrib import messages
+from django.http import HttpResponseRedirect
 from django.template.response import TemplateResponse
 from django.contrib.auth.decorators import login_required
 
@@ -12,31 +13,26 @@ from .models import DeliveryOptions
 def delivery_choices_view(request):
 	delivery_options = DeliveryOptions.objects.filter(is_active=True)
 	context = {'delivery_options': delivery_options}
+	
+	try:
+		if request.session['purchase']['delivery_id']:
+			cart = Cart(request)
+			delivery_type = DeliveryOptions.objects.get(id=request.session['purchase']['delivery_id'])
+			updated_total_price = cart.get_grand_total(delivery_type.delivery_price)
+			context['total'] = updated_total_price
+			context['delivery_price'] = delivery_type.delivery_price
+	except KeyError:
+		pass
+		
 	return TemplateResponse(request, 'checkout/delivery_choices.html', context)
-
-
-@login_required
-def cart_update_delivery_view(request):
-	cart = Cart(request)
-	if request.POST.get('action') == 'post':
-		delivery_option = int(request.POST.get('delivery_option'))
-		delivery_type = DeliveryOptions.objects.get(id=delivery_option)
-		updated_total_price = cart.get_grand_total(delivery_type.delivery_price)
-		
-		session = request.session
-		if 'purchase' not in session:
-			session['purchase'] = {'delivery_id': delivery_type.id}
-		else:
-			session['purchase']['delivery_id'] = delivery_type.id
-			cart.save()
-		
-		response = JsonResponse({'total': updated_total_price, 'delivery_price': delivery_type.delivery_price})
-		return response
-		
+	
 
 @login_required
 def delivery_address_view(request):
-	pass
+	session = request.session
+	if 'purchase' not in session:
+		messages.info(request, 'Please select a delivery option')
+		return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
 @login_required
