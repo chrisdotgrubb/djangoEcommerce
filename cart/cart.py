@@ -83,7 +83,15 @@ class Cart:
 		try:
 			del self.session['cart']
 		except KeyError:
-			return
+			pass
+		try:
+			del self.session['purchase']
+		except KeyError:
+			pass
+		try:
+			del self.session['address']
+		except KeyError:
+			pass
 		self.save()
 		
 		

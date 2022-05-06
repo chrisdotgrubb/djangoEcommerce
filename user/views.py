@@ -15,7 +15,7 @@ from django.views.decorators.http import require_http_methods
 from .forms import RegistrationForm, UserEditForm, UserAddressForm
 from .models import MyUser, Address
 from .token import account_activation_token
-from order.views import user_orders
+from order.models import Order
 from store.models import Product
 from django_htmx.http import trigger_client_event
 
@@ -75,10 +75,7 @@ def account_activate(request, uidb64, token):
 
 @login_required
 def dashboard_view(request):
-	orders = user_orders(request)
-	context = {
-		'orders': orders
-	}
+	context = {}
 	return TemplateResponse(request, 'user/dashboard.html', context)
 
 
@@ -226,3 +223,9 @@ def wishlist_view(request):
 	wishlist = Product.objects.filter(users_wishlist=request.user)
 	context = {'wishlist': wishlist}
 	return TemplateResponse(request, 'user/user_wish_list.html', context)
+
+@login_required
+def orders_view(request):
+	orders = Order.objects.filter(user=request.user).filter(is_paid=True)
+	context = {'orders': orders}
+	return TemplateResponse(request, 'user/orders.html', context)

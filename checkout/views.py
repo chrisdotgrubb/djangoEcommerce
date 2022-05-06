@@ -134,7 +134,9 @@ def payment_complete_view(request):
 
 @login_required
 def payment_success_view(request):
-	pass
+	cart = Cart(request)
+	cart.clear()
+	return TemplateResponse(request, 'checkout/payment_success.html')
 
 
 @login_required

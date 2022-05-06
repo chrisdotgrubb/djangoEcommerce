@@ -35,7 +35,9 @@ urlpatterns = [
 	path('addresses/delete/<uuid:uuid>/', views.delete_address, name='delete_address'),
 	path('addresses/set_default/<uuid:uuid>/', views.set_default_address_view, name='set_default_address'),
 	path('wishlist/add_to_wishlist/<int:pk>/', views.add_to_wishlist_view, name='add_to_wishlist'),
-	path('wishlist/', views.wishlist_view, name='wishlist')
+	path('wishlist/', views.wishlist_view, name='wishlist'),
+	path('orders/', views.orders_view, name='orders'),
+
 ]
 
 htmx_urlpatterns = [
