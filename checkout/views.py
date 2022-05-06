@@ -24,9 +24,9 @@ def delivery_choices_view(request):
 			context['delivery_price'] = delivery_type.delivery_price
 	except KeyError:
 		pass
-		
-	return TemplateResponse(request, 'checkout/delivery_choices.html', context)
 	
+	return TemplateResponse(request, 'checkout/delivery_choices.html', context)
+
 
 @login_required
 def delivery_address_view(request):
@@ -46,6 +46,12 @@ def delivery_address_view(request):
 	delivery_price = delivery_obj.delivery_price
 	total = cart.get_grand_total(delivery_price=delivery_price)
 	
+	if 'address' not in request.session:
+		session['address'] = {'address_id': str(addresses[0].id)}
+	else:
+		session['address']['address_id'] = str(addresses[0].id)
+		session.modified = True
+	
 	context = {
 		'addresses': addresses,
 		'subtotal': subtotal,
@@ -54,6 +60,7 @@ def delivery_address_view(request):
 		'total': total,
 	}
 	return TemplateResponse(request, 'checkout/delivery_address.html', context)
+
 
 @login_required
 def payment_selection_view(request):
@@ -68,6 +75,7 @@ def payment_complete_view(request):
 @login_required
 def payment_success_view(request):
 	pass
+
 
 @login_required
 def update_delivery(request, delivery_id):

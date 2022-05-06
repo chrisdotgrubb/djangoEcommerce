@@ -206,7 +206,7 @@ def delete_address(request, uuid):
 def set_default_address_view(request, uuid):
 	Address.objects.filter(customer=request.user, default=True).update(default=False)
 	Address.objects.filter(pk=uuid, customer=request.user).update(default=True)
-	return HttpResponseRedirect(reverse('user:addresses'))
+	return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
 @login_required
