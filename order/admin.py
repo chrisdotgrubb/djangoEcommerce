@@ -25,7 +25,6 @@ class OrderAdmin(admin.ModelAdmin):
 	fields = (
 		'user',
 		'name',
-		'phone',
 		'address1',
 		'address2',
 		'city',
