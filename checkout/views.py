@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 
 from cart.cart import Cart
 from .models import DeliveryOptions
+from user.models import Address
 
 
 @login_required
@@ -33,7 +34,26 @@ def delivery_address_view(request):
 	if 'purchase' not in session:
 		messages.info(request, 'Please select a delivery option')
 		return HttpResponseRedirect(request.META['HTTP_REFERER'])
-
+	
+	delivery_id = request.session['purchase']['delivery_id']
+	delivery_obj = DeliveryOptions.objects.get(id=delivery_id)
+	
+	cart = Cart(request)
+	addresses = Address.objects.filter(customer=request.user).order_by('-default')
+	
+	subtotal = cart.get_subtotal_price()
+	tax = cart.get_tax_price()
+	delivery_price = delivery_obj.delivery_price
+	total = cart.get_grand_total(delivery_price=delivery_price)
+	
+	context = {
+		'addresses': addresses,
+		'subtotal': subtotal,
+		'tax': tax,
+		'delivery_price': delivery_price,
+		'total': total,
+	}
+	return TemplateResponse(request, 'checkout/delivery_address.html', context)
 
 @login_required
 def payment_selection_view(request):
