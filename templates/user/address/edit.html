@@ -34,6 +34,7 @@
 			<button class="btn btn-primary btn-block py-2 mb-4 mt-4 fw-bold w-100" type="button" value="Submit" onclick="submitForm()">
 				Save Address
 			</button>
+			<a href="{{ request.META.HTTP_REFERER }}"><button class="btn btn-warning btn-block py-2 mb-4 fw-bold w-100" type="button" href="{{ request.META.HTTP_REFERER }}">Cancel</button></a>
 		</form>
 
 	</div>

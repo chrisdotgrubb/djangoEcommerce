@@ -17,7 +17,7 @@
 	<div class="container">
 		<div class="row g-3">
 			{% if addresses|length == 0 %}
-				<div class="col-12">There are no delivery addresses, <a href="{% url 'user:add_address' %}">add address</a></div>
+				<div class="col-12">There are no delivery addresses, <a href="{% url 'user:add_address' %}">add address</a>.</div>
 			{% else %}
 				<div class="col-md-4 col-lg-4 order-md-last p-0 order-3">
 
@@ -41,6 +41,9 @@
 				</div>
 
 				<div class="col-md-7 col-lg-8">
+					{% if not has_default %}
+						<div class="col-12 h4">Select an address, or <a href="{% url 'user:add_address' %}">add address</a>.</div>
+					{% endif %}
 					{% for address in addresses %}
 						{% if not address.default %}
 							<h1 class="h5 pt-4">Other Addresses</h1>
@@ -65,9 +68,9 @@
 											<p class="card-text m-0">{{ address.delivery_instructions }}</p>
 											<div class="pt-5">
 												<a href="{% url 'user:edit_address' address.id %}" class="text-decoration-none">Edit</a>
-											{% if not address.default %}
-												| <a href="{% url 'user:set_default_address' address.id %}" class="text-decoration-none">Select</a>
-											{% endif %}
+												{% if not address.default %}
+													| <a href="{% url 'user:set_default_address' address.id %}" class="text-decoration-none">Select</a>
+												{% endif %}
 											</div>
 										</div>
 									</div>

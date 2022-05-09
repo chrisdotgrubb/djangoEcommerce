@@ -45,6 +45,7 @@ def delivery_address_view(request):
 	
 	cart = Cart(request)
 	addresses = Address.objects.filter(customer=request.user).order_by('-default')
+	has_default = addresses[0].default
 	
 	subtotal = cart.get_subtotal_price()
 	tax = cart.get_tax_price()
@@ -67,6 +68,7 @@ def delivery_address_view(request):
 		'tax': tax,
 		'delivery_price': delivery_price,
 		'total': total,
+		'has_default': has_default
 	}
 	return TemplateResponse(request, 'checkout/delivery_address.html', context)
 
@@ -108,6 +110,7 @@ def payment_complete_view(request):
 	response = PPClient.client.execute(request_order)
 	
 	address = Address.objects.get(customer=request.user, default=True)
+	cart = Cart(request)
 	
 	name = address.name
 	address1 = address.address_line_1
@@ -117,10 +120,9 @@ def payment_complete_view(request):
 	country = address.country
 	zip_code = address.zip
 	delivery_instructions = address.delivery_instructions
-	
 	purchase_units = response.result.purchase_units[0]
+	is_paid = (cart.get_grand_total() == purchase_units.amount.value)
 	
-	cart = Cart(request)
 	order = Order.objects.create(
 		user=request.user,
 		name=name,
@@ -135,7 +137,7 @@ def payment_complete_view(request):
 		total_paid=purchase_units.amount.value,
 		order_key=response.result.id,
 		payment_option='paypal',
-		is_paid=True
+		is_paid=is_paid
 	)
 	order_id = order.pk
 	for key, item in zip(cart.cart.keys(), cart):
@@ -147,8 +149,11 @@ def payment_complete_view(request):
 @login_required
 def payment_success_view(request):
 	cart = Cart(request)
+	
 	cart.clear()
-	return TemplateResponse(request, 'checkout/payment_success.html')
+	order = Order.objects.filter(user=request.user, is_paid=True).first()
+	context = {'order': order}
+	return TemplateResponse(request, 'checkout/payment_success.html', context)
 
 
 @login_required
