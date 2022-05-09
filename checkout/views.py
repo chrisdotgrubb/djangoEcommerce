@@ -107,19 +107,31 @@ def payment_complete_view(request):
 	request_order = OrdersGetRequest(data)
 	response = PPClient.client.execute(request_order)
 	
+	address = Address.objects.get(customer=request.user, default=True)
+	
+	name = address.name
+	address1 = address.address_line_1
+	address2 = address.address_line_2
+	city = address.town_city
+	state = address.state
+	country = address.country
+	zip_code = address.zip
+	delivery_instructions = address.delivery_instructions
+	
 	purchase_units = response.result.purchase_units[0]
 	
 	cart = Cart(request)
 	order = Order.objects.create(
 		user=request.user,
-		name=purchase_units.shipping.name.full_name,
+		name=name,
 		email=purchase_units.payee.email_address,
-		address1=purchase_units.shipping.address.address_line_1,
-		address2=purchase_units.shipping.address.address_line_2,
-		city=purchase_units.shipping.address.admin_area_2,
-		state=purchase_units.shipping.address.admin_area_1,
-		country=purchase_units.shipping.address.country_code,
-		zip_code=purchase_units.shipping.address.postal_code,
+		address1=address1,
+		address2=address2,
+		city=city,
+		state=state,
+		country=country,
+		zip_code=zip_code,
+		delivery_instructions=delivery_instructions,
 		total_paid=purchase_units.amount.value,
 		order_key=response.result.id,
 		payment_option='paypal',

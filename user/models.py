@@ -6,6 +6,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 from django.utils.translation import gettext_lazy as _
 from django_countries.fields import CountryField
 from phonenumber_field.modelfields import PhoneNumberField
+from localflavor.us.models import USStateField
 
 
 class AccountManager(BaseUserManager):
@@ -85,6 +86,7 @@ class Address(models.Model):
 	address_line_1 = models.CharField(max_length=150, blank=True)
 	address_line_2 = models.CharField(max_length=150, blank=True)
 	town_city = models.CharField(max_length=150, blank=True)
+	state = USStateField()
 	zip = models.CharField(_('Zipcode'), max_length=13)
 	delivery_instructions = models.CharField(_('Delivery instructions'), max_length=255, blank=True)
 	created = models.DateTimeField(auto_now_add=True)

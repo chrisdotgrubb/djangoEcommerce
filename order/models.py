@@ -8,14 +8,16 @@ from store.models import Product
 
 class Order(models.Model):
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='order_user')
+	
 	name = models.CharField(max_length=150)
 	email = models.EmailField(max_length=254, blank=True)
-	address1 = models.CharField(max_length=250)
-	address2 = models.CharField(max_length=250)
+	address1 = models.CharField(max_length=250, blank=True)
+	address2 = models.CharField(max_length=250, blank=True)
 	city = models.CharField(max_length=100)
 	state = USStateField()
 	country = CountryField()
 	zip_code = models.CharField(max_length=20)
+	delivery_instructions = models.CharField(max_length=255, blank=True)
 	total_paid = models.DecimalField(max_digits=8, decimal_places=2)
 	order_key = models.CharField(max_length=200)
 	payment_option = models.CharField(max_length=200, blank=True)
