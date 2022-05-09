@@ -32,12 +32,13 @@ class OrderAdmin(admin.ModelAdmin):
 		'country',
 		'zip_code',
 		'total_paid',
+		'delivery_option',
 		'order_key',
 		'is_paid',
 		'created',
 		'updated'
 	)
-	readonly_fields = ('user', 'created', 'updated', 'order_key')
+	readonly_fields = ('user', 'created', 'updated', 'total_paid', 'delivery_option', 'order_key')
 	list_filter = ('is_paid', StatesWithOrders, 'name')
 	ordering = ('-created',)
 

@@ -3,6 +3,7 @@ from django.db import models
 from django_countries.fields import CountryField
 from localflavor.us.models import USStateField
 
+from checkout.models import DeliveryOptions
 from store.models import Product
 
 
@@ -21,6 +22,7 @@ class Order(models.Model):
 	total_paid = models.DecimalField(max_digits=8, decimal_places=2)
 	order_key = models.CharField(max_length=200)
 	payment_option = models.CharField(max_length=200, blank=True)
+	delivery_option = models.ForeignKey(DeliveryOptions, on_delete=models.CASCADE, related_name='delivery_option')
 	is_paid = models.BooleanField(default=False)
 	
 	created = models.DateTimeField(auto_now_add=True)

@@ -121,7 +121,10 @@ def payment_complete_view(request):
 	zip_code = address.zip
 	delivery_instructions = address.delivery_instructions
 	purchase_units = response.result.purchase_units[0]
-	is_paid = (cart.get_grand_total() == purchase_units.amount.value)
+	
+	delivery_id = request.session['purchase']['delivery_id']
+	delivery_price = DeliveryOptions.objects.get(id=delivery_id).delivery_price
+	is_paid = (cart.get_grand_total(delivery_price=delivery_price) == purchase_units.amount.value)
 	
 	order = Order.objects.create(
 		user=request.user,
