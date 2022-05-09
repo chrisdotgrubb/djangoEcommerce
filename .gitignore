@@ -6,6 +6,7 @@
 .idea/**/dictionaries
 .idea/**/shelf
 .idea/*.iml
+!/.idea/djangoEcommerce.iml
 
 # images
 media/images/
@@ -32,7 +33,7 @@ db.sqlite3
 db.sqlite3-journal
 
 # Environments
-config/settings/.env
+ecommerce/settings/.env
 .venv
 env/
 venv/
@@ -53,3 +54,4 @@ venv.bak/
 
 # stripe
 stripe.exe
+
