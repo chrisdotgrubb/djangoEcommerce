@@ -1,0 +1,2 @@
+coverage run manage.py test --verbosity=1
+coverage html

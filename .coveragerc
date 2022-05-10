@@ -1,0 +1,15 @@
+[run]
+omit =
+	*venv/*
+	*migrations*
+	*__init__.py*
+	*ecommerce/settings/*
+	*manage.py*
+
+[report]
+omit =
+	*venv/*
+	*migrations*
+	*__init__.py*
+	*ecommerce/settings/*
+	*manage.py*
