@@ -133,7 +133,7 @@ class Product(models.Model):
 	def save(self, *args, **kwargs):
 		if not self.slug:
 			title = slugify(self.title)
-			count = Category.objects.filter(slug__startswith=title).count()
+			count = Product.objects.filter(slug__startswith=title).count()
 			if count == 0:
 				self.slug = title
 			else:
