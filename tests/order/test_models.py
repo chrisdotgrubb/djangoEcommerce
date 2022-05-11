@@ -6,44 +6,27 @@ from ecommerce.apps.user.models import MyUser
 
 
 class TestOrder(TestCase):
-	name_1 = None
-	username_1 = None
-	password_1 = None
-	email_1 = None
-	first_1 = None
-	address1_1 = None
-	address2_1 = None
-	city_1 = None
-	state_1 = None
-	country_1 = None
-	zip_code_1 = None
-	delivery_instructions_1 = None
-	total_paid_1 = None
-	order_key_1 = None
-	payment_option_1 = None
+	email_1 = 'user_1@user.com'
+	username_1 = 'user_1'
+	password_1 = 'password'
+	first_1 = 'first'
+	name_1 = 'first last'
+	address1_1 = '123 Main Street'
+	address2_1 = 'Apt. 1'
+	city_1 = 'Bellefonte'
+	state_1 = 'PA'
+	country_1 = 'US'
+	zip_code_1 = '16823'
+	delivery_instructions_1 = 'Front Door'
+	total_paid_1 = 100
+	order_key_1 = 'key_from_PayPal'
+	payment_option_1 = 'PayPal'
+	is_paid = True
 	user_1 = None
 	delivery_option_1 = None
-	is_paid = None
 	
 	@classmethod
 	def setUpTestData(cls):
-		cls.email_1 = 'user_1@user.com'
-		cls.username_1 = 'user_1'
-		cls.password_1 = 'password'
-		cls.first_1 = 'first'
-		cls.name_1 = 'first last'
-		cls.address1_1 = '123 Main Street'
-		cls.address2_1 = 'Apt. 1'
-		cls.city_1 = 'Bellefonte'
-		cls.state_1 = 'PA'
-		cls.country_1 = 'US'
-		cls.zip_code_1 = '16823'
-		cls.delivery_instructions_1 = 'Front Door'
-		cls.total_paid_1 = 100
-		cls.order_key_1 = 'key_from_PayPal'
-		cls.payment_option_1 = 'PayPal'
-		cls.is_paid = True
-		
 		cls.user_1 = MyUser.objects.create_user(cls.email_1, cls.username_1, cls.password_1)
 		cls.delivery_option_1 = DeliveryOptions.objects.create(
 			delivery_method='PA',
@@ -77,71 +60,44 @@ class TestOrder(TestCase):
 
 
 class TestOrderItem(TestCase):
-	name_1 = None
-	username_1 = None
-	password_1 = None
-	email_1 = None
-	first_1 = None
-	address1_1 = None
-	address2_1 = None
-	city_1 = None
-	state_1 = None
-	country_1 = None
-	zip_code_1 = None
-	delivery_instructions_1 = None
-	total_paid_1 = None
-	order_key_1 = None
-	payment_option_1 = None
-	user_1 = None
-	delivery_option_1 = None
-	is_paid = None
-	order_1 = None
-	qty_1 = None
-	category_name_1 = None
-	type_name_1 = None
-	title_1 = None
-	title_2 = None
-	title_3 = None
-	description_1 = None
-	description_2 = None
-	description_3 = None
-	regular_price_1 = None
-	discount_price_1 = None
+	email_1 = 'user_1@user.com'
+	username_1 = 'user_1'
+	password_1 = 'password'
+	first_1 = 'first'
+	name_1 = 'first last'
+	address1_1 = '123 Main Street'
+	address2_1 = 'Apt. 1'
+	city_1 = 'Bellefonte'
+	state_1 = 'PA'
+	country_1 = 'US'
+	zip_code_1 = '16823'
+	delivery_instructions_1 = 'Front Door'
+	total_paid_1 = 100
+	order_key_1 = 'key_from_PayPal'
+	payment_option_1 = 'PayPal'
+	is_paid = True
+	qty_1 = 1
+	category_name_1 = 'category'
+	type_name_1 = 'type'
+	title_1 = 'product 1'
+	title_2 = 'product 2'
+	title_3 = 'product 3'
+	description_1 = 'description 1'
+	description_2 = 'description 2'
+	description_3 = 'description 3'
+	regular_price_1 = 25
+	discount_price_1 = 20
 	type_1 = None
 	category_1 = None
+	user_1 = None
+	delivery_option_1 = None
+	order_1 = None
 	product_1 = None
 	product_2 = None
 	product_3 = None
-	
+
 	@classmethod
 	def setUpTestData(cls):
-		cls.email_1 = 'user_1@user.com'
-		cls.username_1 = 'user_1'
-		cls.password_1 = 'password'
-		cls.first_1 = 'first'
-		cls.name_1 = 'first last'
-		cls.address1_1 = '123 Main Street'
-		cls.address2_1 = 'Apt. 1'
-		cls.city_1 = 'Bellefonte'
-		cls.state_1 = 'PA'
-		cls.country_1 = 'US'
-		cls.zip_code_1 = '16823'
-		cls.delivery_instructions_1 = 'Front Door'
-		cls.total_paid_1 = 100
-		cls.order_key_1 = 'key_from_PayPal'
-		cls.payment_option_1 = 'PayPal'
-		cls.is_paid = True
-		cls.qty_1 = 1
-		cls.category_name_1 = 'category'
-		cls.type_name_1 = 'type'
-		cls.title_1 = 'product 1'
-		cls.title_2 = 'product 2'
-		cls.title_3 = 'product 3'
-		cls.description_1 = 'description 1'
-		cls.description_2 = 'description 2'
-		cls.description_3 = 'description 3'
-		cls.regular_price_1 = 25
-		cls.discount_price_1 = 20
 		cls.category_1 = Category.objects.create(name=cls.category_name_1)
 		cls.type_1 = ProductType.objects.create(name=cls.type_name_1)
 		

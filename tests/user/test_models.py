@@ -5,21 +5,14 @@ from django.test import TestCase
 from django.utils.translation import gettext_lazy as _
 
 class TestMyUser(TestCase):
-	
-	email = None
-	username = None
-	password = None
-	phone = None
-	first = None
+	email = 'test@test.com'
+	username = 'test'
+	password = 'password'
+	phone = '814-574-0000'
+	first = 'first'
 	
 	@classmethod
 	def setUpTestData(cls):
-		cls.email = 'test@test.com'
-		cls.username = 'test'
-		cls.password = 'password'
-		cls.phone = '814-574-0000'
-		cls.first = 'first'
-		
 		cls.user = MyUser.objects.create_user(
 			cls.email,
 			cls.username,
@@ -105,39 +98,25 @@ class TestMyUser(TestCase):
 	
 
 class TestAddress(TestCase):
-	
-	email = None
-	username = None
-	password = None
-	user = None
-	name = None
-	phone = None
-	country = None
-	address_line_1 = None
-	address_line_2 = None
-	town_city = None
-	state = None
-	zip = None
-	delivery_instructions = None
+	email = 'test@test.com'
+	username = 'test'
+	password = 'password'
+	name = 'name'
+	phone = '814-574-0000'
+	country = 'US'
+	address_line_1 = '123 Main Street.'
+	address_line_2 = 'Apartment 3'
+	town_city = 'Bellefonte'
+	state = 'PA'
+	zip = '16823'
+	delivery_instructions = 'Leave on porch'
+	user_1 = None
 	
 	@classmethod
 	def setUpTestData(cls):
-		cls.email = 'test@test.com'
-		cls.username = 'test'
-		cls.password = 'password'
-		cls.user = MyUser.objects.create_user(cls.email,cls.username,cls.password)
-		cls.name = 'name'
-		cls.phone = '814-574-0000'
-		cls.country = 'US'
-		cls.address_line_1 = '123 Main Street.'
-		cls.address_line_2 = 'Apartment 3'
-		cls.town_city = 'Bellefonte'
-		cls.state = 'PA'
-		cls.zip = '16823'
-		cls.delivery_instructions = 'Leave on porch'
-		
+		cls.user_1 = MyUser.objects.create_user(cls.email, cls.username, cls.password)
 		cls.address = Address.objects.create(
-			customer=cls.user,
+			customer=cls.user_1,
 			name=cls.name,
 			phone=cls.phone,
 			country=cls.country,
@@ -150,7 +129,7 @@ class TestAddress(TestCase):
 		)
 	
 	def test_customer(self):
-		self.assertEqual(self.address.customer, self.user)
+		self.assertEqual(self.address.customer, self.user_1)
 		
 	def test_name(self):
 		self.assertEqual(self.address.name, self.name)
@@ -198,7 +177,7 @@ class TestAddress(TestCase):
 		format_12 = '+15555555555'
 
 		address_1 = Address.objects.create(
-			customer=self.user,
+			customer=self.user_1,
 			name=self.name,
 			phone=format_1,
 			country=self.country,
@@ -211,7 +190,7 @@ class TestAddress(TestCase):
 		)
 		
 		address_2 = Address.objects.create(
-			customer=self.user,
+			customer=self.user_1,
 			name=self.name,
 			phone=format_2,
 			country=self.country,
@@ -224,7 +203,7 @@ class TestAddress(TestCase):
 		)
 		
 		address_3 = Address.objects.create(
-			customer=self.user,
+			customer=self.user_1,
 			name=self.name,
 			phone=format_3,
 			country=self.country,
@@ -237,7 +216,7 @@ class TestAddress(TestCase):
 		)
 		
 		address_4 = Address.objects.create(
-			customer=self.user,
+			customer=self.user_1,
 			name=self.name,
 			phone=format_4,
 			country=self.country,
@@ -250,7 +229,7 @@ class TestAddress(TestCase):
 		)
 		
 		address_5 = Address.objects.create(
-			customer=self.user,
+			customer=self.user_1,
 			name=self.name,
 			phone=format_5,
 			country=self.country,
@@ -263,7 +242,7 @@ class TestAddress(TestCase):
 		)
 		
 		address_6 = Address.objects.create(
-			customer=self.user,
+			customer=self.user_1,
 			name=self.name,
 			phone=format_6,
 			country=self.country,
@@ -276,7 +255,7 @@ class TestAddress(TestCase):
 		)
 		
 		address_7 = Address.objects.create(
-			customer=self.user,
+			customer=self.user_1,
 			name=self.name,
 			phone=format_7,
 			country=self.country,
@@ -289,7 +268,7 @@ class TestAddress(TestCase):
 		)
 		
 		address_8 = Address.objects.create(
-			customer=self.user,
+			customer=self.user_1,
 			name=self.name,
 			phone=format_8,
 			country=self.country,
@@ -302,7 +281,7 @@ class TestAddress(TestCase):
 		)
 		
 		address_9 = Address.objects.create(
-			customer=self.user,
+			customer=self.user_1,
 			name=self.name,
 			phone=format_9,
 			country=self.country,
@@ -315,7 +294,7 @@ class TestAddress(TestCase):
 		)
 		
 		address_10 = Address.objects.create(
-			customer=self.user,
+			customer=self.user_1,
 			name=self.name,
 			phone=format_10,
 			country=self.country,
@@ -328,7 +307,7 @@ class TestAddress(TestCase):
 		)
 		
 		address_11 = Address.objects.create(
-			customer=self.user,
+			customer=self.user_1,
 			name=self.name,
 			phone=format_11,
 			country=self.country,
@@ -341,7 +320,7 @@ class TestAddress(TestCase):
 		)
 		
 		address_12 = Address.objects.create(
-			customer=self.user,
+			customer=self.user_1,
 			name=self.name,
 			phone=format_12,
 			country=self.country,
