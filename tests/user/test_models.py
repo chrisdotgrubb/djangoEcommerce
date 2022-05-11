@@ -353,18 +353,37 @@ class TestAddress(TestCase):
 			delivery_instructions=self.delivery_instructions,
 		)
 		
-		self.assertEqual(expected, address_1.formatted_phone())
-		self.assertEqual(expected, address_2.formatted_phone())
-		self.assertEqual(expected, address_3.formatted_phone())
-		self.assertEqual(expected, address_4.formatted_phone())
-		self.assertEqual(expected, address_5.formatted_phone())
-		self.assertEqual(expected, address_6.formatted_phone())
-		self.assertEqual(expected, address_7.formatted_phone())
-		self.assertEqual(expected, address_8.formatted_phone())
-		self.assertEqual(expected, address_9.formatted_phone())
-		self.assertEqual(expected, address_10.formatted_phone())
-		self.assertEqual(expected, address_11.formatted_phone())
-		self.assertEqual(expected, address_12.formatted_phone())
+		self.assertEqual(address_1.formatted_phone(), expected)
+		self.assertEqual(address_2.formatted_phone(), expected)
+		self.assertEqual(address_3.formatted_phone(), expected)
+		self.assertEqual(address_4.formatted_phone(), expected)
+		self.assertEqual(address_5.formatted_phone(), expected)
+		self.assertEqual(address_6.formatted_phone(), expected)
+		self.assertEqual(address_7.formatted_phone(), expected)
+		self.assertEqual(address_8.formatted_phone(), expected)
+		self.assertEqual(address_9.formatted_phone(), expected)
+		self.assertEqual(address_10.formatted_phone(), expected)
+		self.assertEqual(address_11.formatted_phone(), expected)
+		self.assertEqual(address_12.formatted_phone(), expected)
+		
+		
+class TestUserManagers(TestCase):
+	
+	@classmethod
+	def setUpTestData(cls):
+		MyUser.objects.create_user('user_1@user.com', 'user_1', 'password', is_active=True)
+		MyUser.objects.create_user('user_2@user.com', 'user_2', 'password', is_active=True)
+		MyUser.objects.create_user('user_3@user.com', 'user_3', 'password', is_active=True)
+		MyUser.objects.create_user('user_4@user.com', 'user_4', 'password', is_active=False)
+		MyUser.objects.create_user('user_5@user.com', 'user_5', 'password', is_active=False)
+		
+	def test_active_manager_qs(self):
+		qs = MyUser.active.all()
+		self.assertEqual(len(qs), 3)
+		
+	def test_inactive_manager_qs(self):
+		qs = MyUser.inactive.all()
+		self.assertEqual(len(qs), 2)
 		
 		
 		
