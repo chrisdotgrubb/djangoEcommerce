@@ -1,56 +1,10 @@
 from django.db import models
 from django.urls import reverse
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 from mptt.models import MPTTModel, TreeForeignKey
 
-# class Category(models.Model):
-# 	name = models.CharField(max_length=255, db_index=True)
-# 	slug = models.SlugField(max_length=255, unique=True)
-#
-# 	class Meta:
-# 		verbose_name_plural = 'Categories'
-#
-# 	def get_absolute_url(self):
-# 		return reverse('store:category', args=[self.slug])
-#
-# 	def __str__(self):
-# 		return self.name
-#
-#
-# class ProductManager(models.Manager):
-#
-# 	def get_queryset(self):
-# 		return super().get_queryset().filter(is_active=True)
-#
-#
-# class Product(models.Model):
-# 	category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='product')
-# 	created_by = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name='product_creator')
-# 	title = models.CharField(max_length=255)
-# 	author = models.CharField(max_length=255, default='admin')
-# 	description = models.TextField(blank=True)
-# 	image = models.ImageField(upload_to='images/', default='images/default.jpg')
-# 	slug = models.SlugField(max_length=255)
-# 	price = models.DecimalField(max_digits=4, decimal_places=2)
-# 	in_stock = models.BooleanField(default=True)
-# 	is_active = models.BooleanField(default=True)
-# 	created = models.DateTimeField(auto_now_add=True)
-# 	updated = models.DateTimeField(auto_now=True)
-#
-# 	objects = models.Manager()
-# 	products = ProductManager()
-#
-#
-# 	class Meta:
-# 		verbose_name_plural = 'Products'
-# 		ordering = ('-created',)
-#
-# 	def get_absolute_url(self):
-# 		return reverse('store:product_detail', args=[self.slug])
-#
-# 	def __str__(self):
-# 		return self.title
 
 class Category(MPTTModel):
 	"""
@@ -63,7 +17,7 @@ class Category(MPTTModel):
 		max_length=255,
 		unique=True,
 	)
-	slug = models.SlugField(verbose_name=_("Category safe URL"), max_length=255, unique=True)
+	slug = models.SlugField(verbose_name=_("Category safe URL"), max_length=255, unique=True, blank=True)
 	parent = TreeForeignKey("self", on_delete=models.CASCADE, null=True, blank=True, related_name="children")
 	is_active = models.BooleanField(default=True)
 	
@@ -74,6 +28,16 @@ class Category(MPTTModel):
 		verbose_name = _("Category")
 		verbose_name_plural = _("Categories")
 	
+	def save(self, *args, **kwargs):
+		if not self.slug:
+			name = slugify(self.name)
+			count = Category.objects.filter(slug__startswith=name).count()
+			if count == 0:
+				self.slug = name
+			else:
+				self.slug = f'{name}-{count}'
+		super().save(*args, **kwargs)
+		
 	def get_absolute_url(self):
 		return reverse("store:category", args=[self.slug])
 	
@@ -128,7 +92,7 @@ class Product(models.Model):
 		max_length=255,
 	)
 	description = models.TextField(verbose_name=_("description"), help_text=_("Not Required"), blank=True)
-	slug = models.SlugField(max_length=255)
+	slug = models.SlugField(max_length=255, unique=True, blank=True)
 	regular_price = models.DecimalField(
 		verbose_name=_("Regular price"),
 		help_text=_("Maximum 999.99"),
@@ -165,6 +129,16 @@ class Product(models.Model):
 		ordering = ("-created_at",)
 		verbose_name = _("Product")
 		verbose_name_plural = _("Products")
+	
+	def save(self, *args, **kwargs):
+		if not self.slug:
+			title = slugify(self.title)
+			count = Category.objects.filter(slug__startswith=title).count()
+			if count == 0:
+				self.slug = title
+			else:
+				self.slug = f'{title}-{count}'
+		super().save(*args, **kwargs)
 	
 	def get_absolute_url(self):
 		return reverse("store:product_detail", args=[self.slug])
