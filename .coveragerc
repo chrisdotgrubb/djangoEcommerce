@@ -7,9 +7,15 @@ omit =
 	*manage.py*
 
 [report]
+show_missing = True
+skip_covered = True
 omit =
 	*venv/*
 	*migrations*
 	*__init__.py*
 	*ecommerce/settings/*
 	*manage.py*
+
+#branch = True
+#fail_uder = 100
+# pip install django-coverage-plugin (for templates)

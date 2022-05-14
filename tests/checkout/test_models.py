@@ -23,12 +23,4 @@ class TestDeliveryOptions(TestCase):
 	
 	def test_str(self):
 		self.assertEqual(str(self.delivery_option_1), self.delivery_name_1)
-		
-class TestPaymentSelections(TestCase):
-	name_1 = 'name'
-	
-	@classmethod
-	def setUpTestData(cls):
-		pass
-	
-	
+
