@@ -45,6 +45,7 @@ def user_registration_view(request):
 			user.email_user(subject=subject, message=message)
 			messages.add_message(request, messages.SUCCESS, 'Account created, check your email to confirm activation.')
 			return redirect('/')
+		#TODO else:
 	else:
 		form = RegistrationForm()
 	
@@ -58,7 +59,7 @@ def account_activate(request, uidb64, token):
 	try:
 		uid = force_str(urlsafe_base64_decode(uidb64))
 		user = get_object_or_404(MyUser, pk=uid)
-	except ObjectDoesNotExist:
+	except ValueError:
 		messages.add_message(request, messages.ERROR, 'Account error, may have already been activated.')
 		return TemplateResponse(request, 'registration/activation_invalid.html')
 	

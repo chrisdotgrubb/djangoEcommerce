@@ -64,39 +64,20 @@ class UserEditForm(forms.ModelForm):
 	first = forms.CharField(label='First name', min_length=2, max_length=50, widget=forms.TextInput(
 		attrs={'class': 'form-control mb-3', 'placeholder': 'First name', 'id': 'form-first'}))
 	
-	country = CountryField(blank=True).formfield(label='Country', widget=CountrySelectWidget(
-		attrs={'class': 'form-control mb-3', 'placeholder': 'Country', 'id': 'form-country'}, layout='{widget}'))
-	
 	phone = PhoneNumberField(label='phone', widget=forms.TextInput(
 		attrs={'class': 'form-control mb-3', 'placeholder': 'Phone number', 'id': 'form-phone'}))
 	
-	address_line_1 = forms.CharField(label='Address', min_length=2, max_length=150, widget=forms.TextInput(
-		attrs={'class': 'form-control mb-3', 'placeholder': 'Address line 1', 'id': 'form-address1'}))
-	
-	address_line_2 = forms.CharField(label='Address continued', min_length=2, max_length=150, widget=forms.TextInput(
-		attrs={'class': 'form-control mb-3', 'placeholder': 'Address line 2', 'id': 'form-address2'}))
-	
-	town_city = forms.CharField(label='Town/City', min_length=2, max_length=150, widget=forms.TextInput(
-		attrs={'class': 'form-control mb-3', 'placeholder': 'Town/City', 'id': 'form-town'}))
-	
-	about = forms.CharField(label='About me', min_length=2, max_length=500, widget=forms.Textarea(
-		attrs={'class': 'form-control mb-3', 'placeholder': 'About me', 'id': 'form-about'}))
 	
 	class Meta:
 		model = MyUser
-		fields = ['email', 'username', 'first', 'country', 'phone', 'address_line_1', 'address_line_2', 'town_city', 'about']
+		fields = ['email', 'username', 'first', 'phone']
 	
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		self.fields['username'].required = True
 		self.fields['email'].required = True
 		self.fields['first'].required = False
-		self.fields['country'].required = False
 		self.fields['phone'].required = False
-		self.fields['address_line_1'].required = False
-		self.fields['address_line_2'].required = False
-		self.fields['town_city'].required = False
-		self.fields['about'].required = False
 
 
 class UserAddressForm(forms.ModelForm):
