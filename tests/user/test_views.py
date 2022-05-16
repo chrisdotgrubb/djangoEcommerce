@@ -4,7 +4,7 @@ from django.core import mail
 from django.test import TestCase
 from django.urls import reverse
 
-from ecommerce.apps.user.models import MyUser
+from ecommerce.apps.user.models import Address, MyUser
 
 
 class TestUserRegistration(TestCase):
@@ -116,7 +116,7 @@ class TestDashboard(TestCase):
 	def test_get(self):
 		self.assertEqual(self.response.status_code, 200)
 	
-	def test_redirect(self):
+	def test_login_required(self):
 		self.client.logout()
 		response = self.client.get(self.url)
 		self.assertEqual(response.status_code, 302)
@@ -199,3 +199,208 @@ class TestEditProfile(TestCase):
 	
 	def test_template_navbar(self):
 		self.assertTemplateUsed(self.response, 'navbar.html')
+	
+class TestDeleteProfile(TestCase):
+	def setUp(self):
+		self.user = MyUser.objects.create_superuser(
+			email='email@email.com',
+			username='username',
+			first='first name',
+			password='GoodPassword000',
+		)
+		self.client.force_login(self.user)
+		self.url = reverse('user:delete_profile')
+	
+	def test_delete(self):
+		active_before = len(MyUser.active.all())
+		inactive_before = len(MyUser.inactive.all())
+		total_before = len(MyUser.objects.all())
+		self.assertEqual(self.user.is_active, True)
+		
+		response = self.client.get(self.url)
+		
+		active_after = len(MyUser.active.all())
+		inactive_after = len(MyUser.inactive.all())
+		total_after = len(MyUser.objects.all())
+		self.assertEqual(active_before - 1, active_after)
+		self.assertEqual(inactive_before + 1, inactive_after)
+		self.assertEqual(total_before, total_after)
+		
+		user = MyUser.objects.get(username='username')
+		self.assertEqual(user.is_active, False)
+		self.assertRedirects(response, reverse('user:delete_finished'))
+	
+
+class TestCheckUsername(TestCase):
+	def setUp(self):
+		self.user = MyUser.objects.create_superuser(
+			email='email@email.com',
+			username='username',
+			first='first name',
+			password='GoodPassword000',
+		)
+		self.deleted = MyUser.objects.create_superuser(
+			email='deleted@email.com',
+			username='deleted',
+			first='first name',
+			password='GoodPassword000',
+			is_active=False
+		)
+		
+		self.url = reverse('user:check_username')
+	
+	def test_good(self):
+		self.response = self.client.post(self.url, data={'username': 'available'})
+		self.assertEqual(self.response.status_code, 200)
+		self.assertTrue('Username available' in str(self.response.content))
+		
+	def test_short(self):
+		self.response = self.client.post(self.url, data={'username': '123'})
+		self.assertEqual(self.response.status_code, 200)
+		self.assertTrue('Username too short' in str(self.response.content))
+		
+	def test_taken(self):
+		self.response = self.client.post(self.url, data={'username': 'username'})
+		self.assertEqual(self.response.status_code, 200)
+		self.assertTrue('Username taken' in str(self.response.content))
+		
+	def test_inactive(self):
+		self.response = self.client.post(self.url, data={'username': 'deleted'})
+		self.assertEqual(self.response.status_code, 200)
+		self.assertTrue('username may have been recently deleted' in str(self.response.content))
+		
+	def test_else(self):
+		self.response = self.client.post(self.url, data={'username': ''})
+		self.assertEqual(self.response.status_code, 200)
+		self.assertTrue('&nbsp' in str(self.response.content))
+
+
+class TestCheckEmail(TestCase):
+	def setUp(self):
+		self.user = MyUser.objects.create_superuser(
+			email='email@email.com',
+			username='username',
+			first='first name',
+			password='GoodPassword000',
+		)
+		self.deleted = MyUser.objects.create_superuser(
+			email='deleted@email.com',
+			username='deleted',
+			first='first name',
+			password='GoodPassword000',
+			is_active=False
+		)
+		
+		self.url = reverse('user:check_email')
+	
+	def test_good(self):
+		self.response = self.client.post(self.url, data={'email': 'available@email.com'})
+		self.assertEqual(self.response.status_code, 200)
+		self.assertTrue('Email available' in str(self.response.content))
+		
+	def test_taken(self):
+		self.response = self.client.post(self.url, data={'email': 'email@email.com'})
+		self.assertEqual(self.response.status_code, 200)
+		self.assertTrue('Email taken' in str(self.response.content))
+	
+	def test_inactive(self):
+		self.response = self.client.post(self.url, data={'email': 'deleted@email.com'})
+		self.assertEqual(self.response.status_code, 200)
+		self.assertTrue('email may have been recently deleted' in str(self.response.content))
+	
+	def test_else(self):
+		self.response = self.client.post(self.url, data={'email': ''})
+		self.assertEqual(self.response.status_code, 200)
+		self.assertTrue('&nbsp' in str(self.response.content))
+		
+	def test_regex_good(self):
+		response = self.client.post(self.url, data={'email': 'TEST@EMAIL.COM'})
+		self.assertTrue('Email available' in str(response.content))
+		
+		response = self.client.post(self.url, data={'email': 'first.last@test.com'})
+		self.assertTrue('Email available' in str(response.content))
+		
+		response = self.client.post(self.url, data={'email': 'first-last@test.co.uk'})
+		self.assertTrue('Email available' in str(response.content))
+		
+		response = self.client.post(self.url, data={'email': 'first_last@test.com'})
+		self.assertTrue('Email available' in str(response.content))
+		
+	def test_regex_bad(self):
+		response = self.client.post(self.url, data={'email': 'email'})
+		self.assertTrue('Email not valid' in str(response.content))
+		
+		response = self.client.post(self.url, data={'email': 'test@test.com.'})
+		self.assertTrue('Email not valid' in str(response.content))
+		
+		response = self.client.post(self.url, data={'email': 'test@test.c'})
+		self.assertTrue('Email not valid' in str(response.content))
+		
+		response = self.client.post(self.url, data={'email': '@test.com'})
+		self.assertTrue('Email not valid' in str(response.content))
+		
+		response = self.client.post(self.url, data={'email': '"test"@test.com'})
+		self.assertTrue('Email not valid' in str(response.content))
+		
+		
+class TestAddressList(TestCase):
+	def setUp(self):
+		self.user = MyUser.objects.create_superuser(
+			email='email@email.com',
+			username='username',
+			first='first name',
+			password='GoodPassword000',
+		)
+		self.address_1 = Address.objects.create(
+			customer=self.user,
+			name='one',
+			phone='(814)574-0000',
+			country='US',
+			address_line_1='123 Main Street',
+			address_line_2='Apartment 2',
+			town_city='Bellefonte',
+			state='PA',
+			zip='16823',
+			delivery_instructions='Leave on porch',
+		)
+		self.address_2 = Address.objects.create(
+			customer=self.user,
+			name='two',
+			phone='(814)574-0001',
+			country='US',
+			address_line_1='124 Main Street',
+			address_line_2='Apartment 1',
+			town_city='Bellefonte',
+			state='PA',
+			zip='16823',
+			delivery_instructions='Leave at back',
+		)
+		self.client.force_login(self.user)
+		self.url = reverse('user:addresses')
+		self.response = self.client.get(self.url)
+	
+	def test_get(self):
+		self.assertEqual(self.response.status_code, 200)
+		
+	def test_login_required(self):
+		self.client.logout()
+		response = self.client.get(self.url)
+		self.assertEqual(response.status_code, 302)
+	
+	def test_context(self):
+		context = self.response.context['addresses']
+		self.assertEqual(len(context), 2)
+	
+	def test_template_address_list(self):
+		self.assertTemplateUsed(self.response, 'user/address/list.html')
+	
+	def test_template_base(self):
+		self.assertTemplateUsed(self.response, 'base.html')
+	
+	def test_template_footer(self):
+		self.assertTemplateUsed(self.response, 'footer.html')
+	
+	def test_template_navbar(self):
+		self.assertTemplateUsed(self.response, 'navbar.html')
+		
+

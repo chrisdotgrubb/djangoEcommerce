@@ -115,7 +115,7 @@ def check_username(request):
 		elif MyUser.active.filter(username__iexact=username).exists():
 			return HttpResponse('<div id="username-error" style="color:red" class="mb-1 ps-2">Username taken</div>')
 		elif MyUser.inactive.filter(username__iexact=username).exists():
-			return HttpResponse('<div id="username-error" style="color:red" class="mb-1 ps-2">Account with this username may have been recently deleted</div>')
+			return HttpResponse('<div id="username-error" style="color:red" class="mb-1 ps-2">Account with this username may have been recently deleted, or hasn\'t been activated yet.</div>')
 		else:
 			return HttpResponse('<div id="username-error" style="color:green" class="mb-1 ps-2">Username available</div>')
 	else:
@@ -131,7 +131,7 @@ def check_email(request):
 		elif MyUser.active.filter(email__iexact=email).exists():
 			return HttpResponse('<div id="email-error" style="color:red" class="mb-1 ps-2">Email taken</div>')
 		elif MyUser.inactive.filter(email__iexact=email).exists():
-			return HttpResponse('<div id="email-error" style="color:red" class="mb-1 ps-2">Account with this email may have been recently deleted</div>')
+			return HttpResponse('<div id="email-error" style="color:red" class="mb-1 ps-2">Account with this email may have been recently deleted, or hasn\'t been activated yet.</div>')
 		else:
 			return HttpResponse('<div id="email-error" style="color:green" class="mb-1 ps-2">Email available</div>')
 	else:
