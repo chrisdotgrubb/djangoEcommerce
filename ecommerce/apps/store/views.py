@@ -27,8 +27,8 @@ def product_detail_view(request, slug):
 
 
 def category_view(request, slug):
-	category = get_object_or_404(Category, slug=slug)
-	products = Product.objects.filter(category__in=Category.objects.filter(slug=slug).get_descendants(include_self=True))
+	category = get_object_or_404(Category, slug=slug, is_active=True)
+	products = Product.objects.filter(category__in=Category.objects.filter(slug=slug).get_descendants(include_self=True)).filter(is_active=True)
 	context = {
 		'category': category,
 		'products': products,
