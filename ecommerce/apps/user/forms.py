@@ -1,8 +1,6 @@
 from django import forms
 from django.contrib.auth import password_validation
-from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm, PasswordChangeForm
-from django_countries.fields import CountryField
-from django_countries.widgets import CountrySelectWidget
+from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm, PasswordChangeForm, UserCreationForm
 from phonenumber_field.formfields import PhoneNumberField
 
 from .models import MyUser, Address
@@ -13,7 +11,7 @@ class UserLoginForm(AuthenticationForm):
 	password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password', 'id': 'login-password'}))
 
 
-class RegistrationForm(forms.ModelForm):
+class RegistrationForm(UserCreationForm):
 	username = forms.CharField(label='Enter Username: ', min_length=4, max_length=50, help_text='Required')
 	email = forms.EmailField(label='Email: ', max_length=100, help_text='Required', error_messages={'required': 'Email is required.'})
 	password1 = forms.CharField(label='Password: ', widget=forms.PasswordInput, help_text=password_validation.password_validators_help_text_html)
@@ -66,7 +64,6 @@ class UserEditForm(forms.ModelForm):
 	
 	phone = PhoneNumberField(label='phone', widget=forms.TextInput(
 		attrs={'class': 'form-control mb-3', 'placeholder': 'Phone number', 'id': 'form-phone'}))
-	
 	
 	class Meta:
 		model = MyUser

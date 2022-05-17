@@ -34,10 +34,11 @@ class TestUserRegistration(TestCase):
 		self.assertEqual(users_after, users_before + 1)
 	
 	def test_is_logged_in(self):
-		user = MyUser.objects.create_superuser(
+		user = MyUser.objects.create_user(
 			email='email@email.com',
 			username='username',
 			password='GoodPassword000',
+			is_active=True
 		)
 		self.client.force_login(user)
 		response = self.client.get(self.url)
@@ -77,7 +78,6 @@ class TestAccountActivate(TestCase):
 		self.url = reverse('user:activate', args=[self.uidb64, self.token])
 		self.response = self.client.get(self.url)
 		self.assertRedirects(self.response, reverse('user:dashboard'))
-		print(self.uidb64)
 	
 	def test_valid_but_wrong_uidb64(self):
 		self.uidb64 = 'MzI4'
@@ -108,10 +108,11 @@ class TestDashboard(TestCase):
 	
 	@classmethod
 	def setUpTestData(cls):
-		cls.user = MyUser.objects.create_superuser(
+		cls.user = MyUser.objects.create_user(
 			email='email@email.com',
 			username='username',
 			password='GoodPassword000',
+			is_active=True
 		)
 	
 	def setUp(self):
@@ -144,11 +145,12 @@ class TestEditProfile(TestCase):
 	
 	@classmethod
 	def setUpTestData(cls):
-		cls.user = MyUser.objects.create_superuser(
+		cls.user = MyUser.objects.create_user(
 			email='email@email.com',
 			username='username',
 			first='first name',
 			password='GoodPassword000',
+			is_active=True
 		)
 	
 	def setUp(self):
@@ -214,11 +216,12 @@ class TestDeleteProfile(TestCase):
 	
 	@classmethod
 	def setUpTestData(cls):
-		cls.user = MyUser.objects.create_superuser(
+		cls.user = MyUser.objects.create_user(
 			email='email@email.com',
 			username='username',
 			first='first name',
 			password='GoodPassword000',
+			is_active=True
 		)
 	
 	def setUp(self):
@@ -249,13 +252,14 @@ class TestCheckUsername(TestCase):
 	
 	@classmethod
 	def setUpTestData(cls):
-		cls.user = MyUser.objects.create_superuser(
+		cls.user = MyUser.objects.create_user(
 			email='email@email.com',
 			username='username',
 			first='first name',
 			password='GoodPassword000',
+			is_active=True
 		)
-		cls.deleted = MyUser.objects.create_superuser(
+		cls.deleted = MyUser.objects.create_user(
 			email='deleted@email.com',
 			username='deleted',
 			first='first name',
@@ -296,13 +300,14 @@ class TestCheckEmail(TestCase):
 	
 	@classmethod
 	def setUpTestData(cls):
-		cls.user = MyUser.objects.create_superuser(
+		cls.user = MyUser.objects.create_user(
 			email='email@email.com',
 			username='username',
 			first='first name',
 			password='GoodPassword000',
+			is_active=True
 		)
-		cls.deleted = MyUser.objects.create_superuser(
+		cls.deleted = MyUser.objects.create_user(
 			email='deleted@email.com',
 			username='deleted',
 			first='first name',
@@ -368,11 +373,12 @@ class TestAddressList(TestCase):
 	
 	@classmethod
 	def setUpTestData(cls):
-		cls.user = MyUser.objects.create_superuser(
+		cls.user = MyUser.objects.create_user(
 			email='email@email.com',
 			username='username',
 			first='first name',
 			password='GoodPassword000',
+			is_active=True
 		)
 		cls.address_1 = Address.objects.create(
 			customer=cls.user,
@@ -433,11 +439,12 @@ class TestAddressForm(TestCase):
 	
 	@classmethod
 	def setUpTestData(cls):
-		cls.user = MyUser.objects.create_superuser(
+		cls.user = MyUser.objects.create_user(
 			email='email@email.com',
 			username='username',
 			first='first name',
 			password='GoodPassword000',
+			is_active=True
 		)
 	
 	def setUp(self):
@@ -465,11 +472,12 @@ class TestGetAddress(TestCase):
 	
 	@classmethod
 	def setUpTestData(cls):
-		cls.user = MyUser.objects.create_superuser(
+		cls.user = MyUser.objects.create_user(
 			email='email@email.com',
 			username='username',
 			first='first name',
 			password='GoodPassword000',
+			is_active=True
 		)
 		cls.address_1 = Address.objects.create(
 			customer=cls.user,
@@ -512,11 +520,12 @@ class TestAddAddress(TestCase):
 	
 	@classmethod
 	def setUpTestData(cls):
-		cls.user = MyUser.objects.create_superuser(
+		cls.user = MyUser.objects.create_user(
 			email='email@email.com',
 			username='username',
 			first='first name',
 			password='GoodPassword000',
+			is_active=True
 		)
 		cls.data = {
 			'name': 'name',
@@ -553,11 +562,12 @@ class TestNewAddressBtn(TestCase):
 	
 	@classmethod
 	def setUpTestData(cls):
-		cls.user = MyUser.objects.create_superuser(
+		cls.user = MyUser.objects.create_user(
 			email='email@email.com',
 			username='username',
 			first='first name',
 			password='GoodPassword000',
+			is_active=True
 		)
 	
 	def setUp(self):
@@ -602,11 +612,12 @@ class TestEditAddress(TestCase):
 	
 	@classmethod
 	def setUpTestData(cls):
-		cls.user = MyUser.objects.create_superuser(
+		cls.user = MyUser.objects.create_user(
 			email='email@email.com',
 			username='username',
 			first='first name',
 			password='GoodPassword000',
+			is_active=True
 		)
 		cls.address_1 = Address.objects.create(
 			customer=cls.user,
@@ -662,11 +673,12 @@ class TestDeleteAddress(TestCase):
 	
 	@classmethod
 	def setUpTestData(cls):
-		cls.user = MyUser.objects.create_superuser(
+		cls.user = MyUser.objects.create_user(
 			email='email@email.com',
 			username='username',
 			first='first name',
 			password='GoodPassword000',
+			is_active=True
 		)
 		cls.address_1 = Address.objects.create(
 			customer=cls.user,
@@ -704,11 +716,12 @@ class TestSetDefaultAddress(TestCase):
 	
 	@classmethod
 	def setUpTestData(cls):
-		cls.user = MyUser.objects.create_superuser(
+		cls.user = MyUser.objects.create_user(
 			email='email@email.com',
 			username='username',
 			first='first name',
 			password='GoodPassword000',
+			is_active=True
 		)
 		cls.address_1 = Address.objects.create(
 			customer=cls.user,
@@ -793,11 +806,12 @@ class TestAddToWishlist(TestCase):
 	
 	@classmethod
 	def setUpTestData(cls):
-		cls.user = MyUser.objects.create_superuser(
+		cls.user = MyUser.objects.create_user(
 			email='email@email.com',
 			username='username',
 			first='first name',
 			password='GoodPassword000',
+			is_active=True
 		)
 		
 		cls.category_1 = Category.objects.create(name=cls.category_name_1)
@@ -895,11 +909,12 @@ class TestWishlist(TestCase):
 	
 	@classmethod
 	def setUpTestData(cls):
-		cls.user = MyUser.objects.create_superuser(
+		cls.user = MyUser.objects.create_user(
 			email='email@email.com',
 			username='username',
 			first='first name',
 			password='GoodPassword000',
+			is_active=True
 		)
 		
 		cls.category_1 = Category.objects.create(name=cls.category_name_1)
@@ -986,7 +1001,7 @@ class TestOrders(TestCase):
 	
 	@classmethod
 	def setUpTestData(cls):
-		cls.user = MyUser.objects.create_superuser(cls.email_1, cls.username_1, cls.password_1)
+		cls.user = MyUser.objects.create_user(cls.email_1, cls.username_1, cls.password_1, is_active=True)
 		
 		cls.delivery_option_1 = DeliveryOptions.objects.create(
 			delivery_method='PA',
