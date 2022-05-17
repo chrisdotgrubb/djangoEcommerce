@@ -11,6 +11,7 @@ from ecommerce.apps.order.models import Order, OrderItem
 from ecommerce.apps.user.models import Address
 from .models import DeliveryOptions
 from .paypal import PayPalClient
+from ecommerce.apps.cart.cart import Cart
 
 
 @login_required

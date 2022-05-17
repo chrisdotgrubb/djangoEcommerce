@@ -8,6 +8,7 @@ from ecommerce.apps.checkout.models import DeliveryOptions
 from ecommerce.apps.order.models import Order
 from ecommerce.apps.store.models import Category, Product, ProductType
 from ecommerce.apps.user.models import Address, MyUser
+from ecommerce.settings.base import LOGIN_URL
 
 
 class TestUserRegistration(TestCase):
@@ -126,7 +127,7 @@ class TestDashboard(TestCase):
 	def test_login_required(self):
 		self.client.logout()
 		response = self.client.get(self.url)
-		self.assertEqual(response.status_code, 302)
+		self.assertRedirects(response, f'{LOGIN_URL}?next={self.url}')
 	
 	def test_template_dashboard(self):
 		self.assertTemplateUsed(self.response, 'user/dashboard.html')
@@ -416,7 +417,7 @@ class TestAddressList(TestCase):
 	def test_login_required(self):
 		self.client.logout()
 		response = self.client.get(self.url)
-		self.assertEqual(response.status_code, 302)
+		self.assertRedirects(response, f'{LOGIN_URL}?next={self.url}')
 	
 	def test_context(self):
 		context = self.response.context['addresses']
@@ -461,7 +462,7 @@ class TestAddressForm(TestCase):
 	def test_login_required(self):
 		self.client.logout()
 		response = self.client.get(self.url)
-		self.assertEqual(response.status_code, 302)
+		self.assertRedirects(response, f'{LOGIN_URL}?next={self.url}')
 	
 	def test_template_address_form(self):
 		self.assertTemplateUsed(self.response, 'user/address/_address_form.html')
@@ -510,7 +511,7 @@ class TestGetAddress(TestCase):
 	def test_login_required(self):
 		self.client.logout()
 		response = self.client.get(self.url)
-		self.assertEqual(response.status_code, 302)
+		self.assertRedirects(response, f'{LOGIN_URL}?next={self.url}')
 	
 	def test_template_address_form(self):
 		self.assertTemplateUsed(self.response, 'user/address/_address.html')
@@ -551,7 +552,7 @@ class TestAddAddress(TestCase):
 	def test_login_required(self):
 		self.client.logout()
 		response = self.client.post(self.url)
-		self.assertRedirects(response, '/user/login/?next=/user/add_address/')
+		self.assertRedirects(response, f'{LOGIN_URL}?next={self.url}')
 	
 	def test_http_methods(self):
 		response = self.client.get(self.url)
@@ -581,7 +582,8 @@ class TestNewAddressBtn(TestCase):
 	def test_login_required(self):
 		self.client.logout()
 		response = self.client.get(self.url)
-		self.assertEqual(response.status_code, 302)
+		self.assertRedirects(response, f'{LOGIN_URL}?next={self.url}')
+	
 	
 	def test_template_new_address_btn(self):
 		self.assertTemplateUsed(self.response, 'user/address/_new_address_btn.html')
@@ -665,7 +667,7 @@ class TestEditAddress(TestCase):
 	def test_login_required(self):
 		self.client.logout()
 		response = self.client.get(self.url)
-		self.assertEqual(response.status_code, 302)
+		self.assertRedirects(response, f'{LOGIN_URL}?next={self.url}')
 
 
 class TestDeleteAddress(TestCase):
@@ -708,7 +710,7 @@ class TestDeleteAddress(TestCase):
 	def test_login_required(self):
 		self.client.logout()
 		response = self.client.get(self.url)
-		self.assertEqual(response.status_code, 302)
+		self.assertRedirects(response, f'{LOGIN_URL}?next={self.url}')
 
 
 class TestSetDefaultAddress(TestCase):
@@ -787,7 +789,7 @@ class TestSetDefaultAddress(TestCase):
 	def test_login_required(self):
 		self.client.logout()
 		response = self.client.get(self.url)
-		self.assertEqual(response.status_code, 302)
+		self.assertRedirects(response, f'{LOGIN_URL}?next={self.url}')
 
 
 class TestAddToWishlist(TestCase):
@@ -890,7 +892,7 @@ class TestAddToWishlist(TestCase):
 		self.client.logout()
 		url = reverse('user:add_to_wishlist', args=[self.product_1.pk])
 		response = self.client.get(url)
-		self.assertEqual(response.status_code, 302)
+		self.assertRedirects(response, f'{LOGIN_URL}?next={url}')
 
 
 class TestWishlist(TestCase):
@@ -964,7 +966,7 @@ class TestWishlist(TestCase):
 	def test_login_required(self):
 		self.client.logout()
 		response = self.client.get(self.url)
-		self.assertEqual(response.status_code, 302)
+		self.assertRedirects(response, f'{LOGIN_URL}?next={self.url}')
 	
 	def test_template_address_list(self):
 		self.assertTemplateUsed(self.response, 'user/user_wish_list.html')
@@ -1041,7 +1043,7 @@ class TestOrders(TestCase):
 	def test_login_required(self):
 		self.client.logout()
 		response = self.client.get(self.url)
-		self.assertEqual(response.status_code, 302)
+		self.assertRedirects(response, f'{LOGIN_URL}?next={self.url}')
 	
 	def test_template_address_list(self):
 		self.assertTemplateUsed(self.response, 'user/orders.html')
