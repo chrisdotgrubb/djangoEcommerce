@@ -33,9 +33,9 @@ def cart_view(request):
 def cart_add(request, product_id):
 	product_qty = request.POST.get('qty', 0)
 	cart = Cart(request)
+	product = get_object_or_404(Product, id=product_id, is_active=True)
 	cart.add(product_id, product_qty)
 	
-	product = get_object_or_404(Product, id=product_id, is_active=True)
 	context = {
 		'product': product,
 		'form': AddForm,
@@ -62,10 +62,10 @@ def cart_delete(request, product_id):
 def cart_choose_quantity(request, product_id):
 	product_qty = request.POST.get('qty', 0)
 	cart = Cart(request)
+	product = get_object_or_404(Product, id=product_id, is_active=True)
 	cart.set_quantity(product_id, product_qty)
 	form = QuantityForm(initial={'qty': product_qty})
 	
-	product = get_object_or_404(Product, id=product_id, is_active=True)
 	context = {
 		'product': product,
 		'form': form,

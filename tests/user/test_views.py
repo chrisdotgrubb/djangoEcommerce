@@ -553,7 +553,7 @@ class TestAddAddress(TestCase):
 		response = self.client.post(self.url)
 		self.assertRedirects(response, '/user/login/?next=/user/add_address/')
 	
-	def test_post_required(self):
+	def test_http_methods(self):
 		response = self.client.get(self.url)
 		self.assertEqual(response.status_code, 405)
 
