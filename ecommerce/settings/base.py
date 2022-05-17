@@ -11,7 +11,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, 'ecommerce/settings/.env'))
 
 SECRET_KEY = env('SECRET_KEY')
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['localhost']
 

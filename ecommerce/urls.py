@@ -12,7 +12,4 @@ urlpatterns = [
     path('checkout/', include('ecommerce.apps.checkout.urls', namespace='checkout')),
     path('__debug__/', include(debug_toolbar.urls)),
     path('', include('ecommerce.apps.store.urls', namespace='store')),
-]
-
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

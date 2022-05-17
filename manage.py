@@ -4,7 +4,7 @@ import os
 import sys
 
 
-settings_file = 'ecommerce.settings.dev_debug'
+settings_file = 'ecommerce.settings.development'
 
 def main():
 	"""Run administrative tasks."""

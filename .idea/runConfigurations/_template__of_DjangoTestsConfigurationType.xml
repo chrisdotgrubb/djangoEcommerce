@@ -5,7 +5,7 @@
     <option name="PARENT_ENVS" value="true" />
     <envs>
       <env name="PYTHONUNBUFFERED" value="1" />
-      <env name="DJANGO_SETTINGS_MODULE" value="ecommerce.settings.dev_debug" />
+      <env name="DJANGO_SETTINGS_MODULE" value="ecommerce.settings.development" />
     </envs>
     <option name="SDK_HOME" value="C:\Users\Grubby\PycharmProjects\venvs\djangoEcommerce\Scripts\python.exe" />
     <option name="WORKING_DIRECTORY" value="" />
