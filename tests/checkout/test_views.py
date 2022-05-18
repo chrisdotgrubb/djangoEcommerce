@@ -45,13 +45,35 @@ class TestDeliveryChoices(TestCase):
 		context = self.response.context
 		self.assertIn('delivery_options', context)
 	
-	def test_purchase_in_session(self):
-		pass
-		# response = self.client.post(self.url)
-		# context = response.context
-		# self.assertIn('delivery_options', context)
-		# self.assertIn('total', context)
-		# self.assertIn('delivery_price', context)
+	def test_delivery_option_in_session(self):
+		session = self.client.session
+		session['purchase'] = {}
+		session['purchase']['delivery_id'] = self.delivery_option_1.pk
+		session.save()
+		response = self.client.post(self.url)
+		context = response.context
+		self.assertIn('total', context)
+		self.assertIn('delivery_price', context)
+		
+	def test_delivery_option_empty(self):
+		session = self.client.session
+		session['purchase'] = {}
+		session['purchase']['delivery_id'] = None
+		session.save()
+		response = self.client.post(self.url)
+		context = response.context
+		self.assertNotIn('total', context)
+		self.assertNotIn('delivery_price', context)
+		
+	def test_delivery_option_wrong(self):
+		session = self.client.session
+		session['purchase'] = {}
+		session['purchase']['delivery_id'] = 999
+		session.save()
+		response = self.client.post(self.url)
+		context = response.context
+		self.assertNotIn('total', context)
+		self.assertNotIn('delivery_price', context)
 		
 	def test_login_required(self):
 		self.client.logout()

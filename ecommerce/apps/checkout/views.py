@@ -1,6 +1,7 @@
 import json
 
 from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect, JsonResponse
 from django.template.response import TemplateResponse
 from django.contrib.auth.decorators import login_required
@@ -22,10 +23,13 @@ def delivery_choices_view(request):
 	try:
 		if request.session['purchase']['delivery_id']:
 			cart = Cart(request)
-			delivery_type = DeliveryOptions.objects.get(id=request.session['purchase']['delivery_id'])
-			updated_total_price = cart.get_grand_total(delivery_type.delivery_price)
-			context['total'] = updated_total_price
-			context['delivery_price'] = delivery_type.delivery_price
+			try:
+				delivery_type = DeliveryOptions.objects.get(id=request.session['purchase']['delivery_id'])
+				updated_total_price = cart.get_grand_total(delivery_type.delivery_price)
+				context['total'] = updated_total_price
+				context['delivery_price'] = delivery_type.delivery_price
+			except ObjectDoesNotExist:
+				pass
 	except KeyError:
 		pass
 	
