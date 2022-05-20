@@ -43,27 +43,32 @@ def delivery_address_view(request):
 		messages.info(request, 'Please select a delivery option.')
 		return HttpResponseRedirect(request.META['HTTP_REFERER'])
 	
-	delivery_id = request.session['purchase']['delivery_id']
-	delivery_obj = DeliveryOptions.objects.get(id=delivery_id)
+	try:
+		delivery_id = request.session['purchase']['delivery_id']
+		delivery_obj = DeliveryOptions.objects.get(id=delivery_id, is_active=True)
+	except (KeyError, ObjectDoesNotExist):
+		messages.info(request, 'Please select a different delivery option.')
+		return HttpResponseRedirect(request.META['HTTP_REFERER'])
 	
 	cart = Cart(request)
 	addresses = Address.objects.filter(customer=request.user).order_by('-default')
-	has_default = addresses[0].default
-	
+	if addresses:
+		has_default = addresses[0].default
+	else:
+		messages.info(request, 'Please add an address for delivery, then checkout again.')
+		return HttpResponseRedirect(reverse('user:addresses'))
+		
 	subtotal = cart.get_subtotal_price()
 	tax = cart.get_tax_price()
 	delivery_price = delivery_obj.delivery_price
 	total = cart.get_grand_total(delivery_price=delivery_price)
 	
-	try:
-		if 'address' not in request.session:
-			session['address'] = {'address_id': str(addresses[0].id)}
-		else:
-			session['address']['address_id'] = str(addresses[0].id)
-			session.modified = True
-	except IndexError:
-		messages.info(request, 'Please add an address for delivery, then checkout again.')
-		return HttpResponseRedirect(reverse('user:addresses'))
+	if 'address' not in request.session:
+		session['address'] = {'address_id': str(addresses[0].id)}
+	else:
+		session['address']['address_id'] = str(addresses[0].id)
+		session.modified = True
+		
 	
 	context = {
 		'addresses': addresses,
