@@ -85,13 +85,16 @@ def delivery_address_view(request):
 def payment_selection_view(request):
 	session = request.session
 	if 'address' not in session:  # shouldn't happen
-		messages.info(request, 'Please select a delivery address')
+		messages.info(request, 'Please select a delivery address.')
 		return HttpResponseRedirect(request.META['HTTP_REFERER'])
+	try:
+		delivery_id = request.session['purchase']['delivery_id']
+		delivery_obj = DeliveryOptions.objects.get(id=delivery_id)
+	except (KeyError, ObjectDoesNotExist):
+		messages.info(request, 'Please select a different delivery option.')
+		return HttpResponseRedirect(reverse('checkout:delivery_choices'))
 	
-	delivery_id = request.session['purchase']['delivery_id']
-	delivery_obj = DeliveryOptions.objects.get(id=delivery_id)
 	cart = Cart(request)
-	
 	subtotal = cart.get_subtotal_price()
 	tax = cart.get_tax_price()
 	delivery_price = delivery_obj.delivery_price
@@ -160,9 +163,12 @@ def payment_complete_view(request):
 @login_required
 def payment_success_view(request):
 	cart = Cart(request)
-	
 	cart.clear()
-	order = Order.objects.filter(user=request.user, is_paid=True).first()
+	
+	order = Order.objects.filter(user=request.user).first()
+	if not order or not order.is_paid:
+		order = None
+		messages.error(request, 'There was a problem with your order.')
 	context = {'order': order}
 	return TemplateResponse(request, 'checkout/payment_success.html', context)
 
